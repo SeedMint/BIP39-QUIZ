@@ -911,6 +911,15 @@
             
             .game-end-screen {
                 padding: 10px 0;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y;
+                overscroll-behavior: contain;
+            }
+            
+            /* Ensure leaderboard is also touch scrollable */
+            .leaderboard-list {
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y;
             }
         }
 
@@ -930,6 +939,8 @@
             animation: fadeIn 0.5s ease;
             overflow-y: auto;
             padding: 20px 0;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .game-end-content {
