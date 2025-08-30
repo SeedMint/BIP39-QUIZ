@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support BIPardy - V4V Donations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29 0%, #24243e 50%, #302b63 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            padding: 20px;
+        }
+
+        .donate-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .qr-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px auto;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .qr-code {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .description {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .highlight {
+            color: #feca57;
+            font-weight: 600;
+        }
+
+        .address {
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            color: #feca57;
+            border: 1px solid rgba(254, 202, 87, 0.3);
+            word-break: break-all;
+        }
+
+        .thanks {
+            font-size: 1.1em;
+            margin-top: 20px;
+            font-style: italic;
+            color: #ff6b6b;
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: #0f0c29;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .donate-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .description {
+                font-size: 1.1em;
+            }
+
+            .qr-code {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="donate-container">
+        <div class="zap-header" onclick="openZapPopup()" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <h1>⚡️ Zap me on NOSTR ⚡️</h1>
+            
+            <div class="description">
+                🧡 V4V 🧡
+            </div>
+        </div>
+
+        <div class="qr-container" onclick="openZapPopup()" style="cursor: pointer; transition: transform 0.2s; display: flex; justify-content: center;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203 203" style="width: 280px; height: 280px; max-width: 100%; border-radius: 10px;" title="Scan to zap snick@primal.net">
+              <defs>
+                <linearGradient id="lightningGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFD700"/>
+                  <stop offset="50%" stop-color="#FFA500"/>
+                  <stop offset="100%" stop-color="#FF8C00"/>
+                </linearGradient>
+              </defs>
+              <rect width="203" height="203" fill="white"/>
+              <g fill="black">
+                <path d="M 0,0 l 7,0 0,7 -7,0 z M 7,0 l 7,0 0,7 -7,0 z M 14,0 l 7,0 0,7 -7,0 z M 21,0 l 7,0 0,7 -7,0 z M 28,0 l 7,0 0,7 -7,0 z M 35,0 l 7,0 0,7 -7,0 z M 42,0 l 7,0 0,7 -7,0 z M 56,0 l 7,0 0,7 -7,0 z M 63,0 l 7,0 0,7 -7,0 z M 84,0 l 7,0 0,7 -7,0 z M 105,0 l 7,0 0,7 -7,0 z M 126,0 l 7,0 0,7 -7,0 z M 140,0 l 7,0 0,7 -7,0 z M 154,0 l 7,0 0,7 -7,0 z M 161,0 l 7,0 0,7 -7,0 z M 168,0 l 7,0 0,7 -7,0 z M 175,0 l 7,0 0,7 -7,0 z M 182,0 l 7,0 0,7 -7,0 z M 189,0 l 7,0 0,7 -7,0 z M 196,0 l 7,0 0,7 -7,0 z M 0,7 l 7,0 0,7 -7,0 z M 42,7 l 7,0 0,7 -7,0 z M 56,7 l 7,0 0,7 -7,0 z M 98,7 l 7,0 0,7 -7,0 z M 126,7 l 7,0 0,7 -7,0 z M 133,7 l 7,0 0,7 -7,0 z M 154,7 l 7,0 0,7 -7,0 z M 196,7 l 7,0 0,7 -7,0 z M 0,14 l 7,0 0,7 -7,0 z M 14,14 l 7,0 0,7 -7,0 z M 21,14 l 7,0 0,7 -7,0 z M 28,14 l 7,0 0,7 -7,0 z M 42,14 l 7,0 0,7 -7,0 z M 56,14 l 7,0 0,7 -7,0 z M 63,14 l 7,0 0,7 -7,0 z M 77,14 l 7,0 0,7 -7,0 z M 112,14 l 7,0 0,7 -7,0 z M 133,14 l 7,0 0,7 -7,0 z M 140,14 l 7,0 0,7 -7,0 z M 154,14 l 7,0 0,7 -7,0 z M 168,14 l 7,0 0,7 -7,0 z M 175,14 l 7,0 0,7 -7,0 z M 182,14 l 7,0 0,7 -7,0 z M 196,14 l 7,0 0,7 -7,0 z M 0,21 l 7,0 0,7 -7,0 z M 14,21 l 7,0 0,7 -7,0 z M 21,21 l 7,0 0,7 -7,0 z M 28,21 l 7,0 0,7 -7,0 z M 42,21 l 7,0 0,7 -7,0 z M 77,21 l 7,0 0,7 -7,0 z M 84,21 l 7,0 0,7 -7,0 z M 91,21 l 7,0 0,7 -7,0 z M 98,21 l 7,0 0,7 -7,0 z M 112,21 l 7,0 0,7 -7,0 z M 119,21 l 7,0 0,7 -7,0 z M 133,21 l 7,0 0,7 -7,0 z M 154,21 l 7,0 0,7 -7,0 z M 168,21 l 7,0 0,7 -7,0 z M 175,21 l 7,0 0,7 -7,0 z M 182,21 l 7,0 0,7 -7,0 z M 196,21 l 7,0 0,7 -7,0 z M 0,28 l 7,0 0,7 -7,0 z M 14,28 l 7,0 0,7 -7,0 z M 21,28 l 7,0 0,7 -7,0 z M 28,28 l 7,0 0,7 -7,0 z M 42,28 l 7,0 0,7 -7,0 z M 91,28 l 7,0 0,7 -7,0 z M 105,28 l 7,0 0,7 -7,0 z M 112,28 l 7,0 0,7 -7,0 z M 126,28 l 7,0 0,7 -7,0 z M 133,28 l 7,0 0,7 -7,0 z M 140,28 l 7,0 0,7 -7,0 z M 154,28 l 7,0 0,7 -7,0 z M 168,28 l 7,0 0,7 -7,0 z M 175,28 l 7,0 0,7 -7,0 z M 182,28 l 7,0 0,7 -7,0 z M 196,28 l 7,0 0,7 -7,0 z M 0,35 l 7,0 0,7 -7,0 z M 42,35 l 7,0 0,7 -7,0 z M 56,35 l 7,0 0,7 -7,0 z M 70,35 l 7,0 0,7 -7,0 z M 77,35 l 7,0 0,7 -7,0 z M 112,35 l 7,0 0,7 -7,0 z M 126,35 l 7,0 0,7 -7,0 z M 140,35 l 7,0 0,7 -7,0 z M 154,35 l 7,0 0,7 -7,0 z M 196,35 l 7,0 0,7 -7,0 z M 0,42 l 7,0 0,7 -7,0 z M 7,42 l 7,0 0,7 -7,0 z M 14,42 l 7,0 0,7 -7,0 z M 21,42 l 7,0 0,7 -7,0 z M 28,42 l 7,0 0,7 -7,0 z M 35,42 l 7,0 0,7 -7,0 z M 42,42 l 7,0 0,7 -7,0 z M 56,42 l 7,0 0,7 -7,0 z M 70,42 l 7,0 0,7 -7,0 z M 84,42 l 7,0 0,7 -7,0 z M 98,42 l 7,0 0,7 -7,0 z M 112,42 l 7,0 0,7 -7,0 z M 126,42 l 7,0 0,7 -7,0 z M 140,42 l 7,0 0,7 -7,0 z M 154,42 l 7,0 0,7 -7,0 z M 161,42 l 7,0 0,7 -7,0 z M 168,42 l 7,0 0,7 -7,0 z M 175,42 l 7,0 0,7 -7,0 z M 182,42 l 7,0 0,7 -7,0 z M 189,42 l 7,0 0,7 -7,0 z M 196,42 l 7,0 0,7 -7,0 z M 56,49 l 7,0 0,7 -7,0 z M 70,49 l 7,0 0,7 -7,0 z M 77,49 l 7,0 0,7 -7,0 z M 84,49 l 7,0 0,7 -7,0 z M 98,49 l 7,0 0,7 -7,0 z M 140,49 l 7,0 0,7 -7,0 z M 14,56 l 7,0 0,7 -7,0 z M 21,56 l 7,0 0,7 -7,0 z M 28,56 l 7,0 0,7 -7,0 z M 42,56 l 7,0 0,7 -7,0 z M 56,56 l 7,0 0,7 -7,0 z M 70,56 l 7,0 0,7 -7,0 z M 112,56 l 7,0 0,7 -7,0 z M 126,56 l 7,0 0,7 -7,0 z M 133,56 l 7,0 0,7 -7,0 z M 140,56 l 7,0 0,7 -7,0 z M 147,56 l 7,0 0,7 -7,0 z M 154,56 l 7,0 0,7 -7,0 z M 161,56 l 7,0 0,7 -7,0 z M 182,56 l 7,0 0,7 -7,0 z M 189,56 l 7,0 0,7 -7,0 z M 196,56 l 7,0 0,7 -7,0 z M 14,63 l 7,0 0,7 -7,0 z M 21,63 l 7,0 0,7 -7,0 z M 28,63 l 7,0 0,7 -7,0 z M 77,63 l 7,0 0,7 -7,0 z M 91,63 l 7,0 0,7 -7,0 z M 98,63 l 7,0 0,7 -7,0 z M 105,63 l 7,0 0,7 -7,0 z M 168,63 l 7,0 0,7 -7,0 z M 175,63 l 7,0 0,7 -7,0 z M 182,63 l 7,0 0,7 -7,0 z M 189,63 l 7,0 0,7 -7,0 z M 196,63 l 7,0 0,7 -7,0 z M 0,70 l 7,0 0,7 -7,0 z M 7,70 l 7,0 0,7 -7,0 z M 14,70 l 7,0 0,7 -7,0 z M 21,70 l 7,0 0,7 -7,0 z M 42,70 l 7,0 0,7 -7,0 z M 63,70 l 7,0 0,7 -7,0 z M 77,70 l 7,0 0,7 -7,0 z M 84,70 l 7,0 0,7 -7,0 z M 126,70 l 7,0 0,7 -7,0 z M 140,70 l 7,0 0,7 -7,0 z M 147,70 l 7,0 0,7 -7,0 z M 161,70 l 7,0 0,7 -7,0 z M 168,70 l 7,0 0,7 -7,0 z M 182,70 l 7,0 0,7 -7,0 z M 21,77 l 7,0 0,7 -7,0 z M 35,77 l 7,0 0,7 -7,0 z M 56,77 l 7,0 0,7 -7,0 z M 77,77 l 7,0 0,7 -7,0 z M 91,77 l 7,0 0,7 -7,0 z M 105,77 l 7,0 0,7 -7,0 z M 112,77 l 7,0 0,7 -7,0 z M 119,77 l 7,0 0,7 -7,0 z M 126,77 l 7,0 0,7 -7,0 z M 147,77 l 7,0 0,7 -7,0 z M 168,77 l 7,0 0,7 -7,0 z M 175,77 l 7,0 0,7 -7,0 z M 196,77 l 7,0 0,7 -7,0 z M 0,84 l 7,0 0,7 -7,0 z M 14,84 l 7,0 0,7 -7,0 z M 28,84 l 7,0 0,7 -7,0 z M 42,84 l 7,0 0,7 -7,0 z M 49,84 l 7,0 0,7 -7,0 z M 63,84 l 7,0 0,7 -7,0 z M 70,84 l 7,0 0,7 -7,0 z M 84,84 l 7,0 0,7 -7,0 z M 91,84 l 7,0 0,7 -7,0 z M 98,84 l 7,0 0,7 -7,0 z M 105,84 l 7,0 0,7 -7,0 z M 112,84 l 7,0 0,7 -7,0 z M 168,84 l 7,0 0,7 -7,0 z M 182,84 l 7,0 0,7 -7,0 z M 189,84 l 7,0 0,7 -7,0 z M 14,91 l 7,0 0,7 -7,0 z M 56,91 l 7,0 0,7 -7,0 z M 63,91 l 7,0 0,7 -7,0 z M 77,91 l 7,0 0,7 -7,0 z M 91,91 l 7,0 0,7 -7,0 z M 98,91 l 7,0 0,7 -7,0 z M 105,91 l 7,0 0,7 -7,0 z M 112,91 l 7,0 0,7 -7,0 z M 119,91 l 7,0 0,7 -7,0 z M 126,91 l 7,0 0,7 -7,0 z M 133,91 l 7,0 0,7 -7,0 z M 140,91 l 7,0 0,7 -7,0 z M 154,91 l 7,0 0,7 -7,0 z M 161,91 l 7,0 0,7 -7,0 z M 168,91 l 7,0 0,7 -7,0 z M 175,91 l 7,0 0,7 -7,0 z M 182,91 l 7,0 0,7 -7,0 z M 189,91 l 7,0 0,7 -7,0 z M 196,91 l 7,0 0,7 -7,0 z M 7,98 l 7,0 0,7 -7,0 z M 14,98 l 7,0 0,7 -7,0 z M 21,98 l 7,0 0,7 -7,0 z M 42,98 l 7,0 0,7 -7,0 z M 63,98 l 7,0 0,7 -7,0 z M 77,98 l 7,0 0,7 -7,0 z M 84,98 l 7,0 0,7 -7,0 z M 91,98 l 7,0 0,7 -7,0 z M 112,98 l 7,0 0,7 -7,0 z M 140,98 l 7,0 0,7 -7,0 z M 154,98 l 7,0 0,7 -7,0 z M 161,98 l 7,0 0,7 -7,0 z M 182,98 l 7,0 0,7 -7,0 z M 7,105 l 7,0 0,7 -7,0 z M 28,105 l 7,0 0,7 -7,0 z M 49,105 l 7,0 0,7 -7,0 z M 63,105 l 7,0 0,7 -7,0 z M 70,105 l 7,0 0,7 -7,0 z M 84,105 l 7,0 0,7 -7,0 z M 91,105 l 7,0 0,7 -7,0 z M 98,105 l 7,0 0,7 -7,0 z M 105,105 l 7,0 0,7 -7,0 z M 112,105 l 7,0 0,7 -7,0 z M 119,105 l 7,0 0,7 -7,0 z M 126,105 l 7,0 0,7 -7,0 z M 147,105 l 7,0 0,7 -7,0 z M 154,105 l 7,0 0,7 -7,0 z M 175,105 l 7,0 0,7 -7,0 z M 189,105 l 7,0 0,7 -7,0 z M 196,105 l 7,0 0,7 -7,0 z M 14,112 l 7,0 0,7 -7,0 z M 21,112 l 7,0 0,7 -7,0 z M 35,112 l 7,0 0,7 -7,0 z M 42,112 l 7,0 0,7 -7,0 z M 63,112 l 7,0 0,7 -7,0 z M 77,112 l 7,0 0,7 -7,0 z M 84,112 l 7,0 0,7 -7,0 z M 105,112 l 7,0 0,7 -7,0 z M 112,112 l 7,0 0,7 -7,0 z M 126,112 l 7,0 0,7 -7,0 z M 133,112 l 7,0 0,7 -7,0 z M 154,112 l 7,0 0,7 -7,0 z M 168,112 l 7,0 0,7 -7,0 z M 182,112 l 7,0 0,7 -7,0 z M 196,112 l 7,0 0,7 -7,0 z M 0,119 l 7,0 0,7 -7,0 z M 7,119 l 7,0 0,7 -7,0 z M 14,119 l 7,0 0,7 -7,0 z M 21,119 l 7,0 0,7 -7,0 z M 56,119 l 7,0 0,7 -7,0 z M 63,119 l 7,0 0,7 -7,0 z M 77,119 l 7,0 0,7 -7,0 z M 98,119 l 7,0 0,7 -7,0 z M 119,119 l 7,0 0,7 -7,0 z M 126,119 l 7,0 0,7 -7,0 z M 140,119 l 7,0 0,7 -7,0 z M 147,119 l 7,0 0,7 -7,0 z M 161,119 l 7,0 0,7 -7,0 z M 175,119 l 7,0 0,7 -7,0 z M 196,119 l 7,0 0,7 -7,0 z M 0,126 l 7,0 0,7 -7,0 z M 14,126 l 7,0 0,7 -7,0 z M 21,126 l 7,0 0,7 -7,0 z M 35,126 l 7,0 0,7 -7,0 z M 42,126 l 7,0 0,7 -7,0 z M 49,126 l 7,0 0,7 -7,0 z M 56,126 l 7,0 0,7 -7,0 z M 63,126 l 7,0 0,7 -7,0 z M 84,126 l 7,0 0,7 -7,0 z M 98,126 l 7,0 0,7 -7,0 z M 126,126 l 7,0 0,7 -7,0 z M 133,126 l 7,0 0,7 -7,0 z M 147,126 l 7,0 0,7 -7,0 z M 175,126 l 7,0 0,7 -7,0 z M 0,133 l 7,0 0,7 -7,0 z M 14,133 l 7,0 0,7 -7,0 z M 21,133 l 7,0 0,7 -7,0 z M 56,133 l 7,0 0,7 -7,0 z M 77,133 l 7,0 0,7 -7,0 z M 112,133 l 7,0 0,7 -7,0 z M 133,133 l 7,0 0,7 -7,0 z M 140,133 l 7,0 0,7 -7,0 z M 147,133 l 7,0 0,7 -7,0 z M 161,133 l 7,0 0,7 -7,0 z M 175,133 l 7,0 0,7 -7,0 z M 189,133 l 7,0 0,7 -7,0 z M 0,140 l 7,0 0,7 -7,0 z M 21,140 l 7,0 0,7 -7,0 z M 35,140 l 7,0 0,7 -7,0 z M 42,140 l 7,0 0,7 -7,0 z M 56,140 l 7,0 0,7 -7,0 z M 63,140 l 7,0 0,7 -7,0 z M 70,140 l 7,0 0,7 -7,0 z M 77,140 l 7,0 0,7 -7,0 z M 84,140 l 7,0 0,7 -7,0 z M 105,140 l 7,0 0,7 -7,0 z M 119,140 l 7,0 0,7 -7,0 z M 126,140 l 7,0 0,7 -7,0 z M 133,140 l 7,0 0,7 -7,0 z M 140,140 l 7,0 0,7 -7,0 z M 147,140 l 7,0 0,7 -7,0 z M 154,140 l 7,0 0,7 -7,0 z M 161,140 l 7,0 0,7 -7,0 z M 168,140 l 7,0 0,7 -7,0 z M 175,140 l 7,0 0,7 -7,0 z M 182,140 l 7,0 0,7 -7,0 z M 189,140 l 7,0 0,7 -7,0 z M 56,147 l 7,0 0,7 -7,0 z M 63,147 l 7,0 0,7 -7,0 z M 70,147 l 7,0 0,7 -7,0 z M 77,147 l 7,0 0,7 -7,0 z M 84,147 l 7,0 0,7 -7,0 z M 98,147 l 7,0 0,7 -7,0 z M 105,147 l 7,0 0,7 -7,0 z M 112,147 l 7,0 0,7 -7,0 z M 140,147 l 7,0 0,7 -7,0 z M 168,147 l 7,0 0,7 -7,0 z M 182,147 l 7,0 0,7 -7,0 z M 189,147 l 7,0 0,7 -7,0 z M 196,147 l 7,0 0,7 -7,0 z M 0,154 l 7,0 0,7 -7,0 z M 7,154 l 7,0 0,7 -7,0 z M 14,154 l 7,0 0,7 -7,0 z M 21,154 l 7,0 0,7 -7,0 z M 28,154 l 7,0 0,7 -7,0 z M 35,154 l 7,0 0,7 -7,0 z M 42,154 l 7,0 0,7 -7,0 z M 63,154 l 7,0 0,7 -7,0 z M 70,154 l 7,0 0,7 -7,0 z M 77,154 l 7,0 0,7 -7,0 z M 91,154 l 7,0 0,7 -7,0 z M 105,154 l 7,0 0,7 -7,0 z M 112,154 l 7,0 0,7 -7,0 z M 133,154 l 7,0 0,7 -7,0 z M 140,154 l 7,0 0,7 -7,0 z M 154,154 l 7,0 0,7 -7,0 z M 168,154 l 7,0 0,7 -7,0 z M 175,154 l 7,0 0,7 -7,0 z M 189,154 l 7,0 0,7 -7,0 z M 0,161 l 7,0 0,7 -7,0 z M 42,161 l 7,0 0,7 -7,0 z M 63,161 l 7,0 0,7 -7,0 z M 70,161 l 7,0 0,7 -7,0 z M 77,161 l 7,0 0,7 -7,0 z M 84,161 l 7,0 0,7 -7,0 z M 91,161 l 7,0 0,7 -7,0 z M 98,161 l 7,0 0,7 -7,0 z M 105,161 l 7,0 0,7 -7,0 z M 119,161 l 7,0 0,7 -7,0 z M 126,161 l 7,0 0,7 -7,0 z M 133,161 l 7,0 0,7 -7,0 z M 140,161 l 7,0 0,7 -7,0 z M 168,161 l 7,0 0,7 -7,0 z M 175,161 l 7,0 0,7 -7,0 z M 189,161 l 7,0 0,7 -7,0 z M 0,168 l 7,0 0,7 -7,0 z M 14,168 l 7,0 0,7 -7,0 z M 21,168 l 7,0 0,7 -7,0 z M 28,168 l 7,0 0,7 -7,0 z M 42,168 l 7,0 0,7 -7,0 z M 56,168 l 7,0 0,7 -7,0 z M 70,168 l 7,0 0,7 -7,0 z M 77,168 l 7,0 0,7 -7,0 z M 112,168 l 7,0 0,7 -7,0 z M 140,168 l 7,0 0,7 -7,0 z M 147,168 l 7,0 0,7 -7,0 z M 154,168 l 7,0 0,7 -7,0 z M 161,168 l 7,0 0,7 -7,0 z M 168,168 l 7,0 0,7 -7,0 z M 182,168 l 7,0 0,7 -7,0 z M 196,168 l 7,0 0,7 -7,0 z M 0,175 l 7,0 0,7 -7,0 z M 14,175 l 7,0 0,7 -7,0 z M 21,175 l 7,0 0,7 -7,0 z M 28,175 l 7,0 0,7 -7,0 z M 42,175 l 7,0 0,7 -7,0 z M 56,175 l 7,0 0,7 -7,0 z M 63,175 l 7,0 0,7 -7,0 z M 70,175 l 7,0 0,7 -7,0 z M 77,175 l 7,0 0,7 -7,0 z M 91,175 l 7,0 0,7 -7,0 z M 112,175 l 7,0 0,7 -7,0 z M 126,175 l 7,0 0,7 -7,0 z M 140,175 l 7,0 0,7 -7,0 z M 175,175 l 7,0 0,7 -7,0 z M 0,182 l 7,0 0,7 -7,0 z M 14,182 l 7,0 0,7 -7,0 z M 21,182 l 7,0 0,7 -7,0 z M 28,182 l 7,0 0,7 -7,0 z M 42,182 l 7,0 0,7 -7,0 z M 56,182 l 7,0 0,7 -7,0 z M 77,182 l 7,0 0,7 -7,0 z M 84,182 l 7,0 0,7 -7,0 z M 119,182 l 7,0 0,7 -7,0 z M 154,182 l 7,0 0,7 -7,0 z M 161,182 l 7,0 0,7 -7,0 z M 168,182 l 7,0 0,7 -7,0 z M 189,182 l 7,0 0,7 -7,0 z M 0,189 l 7,0 0,7 -7,0 z M 42,189 l 7,0 0,7 -7,0 z M 91,189 l 7,0 0,7 -7,0 z M 105,189 l 7,0 0,7 -7,0 z M 112,189 l 7,0 0,7 -7,0 z M 119,189 l 7,0 0,7 -7,0 z M 126,189 l 7,0 0,7 -7,0 z M 133,189 l 7,0 0,7 -7,0 z M 147,189 l 7,0 0,7 -7,0 z M 161,189 l 7,0 0,7 -7,0 z M 189,189 l 7,0 0,7 -7,0 z M 0,196 l 7,0 0,7 -7,0 z M 7,196 l 7,0 0,7 -7,0 z M 14,196 l 7,0 0,7 -7,0 z M 21,196 l 7,0 0,7 -7,0 z M 28,196 l 7,0 0,7 -7,0 z M 35,196 l 7,0 0,7 -7,0 z M 42,196 l 7,0 0,7 -7,0 z M 63,196 l 7,0 0,7 -7,0 z M 70,196 l 7,0 0,7 -7,0 z M 77,196 l 7,0 0,7 -7,0 z M 84,196 l 7,0 0,7 -7,0 z M 91,196 l 7,0 0,7 -7,0 z M 105,196 l 7,0 0,7 -7,0 z M 126,196 l 7,0 0,7 -7,0 z M 168,196 l 7,0 0,7 -7,0 z " />
+              </g>
+              <g transform="translate(101.5,101.5)">
+                <circle cx="0" cy="0" r="28" fill="white" stroke="#333" stroke-width="2"/>
+                <path d="M10,-18 L-8,-2 L0,-2 L-12,18 L8,2 L0,2 Z" fill="url(#lightningGrad)" stroke="#FF6B00" stroke-width="1.5"/>
+                <path d="M6,-14 L-4,-4 L0,-4 L-6,8" fill="none" stroke="#FFFF99" stroke-width="1" opacity="0.8"/>
+              </g>
+            </svg>
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Game</a>
+    </div>
+
+    <script>
+        function openZapPopup() {
+            // Open Primal zap interface in a new window/tab
+            const zapUrl = 'https://primal.net/snick';
+            const popup = window.open(
+                zapUrl, 
+                'primalZap', 
+                'width=450,height=600,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=no'
+            );
+            
+            // Focus the popup if it opened successfully
+            if (popup) {
+                popup.focus();
+            }
+        }
+        
+        // Add visual feedback
+        document.querySelectorAll('.zap-header, .qr-container').forEach(element => {
+            element.addEventListener('click', function(e) {
+                // Add click animation
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

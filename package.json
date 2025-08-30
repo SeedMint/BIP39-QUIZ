@@ -1,0 +1,16 @@
+{
+  "name": "bipardy",
+  "version": "1.0.0",
+  "description": "Bitcoin word guessing game with leaderboard",
+  "main": "index.html",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  },
+  "scripts": {
+    "dev": "netlify dev",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": ["bitcoin", "word-game", "bip39"],
+  "author": "Claude",
+  "license": "MIT"
+}
