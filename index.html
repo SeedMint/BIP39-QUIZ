@@ -933,6 +933,62 @@
             cursor: not-allowed;
         }
 
+        /* New leaderboard UI styles */
+        .leaderboard-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: rgba(254, 202, 87, 0.2);
+            border-color: rgba(254, 202, 87, 0.5);
+            color: #feca57;
+        }
+
+        .submit-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .submit-score-btn.local {
+            background: linear-gradient(45deg, #54a0ff, #2e86de);
+            flex: 1;
+        }
+
+        .submit-score-btn.global {
+            background: linear-gradient(45deg, #5f27cd, #341f97);
+            flex: 1;
+        }
+
+        .submit-score-btn.local:hover:not(:disabled) {
+            box-shadow: 0 5px 15px rgba(84, 160, 255, 0.4);
+        }
+
+        .submit-score-btn.global:hover:not(:disabled) {
+            box-shadow: 0 5px 15px rgba(95, 39, 205, 0.4);
+        }
+
+        .privacy-note {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.3;
+        }
+
         .leaderboard-list {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
@@ -1350,15 +1406,28 @@
             <div class="leaderboard-section" id="leaderboardSection" style="display: none;">
                 <h3 class="leaderboard-title">🏆 BIP39 Masters Leaderboard 🏆</h3>
                 
+                <div class="leaderboard-tabs">
+                    <button class="tab-btn active" id="localTabBtn">📱 Local Best</button>
+                    <button class="tab-btn" id="globalTabBtn">🌍 Global Top</button>
+                </div>
+
                 <div class="leaderboard-submit" id="leaderboardSubmit">
                     <input type="text" 
                            class="name-input" 
                            id="playerNameInput" 
                            placeholder="Enter your name"
                            maxlength="20">
-                    <button class="submit-score-btn" id="submitScoreBtn">
-                        Submit to Leaderboard
-                    </button>
+                    <div class="submit-options">
+                        <button class="submit-score-btn local" id="submitLocalBtn">
+                            💾 Save Locally
+                        </button>
+                        <button class="submit-score-btn global" id="submitGlobalBtn">
+                            🌍 Share Globally
+                        </button>
+                    </div>
+                    <div class="privacy-note">
+                        💡 Local scores stay private on your device. Global scores are shared publicly.
+                    </div>
                 </div>
                 
                 <div class="rank-status" id="rankStatus"></div>
@@ -2387,22 +2456,56 @@
             return winnerIndex;
         }
 
-        // Leaderboard functionality
+        // Enhanced Leaderboard functionality with local storage + GitHub
         let gameStartTime = Date.now();
         let currentPlayerScore = null;
+        let currentLeaderboardView = 'local'; // 'local' or 'global'
 
-        async function loadLeaderboard() {
+        // Local Storage Management
+        function getLocalScores() {
             try {
-                const response = await fetch('/.netlify/functions/get-leaderboard');
-                if (!response.ok) throw new Error('Failed to load leaderboard');
-                return await response.json();
+                const scores = localStorage.getItem('bipardy-local-scores');
+                return scores ? JSON.parse(scores) : [];
             } catch (error) {
-                console.error('Error loading leaderboard:', error);
+                console.error('Error reading local scores:', error);
                 return [];
             }
         }
 
-        async function submitScore(name, scoreData) {
+        function saveLocalScore(scoreEntry) {
+            try {
+                const scores = getLocalScores();
+                scores.push(scoreEntry);
+                // Sort by combined score (descending) and keep top 50
+                scores.sort((a, b) => b.combined - a.combined);
+                const trimmedScores = scores.slice(0, 50);
+                localStorage.setItem('bipardy-local-scores', JSON.stringify(trimmedScores));
+                return trimmedScores;
+            } catch (error) {
+                console.error('Error saving local score:', error);
+                return getLocalScores();
+            }
+        }
+
+        function getPersonalBest(gameLength) {
+            const scores = getLocalScores();
+            const personalBests = scores.filter(score => score.gameLength === gameLength);
+            return personalBests.length > 0 ? personalBests[0] : null;
+        }
+
+        // Global Leaderboard (GitHub-based)
+        async function loadGlobalLeaderboard() {
+            try {
+                const response = await fetch('/.netlify/functions/get-leaderboard');
+                if (!response.ok) throw new Error('Failed to load global leaderboard');
+                return await response.json();
+            } catch (error) {
+                console.error('Error loading global leaderboard:', error);
+                return [];
+            }
+        }
+
+        async function submitGlobalScore(name, scoreData) {
             try {
                 const gameTime = Math.round((Date.now() - gameStartTime) / 1000);
                 const payload = {
@@ -2421,23 +2524,33 @@
 
                 if (!response.ok) {
                     const error = await response.json();
-                    throw new Error(error.error || 'Failed to submit score');
+                    throw new Error(error.error || 'Failed to submit global score');
                 }
 
                 return await response.json();
             } catch (error) {
-                console.error('Error submitting score:', error);
+                console.error('Error submitting global score:', error);
                 throw error;
             }
         }
 
-        function displayLeaderboard(leaderboard, currentPlayerRank = null) {
+        // Combined leaderboard loading
+        async function loadLeaderboard() {
+            if (currentLeaderboardView === 'local') {
+                return getLocalScores();
+            } else {
+                return await loadGlobalLeaderboard();
+            }
+        }
+
+        function displayLeaderboard(leaderboard, currentPlayerRank = null, highlightScore = null) {
             const leaderboardList = document.getElementById('leaderboardList');
             
             if (leaderboard.length === 0) {
+                const viewType = currentLeaderboardView === 'local' ? 'local scores' : 'global scores';
                 leaderboardList.innerHTML = `
                     <div style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 20px;">
-                        No scores yet. Be the first!
+                        No ${viewType} yet. ${currentLeaderboardView === 'local' ? 'Play a game!' : 'Be the first!'}
                     </div>
                 `;
                 return;
@@ -2446,11 +2559,14 @@
             leaderboardList.innerHTML = leaderboard.map((entry, index) => {
                 const rank = index + 1;
                 const isCurrentPlayer = currentPlayerRank === rank;
+                const isHighlighted = highlightScore && 
+                    entry.combined === highlightScore.combined && 
+                    entry.timestamp === highlightScore.timestamp;
                 const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : '';
-                const currentClass = isCurrentPlayer ? 'current-player' : '';
+                const currentClass = (isCurrentPlayer || isHighlighted) ? 'current-player' : '';
                 
                 return `
-                    <div class="leaderboard-entry ${rankClass} ${currentClass}" ${isCurrentPlayer ? 'id="current-player-entry"' : ''}>
+                    <div class="leaderboard-entry ${rankClass} ${currentClass}" ${(isCurrentPlayer || isHighlighted) ? 'id="current-player-entry"' : ''}>
                         <div class="leaderboard-rank">#${rank}</div>
                         <div class="leaderboard-name">${entry.name}</div>
                         <div class="leaderboard-game-length">${entry.gameLength || 12}w</div>
@@ -2460,7 +2576,7 @@
             }).join('');
 
             // Scroll to current player if they're not visible
-            if (currentPlayerRank && currentPlayerRank > 7) { // Show if below top 7
+            if ((currentPlayerRank && currentPlayerRank > 7) || highlightScore) {
                 const currentPlayerElement = document.getElementById('current-player-entry');
                 if (currentPlayerElement) {
                     setTimeout(() => {
@@ -2473,15 +2589,52 @@
             }
         }
 
-        function updateRankStatus(result) {
+        // Tab functionality
+        function switchLeaderboardView(view) {
+            currentLeaderboardView = view;
+            
+            // Update tab styling
+            document.getElementById('localTabBtn').classList.toggle('active', view === 'local');
+            document.getElementById('globalTabBtn').classList.toggle('active', view === 'global');
+            
+            // Load and display the appropriate leaderboard
+            loadLeaderboard().then(leaderboard => {
+                displayLeaderboard(leaderboard);
+            });
+        }
+
+        function updateRankStatus(result, isLocal = false) {
+            const rankStatus = document.getElementById('rankStatus');
+            const leaderboardType = isLocal ? 'local' : 'global';
+            
+            if (isLocal) {
+                rankStatus.innerHTML = `📱 Score saved locally! Check your personal best in the Local tab.`;
+                rankStatus.className = 'rank-status made-leaderboard';
+            } else if (result && result.madeLeaderboard && result.rank) {
+                rankStatus.innerHTML = `🎉 Congratulations! You're rank #${result.rank} on the global leaderboard! 🎉`;
+                rankStatus.className = 'rank-status made-leaderboard';
+            } else if (result) {
+                rankStatus.innerHTML = `🌍 Your score was shared globally, but didn't make the top 21. Keep practicing!`;
+                rankStatus.className = 'rank-status no-leaderboard';
+            } else {
+                rankStatus.innerHTML = `❌ Failed to share globally. Your score is saved locally.`;
+                rankStatus.className = 'rank-status no-leaderboard';
+            }
+        }
+
+        function showPersonalBestInfo(scoreEntry, gameLength) {
+            const personalBest = getPersonalBest(gameLength);
             const rankStatus = document.getElementById('rankStatus');
             
-            if (result.madeLeaderboard && result.rank) {
-                rankStatus.innerHTML = `🎉 Congratulations! You're rank #${result.rank} on the leaderboard! 🎉`;
+            if (personalBest && scoreEntry.combined > personalBest.combined) {
+                rankStatus.innerHTML = `🏆 NEW PERSONAL BEST! Previous best: ${personalBest.combined.toLocaleString()}`;
                 rankStatus.className = 'rank-status made-leaderboard';
-            } else {
-                rankStatus.innerHTML = `Your score didn't make the top 21, but keep practicing!`;
+            } else if (personalBest) {
+                rankStatus.innerHTML = `📈 Personal best for ${gameLength}w: ${personalBest.combined.toLocaleString()}`;
                 rankStatus.className = 'rank-status no-leaderboard';
+            } else {
+                rankStatus.innerHTML = `🎯 First ${gameLength}-word game completed!`;
+                rankStatus.className = 'rank-status made-leaderboard';
             }
         }
 
@@ -2546,14 +2699,19 @@
                 const player = players[0];
                 const combinedScore = calculateCombinedScore(player);
                 
-                // Store current player score for leaderboard submission
-                currentPlayerScore = {
+                // Create score entry
+                const scoreEntry = {
                     score: player.score,
                     streak: player.streak,
                     words: player.words,
                     combined: combinedScore,
-                    gameLength: gameLength
+                    gameLength: gameLength,
+                    timestamp: new Date().toISOString(),
+                    gameTime: Math.round((Date.now() - gameStartTime) / 1000)
                 };
+                
+                // Store current player score for optional global submission
+                currentPlayerScore = scoreEntry;
                 
                 finalStats.innerHTML = `
                     <div class="player-final-stats">
@@ -2581,7 +2739,11 @@
                 // Show leaderboard section for single player
                 leaderboardSection.style.display = 'block';
                 
-                // Load and display leaderboard
+                // Show personal best info initially
+                showPersonalBestInfo(scoreEntry, gameLength);
+                
+                // Load and display local leaderboard by default
+                currentLeaderboardView = 'local';
                 loadLeaderboard().then(leaderboard => {
                     displayLeaderboard(leaderboard);
                 });
@@ -2607,10 +2769,19 @@
             window.location.href = 'donate.html';
         });
 
-        // Leaderboard submission handlers
-        document.getElementById('submitScoreBtn').addEventListener('click', async () => {
+        // Tab switching event handlers
+        document.getElementById('localTabBtn').addEventListener('click', () => {
+            switchLeaderboardView('local');
+        });
+        
+        document.getElementById('globalTabBtn').addEventListener('click', () => {
+            switchLeaderboardView('global');
+        });
+
+        // Local score submission handler
+        document.getElementById('submitLocalBtn').addEventListener('click', async () => {
             const nameInput = document.getElementById('playerNameInput');
-            const submitBtn = document.getElementById('submitScoreBtn');
+            const localBtn = document.getElementById('submitLocalBtn');
             const name = nameInput.value.trim();
 
             if (!name) {
@@ -2628,33 +2799,96 @@
             }
 
             // Disable button and show loading state
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+            localBtn.disabled = true;
+            localBtn.textContent = 'Saving...';
 
             try {
-                const result = await submitScore(name, currentPlayerScore);
+                // Add name to score entry and save locally
+                const scoreEntryWithName = { ...currentPlayerScore, name };
+                const updatedScores = saveLocalScore(scoreEntryWithName);
                 
                 // Update rank status
-                updateRankStatus(result);
+                updateRankStatus(null, true);
                 
-                // Reload and display updated leaderboard
-                const leaderboard = await loadLeaderboard();
+                // Switch to local view and refresh leaderboard
+                currentLeaderboardView = 'local';
+                switchLeaderboardView('local');
+                const rank = updatedScores.findIndex(entry => 
+                    entry.combined === scoreEntryWithName.combined && 
+                    entry.timestamp === scoreEntryWithName.timestamp
+                ) + 1;
+                displayLeaderboard(updatedScores, rank, scoreEntryWithName);
+                
+                // Hide submission form
+                document.getElementById('leaderboardSubmit').style.display = 'none';
+                
+            } catch (error) {
+                alert('Failed to save score locally: ' + error.message);
+                localBtn.disabled = false;
+                localBtn.textContent = '📱 Save Locally';
+            }
+        });
+
+        // Global score submission handler
+        document.getElementById('submitGlobalBtn').addEventListener('click', async () => {
+            const nameInput = document.getElementById('playerNameInput');
+            const globalBtn = document.getElementById('submitGlobalBtn');
+            const localBtn = document.getElementById('submitLocalBtn');
+            const name = nameInput.value.trim();
+
+            if (!name) {
+                nameInput.focus();
+                nameInput.style.borderColor = '#ff6b6b';
+                setTimeout(() => {
+                    nameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                }, 2000);
+                return;
+            }
+
+            if (!currentPlayerScore) {
+                alert('No score data available');
+                return;
+            }
+
+            // Disable both buttons and show loading state
+            globalBtn.disabled = true;
+            localBtn.disabled = true;
+            globalBtn.textContent = 'Sharing...';
+
+            try {
+                // First save locally as backup
+                const scoreEntryWithName = { ...currentPlayerScore, name };
+                saveLocalScore(scoreEntryWithName);
+                
+                // Then try to submit globally
+                const result = await submitGlobalScore(name, currentPlayerScore);
+                
+                // Update rank status
+                updateRankStatus(result, false);
+                
+                // Switch to global view and refresh leaderboard
+                currentLeaderboardView = 'global';
+                switchLeaderboardView('global');
+                const leaderboard = await loadGlobalLeaderboard();
                 displayLeaderboard(leaderboard, result.rank);
                 
                 // Hide submission form
                 document.getElementById('leaderboardSubmit').style.display = 'none';
                 
             } catch (error) {
-                alert('Failed to submit score: ' + error.message);
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit to Leaderboard';
+                console.error('Global submission failed:', error);
+                // Update rank status to show it's saved locally but failed globally
+                updateRankStatus(null, false);
+                globalBtn.disabled = false;
+                localBtn.disabled = false;
+                globalBtn.textContent = '🌍 Share Globally';
             }
         });
 
-        // Allow Enter key to submit score
+        // Allow Enter key to submit to local (default)
         document.getElementById('playerNameInput').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                document.getElementById('submitScoreBtn').click();
+                document.getElementById('submitLocalBtn').click();
             }
         });
 

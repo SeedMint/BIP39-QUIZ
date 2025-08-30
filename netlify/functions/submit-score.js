@@ -1,6 +1,3 @@
-// Simplified submit function for testing - stores in memory (temporary)
-let inMemoryLeaderboard = [];
-
 exports.handler = async (event, context) => {
   // CORS headers for browser requests
   const headers = {
@@ -25,6 +22,19 @@ exports.handler = async (event, context) => {
   }
 
   try {
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    const GITHUB_REPO = process.env.GITHUB_REPO || 'BIP_quiz';
+    const GITHUB_OWNER = process.env.GITHUB_OWNER;
+
+    // Check if GitHub is configured
+    if (!GITHUB_TOKEN || !GITHUB_OWNER) {
+      return {
+        statusCode: 503,
+        headers,
+        body: JSON.stringify({ error: 'Global leaderboard unavailable' })
+      };
+    }
+
     // Parse request body
     const body = JSON.parse(event.body);
     const { name, score, streak, words, combined, gameTime, gameLength } = body;
@@ -100,19 +110,78 @@ exports.handler = async (event, context) => {
       gameLength: gameLength
     };
 
-    // Add new score to in-memory leaderboard
-    inMemoryLeaderboard.push(scoreEntry);
+    // Fetch current scores from GitHub
+    const githubUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/scores.json`;
+    
+    let currentScoresData = { scores: [] };
+    let currentSha = null;
 
-    // Sort by combined score (descending) and keep top 21
-    inMemoryLeaderboard = inMemoryLeaderboard
-      .sort((a, b) => b.combined - a.combined)
-      .slice(0, 21);
+    try {
+      const response = await fetch(githubUrl, {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'BIPARDY-Game'
+        }
+      });
+
+      if (response.ok) {
+        const fileData = await response.json();
+        currentSha = fileData.sha;
+        const content = Buffer.from(fileData.content, 'base64').toString('utf8');
+        currentScoresData = JSON.parse(content);
+      } else if (response.status !== 404) {
+        throw new Error(`GitHub API error: ${response.status}`);
+      }
+    } catch (fetchError) {
+      console.error('Error fetching current scores:', fetchError);
+      // Continue with empty scores if fetch fails
+    }
+
+    // Add new score and sort
+    currentScoresData.scores.push(scoreEntry);
+    currentScoresData.scores.sort((a, b) => b.combined - a.combined);
+    
+    // Keep top 100 scores (to have some history)
+    currentScoresData.scores = currentScoresData.scores.slice(0, 100);
+    currentScoresData.lastUpdated = new Date().toISOString();
 
     // Find the rank of the submitted score
-    const playerRank = inMemoryLeaderboard.findIndex(entry => 
+    const playerRank = currentScoresData.scores.findIndex(entry => 
       entry.combined === calculatedCombined && 
       entry.timestamp === scoreEntry.timestamp
     ) + 1;
+
+    // Commit the updated scores back to GitHub
+    const commitMessage = `Add score: ${sanitizedName} - ${calculatedCombined}`;
+    const updatedContent = Buffer.from(JSON.stringify(currentScoresData, null, 2)).toString('base64');
+
+    const commitPayload = {
+      message: commitMessage,
+      content: updatedContent,
+      branch: 'main'
+    };
+
+    if (currentSha) {
+      commitPayload.sha = currentSha;
+    }
+
+    const commitResponse = await fetch(githubUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+        'User-Agent': 'BIPARDY-Game'
+      },
+      body: JSON.stringify(commitPayload)
+    });
+
+    if (!commitResponse.ok) {
+      const errorText = await commitResponse.text();
+      console.error('GitHub commit failed:', commitResponse.status, errorText);
+      throw new Error(`Failed to save score to GitHub: ${commitResponse.status}`);
+    }
 
     return {
       statusCode: 200,
@@ -129,7 +198,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Failed to submit score' })
+      body: JSON.stringify({ error: 'Failed to submit score to global leaderboard' })
     };
   }
 };
