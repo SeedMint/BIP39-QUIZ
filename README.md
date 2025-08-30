@@ -26,7 +26,7 @@ A PWA implementation of a Bitcoin word game using the BIP-39 wordlist with offli
 
 ## Privacy Policy
 
-- Local scores remain on your device
+- Local scores remain private on your device
 - Global scores are public and stored in GitHub
 - No personal information is collected beyond chosen display names
 - No cookies or tracking used
