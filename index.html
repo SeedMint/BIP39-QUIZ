@@ -902,24 +902,56 @@
         /* Mobile-specific game end screen improvements */
         @media (max-width: 768px) {
             .game-end-content {
-                padding: 20px 15px;
+                padding: 15px 10px;
                 margin: 10px auto;
-                max-height: calc(100vh - 20px);
+                max-height: none !important;
+                min-height: auto !important;
+                height: auto !important;
                 width: 95%;
                 border-radius: 15px;
+                overflow-y: visible;
             }
             
             .game-end-screen {
-                padding: 10px 0;
+                padding: 5px 0;
                 -webkit-overflow-scrolling: touch;
                 touch-action: pan-y;
                 overscroll-behavior: contain;
+                align-items: flex-start !important;
             }
             
             /* Ensure leaderboard is also touch scrollable */
             .leaderboard-list {
                 -webkit-overflow-scrolling: touch;
                 touch-action: pan-y;
+                max-height: 200px;
+            }
+            
+            /* Ensure submit buttons are accessible */
+            .leaderboard-submit {
+                margin: 15px 0;
+                padding: 15px;
+            }
+            
+            /* Mobile-specific button positioning */
+            .submit-score-btn {
+                padding: 12px 20px !important;
+                margin: 8px 0 !important;
+                font-size: 14px !important;
+            }
+        }
+        
+        /* Additional mobile viewport fix */
+        @media (max-width: 480px) {
+            .game-end-content {
+                padding: 10px 8px !important;
+                margin: 5px auto !important;
+                max-height: none !important;
+                width: 98% !important;
+            }
+            
+            .leaderboard-list {
+                max-height: 150px !important;
             }
         }
 
