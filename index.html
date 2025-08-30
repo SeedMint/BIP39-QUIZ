@@ -294,6 +294,7 @@
             justify-content: center;
             margin-bottom: 10px;
             flex-shrink: 0;
+            gap: 12px;
         }
 
         .toggle-container {
@@ -304,6 +305,8 @@
             align-items: center;
             gap: 8px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 80%;
+            width: fit-content;
         }
 
         .toggle-label {
@@ -347,6 +350,64 @@
         }
 
         /* Word display section */
+        /* Timer progress bar */
+        .timer-container {
+            width: 100%;
+            margin-bottom: 15px;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timer-container.active {
+            opacity: 1;
+        }
+
+        .timer-background {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .timer-progress {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #ff6b6b);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            width: 100%;
+            transition: width linear;
+            animation: timerPulse 2.1s infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+                background-position: 0% 50%;
+            }
+            50% { 
+                box-shadow: 0 0 15px rgba(254, 202, 87, 0.8);
+                background-position: 100% 50%;
+            }
+        }
+
+        .timer-bonus {
+            position: absolute;
+            right: 0;
+            top: -25px;
+            color: #feca57;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timer-bonus.show {
+            opacity: 1;
+        }
+
         .word-display {
             background: rgba(36, 36, 62, 0.8);
             padding: 15px;
@@ -730,6 +791,8 @@
 
             .toggle-container {
                 padding: 8px;
+                max-width: 80%;
+                width: fit-content;
             }
 
             .toggle-label {
@@ -1019,7 +1082,7 @@
 
         .leaderboard-entry {
             display: grid;
-            grid-template-columns: 40px 1fr 40px 80px;
+            grid-template-columns: 40px 1fr 40px 50px 80px;
             align-items: center;
             gap: 8px;
             padding: 8px 12px;
@@ -1054,6 +1117,13 @@
             font-size: 12px;
             text-align: center;
         }
+
+        .leaderboard-game-time {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            text-align: center;
+        }
+
 
         .leaderboard-name {
             flex-grow: 1;
@@ -1334,6 +1404,14 @@
                 <div class="toggle-container">
                     <span class="toggle-label">Show word length</span>
                     <div class="toggle-switch" id="lengthToggle"></div>
+                </div>
+            </div>
+            
+            <!-- Timer Progress Bar -->
+            <div class="timer-container" id="timerContainer">
+                <div class="timer-bonus" id="timerBonus">+21 Bonus</div>
+                <div class="timer-background">
+                    <div class="timer-progress" id="timerProgress"></div>
                 </div>
             </div>
             
@@ -1622,6 +1700,108 @@
         let toggleUsedThisRound = false;
         let helpUsedCount = 0;
         let wrongGuessCount = 0;
+
+        // Timer bonus system configuration
+        const TIMER_DURATION = 10; // seconds - easy to adjust
+        const MAX_TIMER_BONUS = 21; // maximum bonus points for instant answer
+        let timerActive = false;
+        let timerStartTime = 0;
+        let timerInterval = null;
+        let currentTimerBonus = 0;
+
+        // Timer bonus system functions
+        function startTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            timerActive = true;
+            timerStartTime = Date.now();
+            currentTimerBonus = MAX_TIMER_BONUS;
+            
+            // Show timer UI
+            const timerContainer = document.getElementById('timerContainer');
+            const timerProgress = document.getElementById('timerProgress');
+            const timerBonus = document.getElementById('timerBonus');
+            
+            timerContainer.classList.add('active');
+            timerBonus.classList.add('show');
+            timerBonus.textContent = `+${currentTimerBonus} Bonus`;
+            
+            // Reset progress bar to full width
+            timerProgress.style.transition = 'none';
+            timerProgress.style.width = '100%';
+            
+            // Start animation after a brief delay
+            setTimeout(() => {
+                timerProgress.style.transition = `width ${TIMER_DURATION}s linear`;
+                timerProgress.style.width = '0%';
+            }, 50);
+            
+            // Update bonus every 100ms for smooth updates
+            timerInterval = setInterval(updateTimerBonus, 100);
+            
+            // Auto-expire timer
+            setTimeout(expireTimer, TIMER_DURATION * 1000);
+        }
+        
+        function updateTimerBonus() {
+            if (!timerActive) return;
+            
+            const elapsed = (Date.now() - timerStartTime) / 1000;
+            const remaining = Math.max(0, TIMER_DURATION - elapsed);
+            const progress = remaining / TIMER_DURATION;
+            
+            // Calculate bonus proportionally
+            currentTimerBonus = Math.round(MAX_TIMER_BONUS * progress);
+            
+            // Update bonus display
+            const timerBonus = document.getElementById('timerBonus');
+            timerBonus.textContent = `+${currentTimerBonus} Bonus`;
+            
+            // Stop when timer expires
+            if (remaining <= 0) {
+                expireTimer();
+            }
+        }
+        
+        function expireTimer() {
+            timerActive = false;
+            currentTimerBonus = 0;
+            
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // Update UI to show expired state
+            const timerBonus = document.getElementById('timerBonus');
+            timerBonus.textContent = '+0 Bonus';
+            timerBonus.classList.remove('show');
+        }
+        
+        function stopTimer() {
+            timerActive = false;
+            
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // Hide timer UI
+            const timerContainer = document.getElementById('timerContainer');
+            const timerBonus = document.getElementById('timerBonus');
+            
+            timerContainer.classList.remove('active');
+            timerBonus.classList.remove('show');
+            
+            // Return current bonus for scoring
+            return currentTimerBonus;
+        }
+        
+        function getCurrentTimerBonus() {
+            return timerActive ? currentTimerBonus : 0;
+        }
 
         // Advanced word selection system
         let recentlyUsedWords = []; // Track last 210 words
@@ -2090,6 +2270,9 @@
             // Update help button text - don't reveal cost when word length is hidden
             updateHelpButtonText();
             
+            // Start timer for this round
+            startTimer();
+            
             enableAllKeys();
             displayWord();
         }
@@ -2104,6 +2287,10 @@
                 let finalPoints = 21; // Base points
                 let bonusText = '';
                 
+                // Get timer bonus
+                const timerBonus = getCurrentTimerBonus();
+                stopTimer();
+                
                 // If toggle was used this round, cap at normal bonus (21 points)
                 if (toggleUsedThisRound) {
                     finalPoints = 21;
@@ -2114,6 +2301,12 @@
                         finalPoints = Math.round(21 * 1.42); // 30 points
                         bonusText = ' (Hidden multiplier)';
                     }
+                }
+                
+                // Add timer bonus
+                finalPoints += timerBonus;
+                if (timerBonus > 0) {
+                    bonusText += ` +${timerBonus} timer bonus`;
                 }
                 
                 players[currentPlayer].score += finalPoints;
@@ -2159,6 +2352,9 @@
                 
                 // Check if player has reached 2 wrong guesses (applies to both single and multiplayer)
                 if (wrongGuessCount >= 2) {
+                    // Stop timer when player fails
+                    stopTimer();
+                    
                     // Apply 10-point penalty for 2 wrong guesses
                     players[currentPlayer].score = Math.max(0, players[currentPlayer].score - 10);
                     updateScoreDisplay();
@@ -2254,6 +2450,9 @@
                 guessedLetters.push(nextLetter);
                 displayWord();
                 
+                // Stop timer when help is used
+                stopTimer();
+                
                 // Deduct help cost and increment usage
                 players[currentPlayer].score -= helpCost;
                 helpUsedCount++;
@@ -2314,6 +2513,9 @@
         // Skip function - no points, keeps streak, increments word count
         function skip() {
             if (!gameActive) return;
+            
+            // Stop timer when skipping
+            stopTimer();
             
             // Show the full word before skipping
             revealFullWord();
@@ -2460,6 +2662,41 @@
         let gameStartTime = Date.now();
         let currentPlayerScore = null;
         let currentLeaderboardView = 'local'; // 'local' or 'global'
+        let scoreSubmittedLocally = false;
+        let scoreSubmittedGlobally = false;
+        
+        
+        // Reset button states for new game
+        function resetSubmissionButtons() {
+            const localBtn = document.getElementById('submitLocalBtn');
+            const globalBtn = document.getElementById('submitGlobalBtn');
+            
+            localBtn.disabled = false;
+            localBtn.textContent = '💾 Save Locally Only';
+            localBtn.style.opacity = '1';
+            
+            globalBtn.disabled = false;
+            globalBtn.textContent = '🌍 Save Local + Share Global';
+            globalBtn.style.opacity = '1';
+        }
+        
+        // Update button states based on submission status
+        function updateSubmissionButtons() {
+            const localBtn = document.getElementById('submitLocalBtn');
+            const globalBtn = document.getElementById('submitGlobalBtn');
+            
+            if (scoreSubmittedLocally) {
+                localBtn.disabled = true;
+                localBtn.textContent = '✅ Saved Locally';
+                localBtn.style.opacity = '0.6';
+            }
+            
+            if (scoreSubmittedGlobally) {
+                globalBtn.disabled = true;
+                globalBtn.textContent = '✅ Shared Globally';
+                globalBtn.style.opacity = '0.6';
+            }
+        }
 
         // Local Storage Management
         function getLocalScores() {
@@ -2570,6 +2807,7 @@
                         <div class="leaderboard-rank">#${rank}</div>
                         <div class="leaderboard-name">${entry.name}</div>
                         <div class="leaderboard-game-length">${entry.gameLength || 12}w</div>
+                        <div class="leaderboard-game-time">${entry.gameTime || 0}s</div>
                         <div class="leaderboard-score">${entry.combined.toLocaleString()}</div>
                     </div>
                 `;
@@ -2687,6 +2925,10 @@
                                 <div class="stat-value">${player.words}</div>
                                 <div class="stat-label">Words</div>
                             </div>
+                            <div class="stat-card small">
+                                <div class="stat-value">${Math.round((Date.now() - gameStartTime) / 1000)}s</div>
+                                <div class="stat-label">Time</div>
+                            </div>
                         </div>
                     `;
                     finalStats.appendChild(playerContainer);
@@ -2713,6 +2955,13 @@
                 // Store current player score for optional global submission
                 currentPlayerScore = scoreEntry;
                 
+                // Reset submission flags for new score
+                scoreSubmittedLocally = false;
+                scoreSubmittedGlobally = false;
+                
+                // Reset button states
+                resetSubmissionButtons();
+                
                 finalStats.innerHTML = `
                     <div class="player-final-stats">
                         <div class="stat-card large-score">
@@ -2731,6 +2980,10 @@
                             <div class="stat-card small">
                                 <div class="stat-value">${player.words}</div>
                                 <div class="stat-label">Words</div>
+                            </div>
+                            <div class="stat-card small">
+                                <div class="stat-value">${Math.round((Date.now() - gameStartTime) / 1000)}s</div>
+                                <div class="stat-label">Time</div>
                             </div>
                         </div>
                     </div>
@@ -2798,6 +3051,10 @@
                 return;
             }
 
+            if (scoreSubmittedLocally) {
+                return; // Button should already be disabled and show saved state
+            }
+
             // Disable button and show loading state
             localBtn.disabled = true;
             localBtn.textContent = 'Saving...';
@@ -2818,6 +3075,12 @@
                     entry.timestamp === scoreEntryWithName.timestamp
                 ) + 1;
                 displayLeaderboard(updatedScores, rank, scoreEntryWithName);
+                
+                // Mark as submitted locally
+                scoreSubmittedLocally = true;
+                
+                // Update button states
+                updateSubmissionButtons();
                 
                 // Hide submission form
                 document.getElementById('leaderboardSubmit').style.display = 'none';
@@ -2850,6 +3113,10 @@
                 return;
             }
 
+            if (scoreSubmittedGlobally) {
+                return; // Button should already be disabled and show shared state
+            }
+
             // Disable both buttons and show loading state
             globalBtn.disabled = true;
             localBtn.disabled = true;
@@ -2872,6 +3139,13 @@
                 const leaderboard = await loadGlobalLeaderboard();
                 displayLeaderboard(leaderboard, result.rank);
                 
+                // Mark as submitted globally (and locally since global saves locally first)
+                scoreSubmittedGlobally = true;
+                scoreSubmittedLocally = true;
+                
+                // Update button states
+                updateSubmissionButtons();
+                
                 // Hide submission form
                 document.getElementById('leaderboardSubmit').style.display = 'none';
                 
@@ -2879,9 +3153,17 @@
                 console.error('Global submission failed:', error);
                 // Update rank status to show it's saved locally but failed globally
                 updateRankStatus(null, false);
+                
+                // Mark as submitted locally (global submission saves locally first)
+                scoreSubmittedLocally = true;
+                
+                // Update button states
+                updateSubmissionButtons();
+                
+                // Re-enable global button since it failed (local button will be disabled by updateSubmissionButtons)
                 globalBtn.disabled = false;
-                localBtn.disabled = false;
-                globalBtn.textContent = '🌍 Save Local + Share Global';
+                globalBtn.textContent = '🌍 Share Globally (retry)';
+                globalBtn.style.opacity = '1';
             }
         });
 
@@ -2958,6 +3240,7 @@
             
             displayWord();
         });
+
 
         // Player selector
         playerSelector.addEventListener('click', (e) => {
@@ -3082,5 +3365,6 @@
         // Initialize matrix rain effect
         initMatrixRain();
     </script>
+    
 </body>
 </html>
