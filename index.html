@@ -918,6 +918,8 @@
                 touch-action: pan-y;
                 overscroll-behavior: contain;
                 align-items: flex-start !important;
+                overflow-y: auto !important;
+                height: 100vh !important;
             }
             
             /* Ensure leaderboard is also touch scrollable */
@@ -983,8 +985,8 @@
             text-align: center;
             max-width: 600px;
             width: 90%;
-            max-height: calc(100vh - 40px);
-            overflow-y: auto;
+            max-height: none;
+            overflow-y: visible;
             backdrop-filter: blur(10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             margin: 20px auto;
@@ -1140,6 +1142,21 @@
 
         .leaderboard-list::-webkit-scrollbar-thumb:hover {
             background: rgba(254, 202, 87, 0.7);
+        }
+
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 40px 1fr 40px 50px 80px;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border-bottom: 2px solid rgba(254, 202, 87, 0.3);
         }
 
         .leaderboard-entry {
@@ -1568,6 +1585,11 @@
                     <div class="privacy-note">
                         💡 Both options save to your device. Global also shares your score publicly for everyone to see.
                     </div>
+                    <div class="multiplayer-submission-info" id="multiplayerSubmissionInfo" style="display: none;">
+                        <div style="font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-top: 10px; text-align: center;">
+                            🎮 Multiplayer Mode: Each qualifying player can submit their score individually
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="rank-status" id="rankStatus"></div>
@@ -1764,7 +1786,7 @@
         let wrongGuessCount = 0;
 
         // Timer bonus system configuration
-        const TIMER_DURATION = 10; // seconds - easy to adjust
+        const TIMER_DURATION = 5; // seconds - easy to adjust
         const MAX_TIMER_BONUS = 21; // maximum bonus points for instant answer
         let timerActive = false;
         let timerStartTime = 0;
@@ -2848,6 +2870,13 @@
             if (leaderboard.length === 0) {
                 const viewType = currentLeaderboardView === 'local' ? 'local scores' : 'global scores';
                 leaderboardList.innerHTML = `
+                    <div class="leaderboard-header">
+                        <div class="leaderboard-rank">Rank</div>
+                        <div class="leaderboard-name">Name</div>
+                        <div class="leaderboard-game-length">Words</div>
+                        <div class="leaderboard-game-time">Time</div>
+                        <div class="leaderboard-score">Score</div>
+                    </div>
                     <div style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 20px;">
                         No ${viewType} yet. ${currentLeaderboardView === 'local' ? 'Play a game!' : 'Be the first!'}
                     </div>
@@ -2855,7 +2884,17 @@
                 return;
             }
 
-            leaderboardList.innerHTML = leaderboard.map((entry, index) => {
+            const headerHtml = `
+                <div class="leaderboard-header">
+                    <div class="leaderboard-rank">Rank</div>
+                    <div class="leaderboard-name">Name</div>
+                    <div class="leaderboard-game-length">Words</div>
+                    <div class="leaderboard-game-time">Time</div>
+                    <div class="leaderboard-score">Score</div>
+                </div>
+            `;
+
+            const entriesHtml = leaderboard.map((entry, index) => {
                 const rank = index + 1;
                 const isCurrentPlayer = currentPlayerRank === rank;
                 const isHighlighted = highlightScore && 
@@ -2868,12 +2907,14 @@
                     <div class="leaderboard-entry ${rankClass} ${currentClass}" ${(isCurrentPlayer || isHighlighted) ? 'id="current-player-entry"' : ''}>
                         <div class="leaderboard-rank">#${rank}</div>
                         <div class="leaderboard-name">${entry.name}</div>
-                        <div class="leaderboard-game-length">${entry.gameLength || 12}w</div>
+                        <div class="leaderboard-game-length">${entry.words || 0}</div>
                         <div class="leaderboard-game-time">${entry.gameTime || 0}s</div>
                         <div class="leaderboard-score">${entry.combined.toLocaleString()}</div>
                     </div>
                 `;
             }).join('');
+
+            leaderboardList.innerHTML = headerHtml + entriesHtml;
 
             // Scroll to current player if they're not visible
             if ((currentPlayerRank && currentPlayerRank > 7) || highlightScore) {
@@ -2952,8 +2993,63 @@
                 gameEndTitle.textContent = 'We Have a Winner!';
                 winnerName.textContent = `🎉 ${players[winnerIndex].name} Wins! 🎉`;
                 
-                // Hide leaderboard for multiplayer
-                leaderboardSection.style.display = 'none';
+                // Show leaderboard for multiplayer - allow all players to submit
+                leaderboardSection.style.display = 'block';
+                
+                // Find all players with qualifying scores and prepare them for submission
+                const qualifyingPlayers = [];
+                players.forEach((player, index) => {
+                    const combinedScore = calculateCombinedScore(player);
+                    // Check if player has a reasonable score (more than 0)
+                    if (combinedScore > 0) {
+                        qualifyingPlayers.push({
+                            index: index,
+                            player: player,
+                            combinedScore: combinedScore,
+                            scoreEntry: {
+                                score: player.score,
+                                streak: player.streak,
+                                words: player.words,
+                                combined: combinedScore,
+                                gameLength: gameLength,
+                                timestamp: new Date().toISOString(),
+                                gameTime: Math.round((Date.now() - gameStartTime) / 1000)
+                            }
+                        });
+                    }
+                });
+                
+                // Set up submission context for multiplayer
+                if (qualifyingPlayers.length > 0) {
+                    // Automatically save all qualifying players to local leaderboard
+                    qualifyingPlayers.forEach(playerData => {
+                        const scoreEntryWithName = { ...playerData.scoreEntry, name: playerData.player.name };
+                        saveLocalScore(scoreEntryWithName);
+                    });
+                    
+                    // Store qualifying players for potential global submission
+                    window.multiplayerQualifyingScores = qualifyingPlayers;
+                    
+                    // Use the winner's score as the default global submission target
+                    const winnerData = qualifyingPlayers.find(p => p.index === winnerIndex);
+                    if (winnerData) {
+                        currentPlayerScore = winnerData.scoreEntry;
+                        
+                        // Reset submission flags
+                        scoreSubmittedLocally = true; // Already saved locally above
+                        scoreSubmittedGlobally = false;
+                        resetSubmissionButtons();
+                        
+                        // Pre-fill the name input with the winner's name
+                        document.getElementById('playerNameInput').value = winnerData.player.name;
+                        
+                        // Show multiplayer submission info
+                        document.getElementById('multiplayerSubmissionInfo').style.display = 'block';
+                        
+                        // Update rank status to show local saves
+                        updateRankStatus(null, true);
+                    }
+                }
                 
                 // Show all players' stats with combined scores
                 finalStats.innerHTML = '';
@@ -3321,10 +3417,13 @@
             }
         });
 
-        // Prevent scrolling on mobile
+        // Prevent scrolling on mobile except in specific areas
         if (isMobile) {
             document.addEventListener('touchmove', function(e) {
-                if (!e.target.closest('.app-container')) {
+                // Allow scrolling in game end screen, app container, and leaderboard
+                if (!e.target.closest('.app-container') && 
+                    !e.target.closest('.game-end-screen') && 
+                    !e.target.closest('.leaderboard-list')) {
                     e.preventDefault();
                 }
             }, { passive: false });
