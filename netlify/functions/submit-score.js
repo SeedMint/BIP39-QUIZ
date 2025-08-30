@@ -158,8 +158,7 @@ exports.handler = async (event, context) => {
 
     const commitPayload = {
       message: commitMessage,
-      content: updatedContent,
-      branch: 'main'
+      content: updatedContent
     };
 
     if (currentSha) {
