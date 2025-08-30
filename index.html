@@ -1419,14 +1419,14 @@
                            maxlength="20">
                     <div class="submit-options">
                         <button class="submit-score-btn local" id="submitLocalBtn">
-                            💾 Save Locally
+                            💾 Save Locally Only
                         </button>
                         <button class="submit-score-btn global" id="submitGlobalBtn">
-                            🌍 Share Globally
+                            🌍 Save Local + Share Global
                         </button>
                     </div>
                     <div class="privacy-note">
-                        💡 Local scores stay private on your device. Global scores are shared publicly.
+                        💡 Both options save to your device. Global also shares your score publicly for everyone to see.
                     </div>
                 </div>
                 
@@ -2608,13 +2608,13 @@
             const leaderboardType = isLocal ? 'local' : 'global';
             
             if (isLocal) {
-                rankStatus.innerHTML = `📱 Score saved locally! Check your personal best in the Local tab.`;
+                rankStatus.innerHTML = `💾 Score saved locally only! Check your personal best in the Local tab.`;
                 rankStatus.className = 'rank-status made-leaderboard';
             } else if (result && result.madeLeaderboard && result.rank) {
-                rankStatus.innerHTML = `🎉 Congratulations! You're rank #${result.rank} on the global leaderboard! 🎉`;
+                rankStatus.innerHTML = `🎉 Saved locally + rank #${result.rank} on global leaderboard! 🎉`;
                 rankStatus.className = 'rank-status made-leaderboard';
             } else if (result) {
-                rankStatus.innerHTML = `🌍 Your score was shared globally, but didn't make the top 21. Keep practicing!`;
+                rankStatus.innerHTML = `🌍 Saved locally + shared globally, but didn't make top 21. Keep practicing!`;
                 rankStatus.className = 'rank-status no-leaderboard';
             } else {
                 rankStatus.innerHTML = `❌ Failed to share globally. Your score is saved locally.`;
@@ -2825,7 +2825,7 @@
             } catch (error) {
                 alert('Failed to save score locally: ' + error.message);
                 localBtn.disabled = false;
-                localBtn.textContent = '📱 Save Locally';
+                localBtn.textContent = '💾 Save Locally Only';
             }
         });
 
@@ -2881,7 +2881,7 @@
                 updateRankStatus(null, false);
                 globalBtn.disabled = false;
                 localBtn.disabled = false;
-                globalBtn.textContent = '🌍 Share Globally';
+                globalBtn.textContent = '🌍 Save Local + Share Global';
             }
         });
 
