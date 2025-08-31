@@ -12,8 +12,8 @@
   [headers.values]
     Content-Security-Policy = '''
       default-src 'self';
-      script-src 'self';
-      style-src 'self';
+      script-src 'self' 'unsafe-inline';
+      style-src 'self' 'unsafe-inline';
       img-src 'self' data:;
       connect-src 'self' https://api.github.com https://*.netlify.app;
       font-src 'self';
