@@ -1,10 +1,19 @@
-const CACHE_NAME = 'bipardy-v1';
+const CACHE_NAME = 'bipardy-v2';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/styles.css',
+  '/game.js',
   '/manifest.json',
   '/icon-192.png',
-  '/icon-512.png'
+  '/icon-512.png',
+  '/readme-page.html',
+  '/readme-de.html',
+  '/readme-es.html',
+  '/readme-fr.html',
+  '/readme-it.html',
+  '/readme-ja.html',
+  '/readme-da.html'
 ];
 
 // Install event
