@@ -1,5 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2024-08-30T18:00:00.000Z",
-  "scores": []
+  "lastUpdated": "2025-08-31T19:48:32.759Z",
+  "scores": [
+    {
+      "name": "GENESIS21",
+      "score": 241,
+      "streak": 2,
+      "words": 12,
+      "combined": 241212,
+      "timestamp": "2025-08-31T19:48:32.395Z",
+      "gameTime": 170,
+      "gameLength": 12
+    }
+  ]
 }
