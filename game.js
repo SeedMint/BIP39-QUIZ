@@ -1605,11 +1605,16 @@ async function showPersonalBestInfo(scoreEntry, gameLength) {
 
 // Show game end screen
 async function showGameEndScreen(triggeringPlayerIndex) {
-    const gameEndScreen = document.getElementById('gameEndScreen');
-    const gameEndTitle = document.getElementById('gameEndTitle');
-    const winnerName = document.getElementById('winnerName');
-    const finalStats = document.getElementById('finalStats');
-    const leaderboardSection = document.getElementById('leaderboardSection');
+    // Security: Prevent race conditions
+    if (showGameEndScreen.inProgress) return;
+    showGameEndScreen.inProgress = true;
+    
+    try {
+        const gameEndScreen = document.getElementById('gameEndScreen');
+        const gameEndTitle = document.getElementById('gameEndTitle');
+        const winnerName = document.getElementById('winnerName');
+        const finalStats = document.getElementById('finalStats');
+        const leaderboardSection = document.getElementById('leaderboardSection');
     
     // For multiplayer, determine winner by combined score
     if (numPlayers > 1) {
@@ -1795,6 +1800,11 @@ async function showGameEndScreen(triggeringPlayerIndex) {
     
     // Show the screen
     gameEndScreen.style.display = 'flex';
+    
+    } finally {
+        // Security: Always reset race condition flag
+        showGameEndScreen.inProgress = false;
+    }
 }
 
 // Event listeners
@@ -1824,10 +1834,13 @@ document.getElementById('submitLocalBtn').addEventListener('click', async () => 
     const localBtn = document.getElementById('submitLocalBtn');
     const name = nameInput.value.trim();
 
-    if (!name || name.length < 3) {
+    const validatedName = validatePlayerName(name);
+    if (!validatedName) {
         nameInput.focus();
         nameInput.style.borderColor = '#ff6b6b';
-        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : `Too short - need ${3 - name.length} more chars`;
+        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : 
+                               name.length < 3 ? `Too short - need ${3 - name.length} more chars` :
+                               'Name too long - max 21 chars';
         setTimeout(() => {
             nameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
             nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-21 chars)';
@@ -1850,7 +1863,7 @@ document.getElementById('submitLocalBtn').addEventListener('click', async () => 
 
     try {
         // Add name to score entry and save locally
-        const scoreEntryWithName = { ...currentPlayerScore, name };
+        const scoreEntryWithName = { ...currentPlayerScore, name: validatedName };
         const updatedScores = await saveLocalScore(scoreEntryWithName);
         
         // Update rank status
@@ -1888,10 +1901,13 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
     const localBtn = document.getElementById('submitLocalBtn');
     const name = nameInput.value.trim();
 
-    if (!name || name.length < 3) {
+    const validatedName = validatePlayerName(name);
+    if (!validatedName) {
         nameInput.focus();
         nameInput.style.borderColor = '#ff6b6b';
-        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : `Too short - need ${3 - name.length} more chars`;
+        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : 
+                               name.length < 3 ? `Too short - need ${3 - name.length} more chars` :
+                               'Name too long - max 21 chars';
         setTimeout(() => {
             nameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
             nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-21 chars)';
@@ -1915,11 +1931,11 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
 
     try {
         // First save locally as backup
-        const scoreEntryWithName = { ...currentPlayerScore, name };
+        const scoreEntryWithName = { ...currentPlayerScore, name: validatedName };
         await saveLocalScore(scoreEntryWithName);
         
         // Then try to submit globally
-        const result = await submitGlobalScore(name, currentPlayerScore);
+        const result = await submitGlobalScore(validatedName, currentPlayerScore);
         
         // Update rank status
         updateRankStatus(result, false);
@@ -1958,13 +1974,44 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
     }
 });
 
-// Name input validation and filtering
+// Enhanced name input validation and filtering
+function validatePlayerName(name) {
+    const filtered = name.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    return filtered.length >= 3 && filtered.length <= 21 ? filtered : null;
+}
+
 document.getElementById('playerNameInput').addEventListener('input', (e) => {
     const input = e.target;
-    const filtered = input.value.replace(/[^A-Z0-9]/gi, '').toUpperCase();
-    if (input.value !== filtered) {
+    const original = input.value;
+    const filtered = original.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    
+    // Apply filtering
+    if (original !== filtered) {
         input.value = filtered;
     }
+    
+    // Visual feedback for length requirements
+    if (filtered.length < 3) {
+        input.style.borderColor = '#ff6b6b';
+    } else if (filtered.length > 21) {
+        input.value = filtered.substring(0, 21);
+        input.style.borderColor = '#feca57';
+    } else {
+        input.style.borderColor = '#00b894';
+    }
+});
+
+// Handle paste events with validation
+document.getElementById('playerNameInput').addEventListener('paste', (e) => {
+    setTimeout(() => {
+        const input = e.target;
+        const filtered = input.value.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+        if (filtered.length > 21) {
+            input.value = filtered.substring(0, 21);
+        } else {
+            input.value = filtered;
+        }
+    }, 0);
 });
 
 // Allow Enter key to submit to local (default)
@@ -2112,6 +2159,11 @@ function initMatrixRain() {
         const size = 20 + Math.random() * 15;
         box.style.width = size + 'px';
         box.style.height = size + 'px';
+        
+        // Security: Limit DOM elements to prevent memory exhaustion
+        if (matrixContainer.children.length > 200) {
+            matrixContainer.firstChild.remove();
+        }
         
         matrixContainer.appendChild(box);
         
