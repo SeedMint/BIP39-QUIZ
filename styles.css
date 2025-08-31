@@ -69,9 +69,6 @@ body {
 .matrix-box.shade-2::before { opacity: 0.8; background: linear-gradient(135deg, #feca57, #ff6b6b); }
 .matrix-box.shade-3::before { opacity: 0.7; background: linear-gradient(135deg, #ff8c94, #ffeaa7); }
 
-.matrix-box.blink::before {
-    animation: matrixBlink 0.5s ease-in-out;
-}
 
 @keyframes matrixBlink {
     0%, 100% {

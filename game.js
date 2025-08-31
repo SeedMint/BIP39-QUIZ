@@ -761,7 +761,7 @@ function newWord() {
 }
 
 // Check guess
-function checkGuess() {
+async function checkGuess() {
     if (!gameActive) return;
     
     const guessedWord = currentWord.substring(0, revealedLetters) + guessedLetters.join('');
@@ -803,7 +803,7 @@ function checkGuess() {
             revealFullWord();
             
             // Show game end screen
-            showGameEndScreen(currentPlayer);
+            await showGameEndScreen(currentPlayer);
             return;
         }
         
@@ -896,7 +896,7 @@ function checkGuess() {
 }
 
 // Help function - costs variable points based on word length and usage count
-function help() {
+async function help() {
     if (!gameActive) return;
     
     if (revealedLetters + guessedLetters.length < currentWord.length) {
@@ -969,7 +969,7 @@ function help() {
             // Check if game should end (target words reached)
             if (players[currentPlayer].words >= gameLength) {
                 // Show game end screen
-                showGameEndScreen(currentPlayer);
+                await showGameEndScreen(currentPlayer);
                 return;
             }
             
@@ -994,7 +994,7 @@ function help() {
 }
 
 // Skip function - no points, keeps streak, increments word count
-function skip() {
+async function skip() {
     if (!gameActive) return;
     
     // Stop timer when skipping
@@ -1014,7 +1014,7 @@ function skip() {
     // Check if game should end (target words reached)
     if (players[currentPlayer].words >= gameLength) {
         // Show game end screen
-        showGameEndScreen(currentPlayer);
+        await showGameEndScreen(currentPlayer);
         return;
     }
     
@@ -1051,9 +1051,18 @@ function enableAllKeys() {
 // Edit player name function
 function editPlayerName(playerIndex, nameElement) {
     // Don't allow editing during active gameplay
-    if (!gameActive && document.querySelector('.name.editing')) {
-        return; // Already editing another name
+    if (gameActive) {
+        console.log('❌ Cannot edit names during active gameplay');
+        return;
     }
+    
+    // Don't allow editing if already editing another name
+    if (document.querySelector('.name.editing')) {
+        console.log('❌ Already editing another name');
+        return;
+    }
+    
+    console.log('✅ Starting name edit for player', playerIndex);
 
     const currentName = players[playerIndex].name;
     
@@ -1061,7 +1070,9 @@ function editPlayerName(playerIndex, nameElement) {
     const input = document.createElement('input');
     input.type = 'text';
     input.className = 'name-input';
-    input.value = currentName;
+    // Filter the current name before setting it
+    const filteredCurrentName = currentName.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    input.value = filteredCurrentName;
     input.maxLength = 12; // Reasonable limit
     
     // Add editing class for visual feedback
@@ -1075,9 +1086,29 @@ function editPlayerName(playerIndex, nameElement) {
     input.focus();
     input.select();
     
+    // Add input filtering for name validation
+    function filterInput(inputEl) {
+        const original = inputEl.value;
+        const filtered = original.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+        if (original !== filtered) {
+            console.log('🔄 FILTERING NAME INPUT:', original, '->', filtered);
+            inputEl.value = filtered;
+        }
+    }
+    
+    console.log('✅ Name filtering function attached to input element');
+    
+    input.addEventListener('input', (e) => filterInput(e.target));
+    input.addEventListener('paste', (e) => {
+        setTimeout(() => filterInput(e.target), 0);
+    });
+    input.addEventListener('keyup', (e) => filterInput(e.target));
+    
     // Handle saving the name
     function saveName() {
-        const newName = input.value.trim();
+        const rawName = input.value.trim();
+        // Apply filtering to the final name before saving
+        const newName = rawName.replace(/[^A-Z0-9]/gi, '').toUpperCase();
         if (newName && newName !== currentName) {
             players[playerIndex].name = newName;
         }
@@ -1181,34 +1212,228 @@ function updateSubmissionButtons() {
     }
 }
 
-// Local Storage Management
-function getLocalScores() {
+// Encryption utilities for local storage
+class LocalStorageEncryption {
+    constructor() {
+        this.keyName = 'bipardy-crypto-key';
+    }
+
+    async generateKey() {
+        return await crypto.subtle.generateKey(
+            { name: 'AES-GCM', length: 256 },
+            true,
+            ['encrypt', 'decrypt']
+        );
+    }
+
+    async getOrCreateKey() {
+        const stored = localStorage.getItem(this.keyName);
+        if (stored) {
+            try {
+                const keyData = JSON.parse(stored);
+                return await crypto.subtle.importKey('jwk', keyData, 'AES-GCM', true, ['encrypt', 'decrypt']);
+            } catch (error) {
+                console.warn('Error importing stored key, generating new one:', error);
+            }
+        }
+        
+        const key = await this.generateKey();
+        const keyData = await crypto.subtle.exportKey('jwk', key);
+        localStorage.setItem(this.keyName, JSON.stringify(keyData));
+        return key;
+    }
+
+    async encrypt(data) {
+        try {
+            const key = await this.getOrCreateKey();
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const encodedData = new TextEncoder().encode(JSON.stringify(data));
+            
+            const encrypted = await crypto.subtle.encrypt(
+                { name: 'AES-GCM', iv },
+                key,
+                encodedData
+            );
+
+            return {
+                encrypted: Array.from(new Uint8Array(encrypted)),
+                iv: Array.from(iv)
+            };
+        } catch (error) {
+            console.error('Encryption error:', error);
+            return null;
+        }
+    }
+
+    async decrypt(encryptedData) {
+        try {
+            const key = await this.getOrCreateKey();
+            const { encrypted, iv } = encryptedData;
+            
+            const decrypted = await crypto.subtle.decrypt(
+                { name: 'AES-GCM', iv: new Uint8Array(iv) },
+                key,
+                new Uint8Array(encrypted)
+            );
+
+            const decryptedString = new TextDecoder().decode(decrypted);
+            return JSON.parse(decryptedString);
+        } catch (error) {
+            console.error('Decryption error:', error);
+            return null;
+        }
+    }
+}
+
+const storageEncryption = new LocalStorageEncryption();
+
+// Comprehensive HTML escaping function (defense in depth)
+function escapeHTML(text) {
+    if (typeof text !== 'string') {
+        text = String(text);
+    }
+    
+    return text
+        .replace(/&/g, '&amp;')      // Must be first - escapes ampersands
+        .replace(/</g, '&lt;')       // Less than
+        .replace(/>/g, '&gt;')       // Greater than  
+        .replace(/"/g, '&quot;')     // Double quotes
+        .replace(/'/g, '&#x27;')     // Single quotes (&#x27; preferred over &#39;)
+        .replace(/\//g, '&#x2F;')    // Forward slash (prevents script tag escaping)
+        .replace(/`/g, '&#x60;')     // Backticks (prevents template literal injection)
+        .replace(/=/g, '&#x3D;');    // Equals sign (prevents attribute injection)
+}
+
+// Advanced XSS protection - catches dangerous patterns
+function sanitizeForDisplay(userText) {
+    if (typeof userText !== 'string') {
+        userText = String(userText);
+    }
+    
+    // First pass: Remove dangerous URL schemes
+    let sanitized = userText
+        .replace(/javascript\s*:/gi, 'blocked-js:')
+        .replace(/vbscript\s*:/gi, 'blocked-vbs:')
+        .replace(/data\s*:/gi, 'blocked-data:')
+        .replace(/file\s*:/gi, 'blocked-file:')
+        .replace(/ftp\s*:/gi, 'blocked-ftp:');
+    
+    // Second pass: Remove dangerous event handlers
+    sanitized = sanitized
+        .replace(/\bon\w+\s*=/gi, 'blocked-event=')
+        .replace(/\bstyle\s*=/gi, 'blocked-style=')
+        .replace(/\bformaction\s*=/gi, 'blocked-formaction=');
+    
+    // Third pass: Remove dangerous HTML patterns
+    sanitized = sanitized
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '[blocked-script]')
+        .replace(/<iframe\b[^>]*>/gi, '[blocked-iframe]')
+        .replace(/<object\b[^>]*>/gi, '[blocked-object]')
+        .replace(/<embed\b[^>]*>/gi, '[blocked-embed]')
+        .replace(/<link\b[^>]*>/gi, '[blocked-link]')
+        .replace(/<meta\b[^>]*>/gi, '[blocked-meta]')
+        .replace(/<base\b[^>]*>/gi, '[blocked-base]')
+        .replace(/<form\b[^>]*>/gi, '[blocked-form]');
+    
+    // Fourth pass: HTML escape everything
+    return escapeHTML(sanitized);
+}
+
+// Safe user data display function with layered protection
+function safeDisplayUserData(userText) {
+    // Layer 1: Input sanitization
+    const sanitized = sanitizeForDisplay(userText);
+    
+    // Layer 2: Browser-native escaping (belt and suspenders)
+    const div = document.createElement('div');
+    div.textContent = sanitized;
+    const browserEscaped = div.innerHTML;
+    
+    // Layer 3: Final manual escape (triple protection)
+    return escapeHTML(browserEscaped);
+}
+
+// Create safe text elements with comprehensive protection
+function createSafeTextElement(text, className = '') {
+    const element = document.createElement('span');
+    if (className) element.className = className;
+    
+    // Use textContent for maximum safety (browser handles everything)
+    element.textContent = sanitizeForDisplay(text);
+    return element;
+}
+
+// URL sanitization for any links or redirects
+function sanitizeURL(url) {
+    if (typeof url !== 'string') return '#';
+    
+    // Allow only safe URL schemes
+    const safeSchemes = ['http:', 'https:', 'mailto:', 'tel:'];
+    
     try {
-        const scores = localStorage.getItem('bipardy-local-scores');
-        return scores ? JSON.parse(scores) : [];
+        const urlObj = new URL(url, window.location.origin);
+        if (safeSchemes.includes(urlObj.protocol)) {
+            return urlObj.href;
+        }
+    } catch (e) {
+        // Invalid URL
+    }
+    
+    return '#'; // Default to safe anchor
+}
+
+// CSS injection protection
+function sanitizeCSS(cssText) {
+    if (typeof cssText !== 'string') return '';
+    
+    // Remove dangerous CSS patterns
+    return cssText
+        .replace(/expression\s*\(/gi, 'blocked-expression(')
+        .replace(/javascript\s*:/gi, 'blocked:')
+        .replace(/\/\*.*?\*\//g, '') // Remove comments
+        .replace(/@import/gi, 'blocked-import')
+        .replace(/behavior\s*:/gi, 'blocked-behavior:')
+        .replace(/binding\s*:/gi, 'blocked-binding:');
+}
+
+// Local Storage Management
+async function getLocalScores() {
+    try {
+        const encryptedScores = localStorage.getItem('bipardy-local-scores');
+        if (!encryptedScores) return [];
+        
+        const encryptedData = JSON.parse(encryptedScores);
+        const decryptedScores = await storageEncryption.decrypt(encryptedData);
+        
+        return decryptedScores || [];
     } catch (error) {
         console.error('Error reading local scores:', error);
         return [];
     }
 }
 
-function saveLocalScore(scoreEntry) {
+async function saveLocalScore(scoreEntry) {
     try {
-        const scores = getLocalScores();
+        const scores = await getLocalScores();
         scores.push(scoreEntry);
         // Sort by combined score (descending) and keep top 50
         scores.sort((a, b) => b.combined - a.combined);
         const trimmedScores = scores.slice(0, 50);
-        localStorage.setItem('bipardy-local-scores', JSON.stringify(trimmedScores));
+        
+        const encryptedData = await storageEncryption.encrypt(trimmedScores);
+        if (encryptedData) {
+            localStorage.setItem('bipardy-local-scores', JSON.stringify(encryptedData));
+        }
+        
         return trimmedScores;
     } catch (error) {
         console.error('Error saving local score:', error);
-        return getLocalScores();
+        return await getLocalScores();
     }
 }
 
-function getPersonalBest(gameLength) {
-    const scores = getLocalScores();
+async function getPersonalBest(gameLength) {
+    const scores = await getLocalScores();
     const personalBests = scores.filter(score => score.gameLength === gameLength);
     return personalBests.length > 0 ? personalBests[0] : null;
 }
@@ -1257,7 +1482,7 @@ async function submitGlobalScore(name, scoreData) {
 // Combined leaderboard loading
 async function loadLeaderboard() {
     if (currentLeaderboardView === 'local') {
-        return getLocalScores();
+        return await getLocalScores();
     } else {
         return await loadGlobalLeaderboard();
     }
@@ -1305,7 +1530,7 @@ function displayLeaderboard(leaderboard, currentPlayerRank = null, highlightScor
         return `
             <div class="leaderboard-entry ${rankClass} ${currentClass}" ${(isCurrentPlayer || isHighlighted) ? 'id="current-player-entry"' : ''}>
                 <div class="leaderboard-rank">#${rank}</div>
-                <div class="leaderboard-name">${entry.name}</div>
+                <div class="leaderboard-name">${safeDisplayUserData(entry.name)}</div>
                 <div class="leaderboard-game-length">${entry.words || 0}</div>
                 <div class="leaderboard-game-time">${entry.gameTime || 0}s</div>
                 <div class="leaderboard-score">${entry.combined.toLocaleString()}</div>
@@ -1362,8 +1587,8 @@ function updateRankStatus(result, isLocal = false) {
     }
 }
 
-function showPersonalBestInfo(scoreEntry, gameLength) {
-    const personalBest = getPersonalBest(gameLength);
+async function showPersonalBestInfo(scoreEntry, gameLength) {
+    const personalBest = await getPersonalBest(gameLength);
     const rankStatus = document.getElementById('rankStatus');
     
     if (personalBest && scoreEntry.combined > personalBest.combined) {
@@ -1379,7 +1604,7 @@ function showPersonalBestInfo(scoreEntry, gameLength) {
 }
 
 // Show game end screen
-function showGameEndScreen(triggeringPlayerIndex) {
+async function showGameEndScreen(triggeringPlayerIndex) {
     const gameEndScreen = document.getElementById('gameEndScreen');
     const gameEndTitle = document.getElementById('gameEndTitle');
     const winnerName = document.getElementById('winnerName');
@@ -1421,10 +1646,10 @@ function showGameEndScreen(triggeringPlayerIndex) {
         // Set up submission context for multiplayer
         if (qualifyingPlayers.length > 0) {
             // Automatically save all qualifying players to local leaderboard
-            qualifyingPlayers.forEach(playerData => {
+            for (const playerData of qualifyingPlayers) {
                 const scoreEntryWithName = { ...playerData.scoreEntry, name: playerData.player.name };
-                saveLocalScore(scoreEntryWithName);
-            });
+                await saveLocalScore(scoreEntryWithName);
+            }
             
             // Store qualifying players for potential global submission
             window.multiplayerQualifyingScores = qualifyingPlayers;
@@ -1439,8 +1664,9 @@ function showGameEndScreen(triggeringPlayerIndex) {
                 scoreSubmittedGlobally = false;
                 resetSubmissionButtons();
                 
-                // Pre-fill the name input with the winner's name
-                document.getElementById('playerNameInput').value = winnerData.player.name;
+                // Pre-fill the name input with the winner's name (filtered)
+                const filteredWinnerName = winnerData.player.name.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+                document.getElementById('playerNameInput').value = filteredWinnerName;
                 
                 // Show multiplayer submission info
                 document.getElementById('multiplayerSubmissionInfo').style.display = 'block';
@@ -1463,7 +1689,7 @@ function showGameEndScreen(triggeringPlayerIndex) {
             
             playerContainer.innerHTML = `
                 <div style="font-weight: bold; margin-bottom: 15px; color: ${index === winnerIndex ? '#feca57' : '#fff'}; text-align: center;">
-                    ${player.name}
+                    ${safeDisplayUserData(player.name)}
                 </div>
                 <div class="stat-card large-score">
                     <div class="stat-value">${combinedScore.toLocaleString()}</div>
@@ -1550,7 +1776,7 @@ function showGameEndScreen(triggeringPlayerIndex) {
         leaderboardSection.style.display = 'block';
         
         // Show personal best info initially
-        showPersonalBestInfo(scoreEntry, gameLength);
+        await showPersonalBestInfo(scoreEntry, gameLength);
         
         // Load and display local leaderboard by default
         currentLeaderboardView = 'local';
@@ -1558,9 +1784,10 @@ function showGameEndScreen(triggeringPlayerIndex) {
             displayLeaderboard(leaderboard);
         });
         
-        // Pre-fill name input with player name if available
+        // Pre-fill name input with player name if available (filtered)
         const nameInput = document.getElementById('playerNameInput');
-        nameInput.value = player.name || '';
+        const filteredPlayerName = (player.name || '').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+        nameInput.value = filteredPlayerName;
     }
     
     // Enable body scrolling for the modal
@@ -1597,12 +1824,14 @@ document.getElementById('submitLocalBtn').addEventListener('click', async () => 
     const localBtn = document.getElementById('submitLocalBtn');
     const name = nameInput.value.trim();
 
-    if (!name) {
+    if (!name || name.length < 3) {
         nameInput.focus();
         nameInput.style.borderColor = '#ff6b6b';
+        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : `Too short - need ${3 - name.length} more chars`;
         setTimeout(() => {
             nameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-        }, 2000);
+            nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-21 chars)';
+        }, 3000);
         return;
     }
 
@@ -1622,7 +1851,7 @@ document.getElementById('submitLocalBtn').addEventListener('click', async () => 
     try {
         // Add name to score entry and save locally
         const scoreEntryWithName = { ...currentPlayerScore, name };
-        const updatedScores = saveLocalScore(scoreEntryWithName);
+        const updatedScores = await saveLocalScore(scoreEntryWithName);
         
         // Update rank status
         updateRankStatus(null, true);
@@ -1659,12 +1888,14 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
     const localBtn = document.getElementById('submitLocalBtn');
     const name = nameInput.value.trim();
 
-    if (!name) {
+    if (!name || name.length < 3) {
         nameInput.focus();
         nameInput.style.borderColor = '#ff6b6b';
+        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : `Too short - need ${3 - name.length} more chars`;
         setTimeout(() => {
             nameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-        }, 2000);
+            nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-21 chars)';
+        }, 3000);
         return;
     }
 
@@ -1685,7 +1916,7 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
     try {
         // First save locally as backup
         const scoreEntryWithName = { ...currentPlayerScore, name };
-        saveLocalScore(scoreEntryWithName);
+        await saveLocalScore(scoreEntryWithName);
         
         // Then try to submit globally
         const result = await submitGlobalScore(name, currentPlayerScore);
@@ -1724,6 +1955,15 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
         globalBtn.disabled = false;
         globalBtn.textContent = '🌍 Share Globally (retry)';
         globalBtn.style.opacity = '1';
+    }
+});
+
+// Name input validation and filtering
+document.getElementById('playerNameInput').addEventListener('input', (e) => {
+    const input = e.target;
+    const filtered = input.value.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    if (input.value !== filtered) {
+        input.value = filtered;
     }
 });
 
@@ -1832,21 +2072,16 @@ if (isMobile) {
 initializePlayers(1);
 newWord();
 
-// Matrix Rain Background Effect
+// Matrix Rain Background Effect - Optimized
 function initMatrixRain() {
     const matrixContainer = document.getElementById('matrixContainer');
     const columns = Math.floor(window.innerWidth / 35);
     
-    // Create boxes for each column with random delays
-    for (let i = 0; i < columns; i++) {
-        // Each column gets a completely random start delay (0-12 seconds)
-        const columnDelay = Math.random() * 12000;
-        
-        // Create 2 boxes per column
-        for (let j = 0; j < 2; j++) {
-            const boxDelay = columnDelay + (j * 2000) + (Math.random() * 3000);
-            setTimeout(() => createMatrixBox(i, true), boxDelay);
-        }
+    // Create boxes with 46% more density (2.9 average per column) 
+    for (let i = 0; i < columns * 2.9; i++) {
+        const column = i % columns;
+        const delay = Math.random() * 12000 + (Math.floor(i / columns) * 2000);
+        setTimeout(() => createMatrixBox(column, true), delay);
     }
 
     function createMatrixBox(column, isInitial = false) {
@@ -1857,72 +2092,35 @@ function initMatrixRain() {
         const xPos = column * 35 + Math.random() * 25;
         box.style.left = xPos + 'px';
         
-        // Random animation duration for different speeds (back to slower)
-        const duration = 12 + Math.random() * 18; // Slower, cinematic speed
+        // Random animation duration for different speeds
+        const duration = 12 + Math.random() * 18;
         box.style.animationDuration = duration + 's';
         
+        // Always start from top, use animation delay for staggered appearance
+        box.style.top = '-40px';
+        
         if (isInitial) {
-            // For initial boxes, start them at random positions in their fall cycle
-            // This creates the illusion that rain has already been falling
-            const randomStartPercent = Math.random() * 100; // 0-100%
-            const animationDelay = -duration * (randomStartPercent / 100); // Negative delay = already started
+            // For initial boxes, use negative delay to simulate "already falling"
+            const randomStartPercent = Math.random() * 100;
+            const animationDelay = -duration * (randomStartPercent / 100);
             box.style.animationDelay = animationDelay + 's';
         } else {
-            // For continuous boxes, use small random delay
-            const delay = Math.random() * 2;
-            box.style.animationDelay = delay + 's';
+            // For continuous boxes, small positive delay
+            box.style.animationDelay = Math.random() * 2 + 's';
         }
         
-        // Random size for depth effect
         const size = 20 + Math.random() * 15;
         box.style.width = size + 'px';
         box.style.height = size + 'px';
         
-        // Rare blinking (5% chance)
-        if (Math.random() > 0.95) {
-            setTimeout(() => {
-                box.classList.add('blink');
-                setTimeout(() => {
-                    box.classList.remove('blink');
-                }, 500);
-            }, Math.random() * duration * 1000);
-        }
-        
         matrixContainer.appendChild(box);
         
-        // Create new boxes continuously
+        // Remove and recreate when animation ends
         box.addEventListener('animationend', () => {
             box.remove();
             setTimeout(() => createMatrixBox(column, false), Math.random() * 3000);
         });
     }
-
-    // Add occasional blinking to existing boxes
-    setInterval(() => {
-        const boxes = document.querySelectorAll('.matrix-box:not(.blink)');
-        if (boxes.length > 0 && Math.random() > 0.7) {
-            const randomBox = boxes[Math.floor(Math.random() * boxes.length)];
-            randomBox.classList.add('blink');
-            setTimeout(() => {
-                randomBox.classList.remove('blink');
-            }, 500);
-        }
-    }, 2000);
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        const newColumns = Math.floor(window.innerWidth / 35);
-        const currentBoxes = matrixContainer.children.length;
-        
-        if (newColumns * 2 > currentBoxes) {
-            for (let i = Math.floor(currentBoxes / 2); i < newColumns; i++) {
-                for (let j = 0; j < 2; j++) {
-                    const boxDelay = (j * 2000) + (Math.random() * 5000);
-                    setTimeout(() => createMatrixBox(i, true), boxDelay);
-                }
-            }
-        }
-    });
 }
 
 // Initialize advanced word selection system
