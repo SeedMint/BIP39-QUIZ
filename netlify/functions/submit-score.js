@@ -1,7 +1,18 @@
 exports.handler = async (event, context) => {
-  // CORS headers for browser requests
+  // CORS headers for browser requests - restrict to known domains
+  const allowedOrigins = [
+    'https://seedmint.github.io',
+    'https://bipardy.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'http://127.0.0.1:5500' // VS Code Live Server
+  ];
+  
+  const origin = event.headers.origin || event.headers.Origin;
+  const allowedOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+  
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json'
@@ -48,8 +59,14 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Sanitize name (remove HTML, limit length)
-    const sanitizedName = name.replace(/<[^>]*>?/gm, '').trim().substring(0, 20);
+    // Enhanced HTML sanitization and input cleaning
+    const sanitizedName = name
+      .replace(/<[^>]*>?/gm, '')           // Remove HTML tags
+      .replace(/[<>&"']/g, '')             // Remove potentially dangerous chars
+      .replace(/\s+/g, ' ')                // Normalize whitespace
+      .replace(/[^\w\s-_.]/g, '')          // Allow only alphanumeric, space, dash, underscore, dot
+      .trim()
+      .substring(0, 20);
     if (sanitizedName.length === 0) {
       return {
         statusCode: 400,
