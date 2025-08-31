@@ -30,3 +30,22 @@ A PWA implementation of a Bitcoin word game using the BIP-39 wordlist with offli
 - Global scores are public and stored in GitHub
 - No personal information is collected beyond chosen display names
 - No cookies or tracking used
+
+## License
+
+Bipardy is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+
+This means you are free to:
+- Use the software for any purpose
+- Study and modify the source code
+- Distribute copies of the software
+- Distribute modified versions
+
+Under these conditions:
+- You must include the license and copyright notice
+- You must state significant changes made to the software
+- If you distribute the software, you must make the source code available
+- If you run a modified version on a server, users must be able to download the source code
+- Any derivative work must also be licensed under AGPL-3.0
+
+See [LICENSE](LICENSE) for the full license text.

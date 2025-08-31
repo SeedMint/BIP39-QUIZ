@@ -1,5 +1,22 @@
+<!--
+ * Bipardy - BIP39 Word Search Game
+ * Copyright (C) 2025 BIPARDY
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ -->
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,118 +140,220 @@
         }
 
         h1 {
-            font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 30px;
+            font-size: 3rem;
+            margin-bottom: 20px;
             background: linear-gradient(45deg, #ff6b6b, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         h2 {
             color: #feca57;
-            font-size: 1.5rem;
             margin-top: 30px;
             margin-bottom: 15px;
+            font-size: 1.5rem;
             border-bottom: 2px solid rgba(254, 202, 87, 0.3);
             padding-bottom: 5px;
         }
 
         h3 {
-            color: #48dbfb;
-            font-size: 1.2rem;
+            color: #ff9ff3;
             margin-top: 20px;
             margin-bottom: 10px;
+            font-size: 1.2rem;
         }
 
-        p, li {
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-
-        ul {
-            margin-left: 20px;
+        p {
             margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #d0d0d0;
         }
 
         .points-gain {
-            background: rgba(11, 232, 129, 0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #0be881;
-            font-weight: 600;
+            color: #4ecdc4;
+            font-weight: bold;
         }
 
         .points-cost {
-            background: rgba(238, 90, 111, 0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #ee5a6f;
-            font-weight: 600;
+            color: #ff6b6b;
+            font-weight: bold;
         }
 
         .control-help {
-            background: rgba(72, 219, 251, 0.2);
-            padding: 2px 6px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            padding: 2px 8px;
             border-radius: 4px;
-            color: #48dbfb;
-            font-weight: 600;
+            color: #0f0c29;
+            font-weight: bold;
         }
 
         .control-skip {
-            background: rgba(255, 159, 67, 0.2);
-            padding: 2px 6px;
+            background: linear-gradient(45deg, #feca57, #ff9a9e);
+            padding: 2px 8px;
             border-radius: 4px;
-            color: #ff9f43;
-            font-weight: 600;
+            color: #0f0c29;
+            font-weight: bold;
         }
 
         .control-submit {
-            background: rgba(0, 184, 148, 0.2);
-            padding: 2px 6px;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            padding: 2px 8px;
             border-radius: 4px;
-            color: #00b894;
-            font-weight: 600;
+            color: #0f0c29;
+            font-weight: bold;
         }
 
         .control-toggle {
-            background: rgba(254, 202, 87, 0.2);
-            padding: 2px 6px;
+            background: linear-gradient(45deg, #d299c2, #fef9d7);
+            padding: 2px 8px;
             border-radius: 4px;
-            color: #feca57;
-            font-weight: 600;
+            color: #0f0c29;
+            font-weight: bold;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #0f0c29;
+            font-weight: bold;
         }
 
         .example-box {
-            background: rgba(72, 219, 251, 0.1);
-            border: 1px solid rgba(72, 219, 251, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #feca57;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: monospace;
+            line-height: 1.8;
         }
 
-        .back-button {
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
-            color: #0f0c29;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin: 30px auto 0;
-            display: block;
-            text-decoration: none;
-            text-align: center;
+        .jump-to-bottom {
+            position: fixed !important;
+            bottom: 100px !important;
+            right: 30px !important;
+            width: 60px !important;
+            height: 60px !important;
+            background: linear-gradient(145deg, #ff6b6b, #feca57) !important;
+            border: none !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            z-index: 99999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            color: white !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            box-shadow: 
+                0 16px 50px rgba(255, 107, 107, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.2) !important;
+            transition: all 0.3s ease !important;
         }
 
-        .back-button:hover {
+        .jump-to-bottom.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .jump-to-bottom:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 24px 70px rgba(255, 107, 107, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+            background: linear-gradient(145deg, #ff7b7b, #ffd467);
+        }
+
+        .jump-to-bottom:active {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 
+                0 12px 40px rgba(255, 107, 107, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Pulsing down symbol */
+        .jump-to-bottom::before {
+            content: '⬇';
+            font-size: 28px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            40% {
+                transform: translateY(3px);
+                opacity: 0.8;
+            }
+            60% {
+                transform: translateY(1px);
+                opacity: 0.9;
+            }
+        }
+
+        .play-button-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .play-button {
+            display: inline-block;
+            background: linear-gradient(145deg, #ff6b6b, #feca57);
+            color: #0f0c29;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 
+                0 10px 25px rgba(255, 107, 107, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .play-button:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(145deg, #ff7b7b, #ffd467);
+            box-shadow: 
+                0 15px 35px rgba(255, 107, 107, 0.4),
+                0 6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .play-button:active {
+            transform: translateY(-1px);
+            box-shadow: 
+                0 8px 20px rgba(255, 107, 107, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.4);
         }
 
         @media (max-width: 600px) {
@@ -254,6 +373,10 @@
     </style>
 </head>
 <body>
+    <!-- Jump to bottom button -->
+    <button class="jump-to-bottom" id="jumpToBottomBtn" onclick="jumpToBottom()" title="Retourner en haut">
+    </button>
+    
     <div class="container">
         <div class="language-switcher">
             <div class="language-dropdown">
@@ -268,208 +391,203 @@
                     <a href="readme-fr.html" class="active">🇫🇷 Français</a>
                     <a href="readme-it.html">🇮🇹 Italiano</a>
                     <a href="readme-ja.html">🇯🇵 日本語</a>
+                    <a href="readme-da.html">🇩🇰 Dansk</a>
                 </div>
             </div>
         </div>
-
-        <h1>BIPARDY - Guide & Mécaniques Complètes</h1>
         
-        <h2>🎯 Vision du Jeu</h2>
+
+        <h1>🎲 BIPARDY</h1>
+        
+        <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(45deg, rgba(255, 107, 107, 0.15), rgba(254, 202, 87, 0.15)); border: 2px solid rgba(255, 107, 107, 0.3); border-radius: 15px; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 12px 35px rgba(255, 107, 107, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.2)'">
+            <a href="https://github.com/SeedMint/BIP39-QUIZ" style="color: #feca57; text-decoration: none; font-weight: bold; font-size: 1.1rem;">
+                🔗 Open Source Code on GitHub 🔗
+            </a>
+        </div>
+        
         <p>Savais-tu que seulement 2048 mots protègent toute la sécurité de Bitcoin ? 🔐 BIPARDY transforme les mots mnémotechniques BIP-39 (fondation des phrases de récupération Bitcoin) en défi mental captivant.</p>
         
         <p>Chaque mot que tu devines est un véritable mot de récupération de portefeuille - tu joues littéralement avec les briques qui ont construit l'écosystème Bitcoin ! 🧱⚡</p>
 
-        <h2>⚙️ Architecture Technique</h2>
-        <ul>
-            <li><strong>PWA Intégrale :</strong> Installation sur tout appareil, fonctionne hors-ligne après premier chargement</li>
-            <li><strong>Génération Cryptographique :</strong> Utilise crypto.getRandomValues() pour vraie aléatoirerie</li>
-            <li><strong>Système Anti-Répétition :</strong> Buffer de 210 mots prévient les répétitions récentes</li>
-            <li><strong>Entropie Mixte :</strong> Combine mouvement souris, frappes clavier et événements tactiles</li>
-            <li><strong>Algorithme Fisher-Yates :</strong> Mélange mathématiquement parfait</li>
-            <li><strong>Responsive Absolu :</strong> Optimisé pour toute taille d'écran</li>
-        </ul>
+        <h2>🎯 Vision du Jeu</h2>
+        <p>BIPARDY te défie de compléter des mots de la liste de mots Bitcoin BIP-39. Tu vois les 4 premières lettres de chaque mot - ta mission est de deviner le reste. Mais voici le piège : chaque décision compte. Passer pour préserver ta série ? Utiliser de l'aide coûteuse ? Tout miser sur une supposition ? Le choix t'appartient.</p>
 
-        <h2>🎮 Modes de Jeu</h2>
-        <h3>🙋 Solo</h3>
-        <p>Défie-toi à construire le meilleur score combiné possible. La pression repose sur tes décisions stratégiques.</p>
-        
-        <h3>👥 Multijoueur (2-4 Joueurs)</h3>
-        <p>Bataille tactique au tour par tour. Ce n'est pas celui qui arrive à 21 mots en premier qui gagne - <em>c'est celui qui construit le meilleur score combiné</em>.</p>
-
-        <h2>🎲 Mécanique de Jeu</h2>
-        <h3>Flux de Manche :</h3>
-        <ol>
-            <li><strong>Présentation :</strong> Un mot BIP-39 apparaît (minimum 5 lettres)</li>
-            <li><strong>Révélation Initiale :</strong> Les 4 premières lettres s'affichent automatiquement</li>
-            <li><strong>Phase de Construction :</strong> Complete les lettres restantes via le clavier</li>
-            <li><strong>Vérification :</strong> Confirme ta solution quand elle est prête</li>
-            <li><strong>Évaluation :</strong> Le système calcule points, série et progression</li>
-        </ol>
-
-        <h2>🎛️ Arsenal de Contrôles</h2>
-        <h3>Actions Principales :</h3>
+        <h3>Mécaniques Centrales:</h3>
         <ul>
-            <li><span class="control-help">💡 HELP :</span> Révèle la lettre suivante séquentiellement (<span class="points-cost">coût variable selon longueur</span>)</li>
-            <li><span class="control-skip">⏭️ SKIP :</span> Abandonne le mot actuel (préserve série, augmente compteur, aucun changement de points)</li>
-            <li><span class="control-submit">✅ SUBMIT :</span> Valide ta réponse complète contre la base BIP-39</li>
-            <li><span class="control-toggle">🔍 TOGGLE :</span> Révèle/cache la longueur totale (<span class="points-cost">sacrifie bonus 42%</span>)</li>
-        </ul>
-        
-        <h3>Saisie de Texte :</h3>
-        <ul>
-            <li><strong>Clavier Virtuel :</strong> Optimisé pour tactile sur mobiles</li>
-            <li><strong>Clavier Physique :</strong> Détection automatique sur desktop</li>
-            <li><strong>Auto-majuscules :</strong> Conversion automatique pour vérification</li>
+            <li>🎯 <strong>Source des Mots:</strong> Tous les mots proviennent de la liste officielle BIP-39 (filtrée aux mots de 5 lettres ou plus)</li>
+            <li>🔍 <strong>Système de Révélation:</strong> Les 4 premières lettres sont toujours révélées</li>
+            <li>⚡ <strong>Limite de Tentatives:</strong> Tu obtiens exactement 2 tentatives par mot</li>
+            <li>🔥 <strong>Mécanique de Série:</strong> Les mauvaises réponses remettent ta série à 0, mais passer préserve</li>
+            <li>🏁 <strong>Condition de Fin de Jeu:</strong> Complète 12 ou 24 mots pour finir le jeu (longueurs standard BIP-39)</li>
+            <li>🎊 <strong>Condition de Victoire:</strong> En multijoueur, le score combiné le plus élevé gagne (pas qui finit en premier!)</li>
         </ul>
 
         <h2>🔢 Système de Score Intégral</h2>
+        <p>Le système de score de BIPARDY récompense à la fois la précision et la prise de risques stratégiques. Chaque action a des conséquences, et comprendre l'économie des points est crucial pour maîtriser le jeu.</p>
+
+        <h3>📈 Score de Base:</h3>
+        <ul>
+            <li><strong>Complétion de Mot Standard:</strong> <span class="points-gain">+21 points</span></li>
+            <li><strong>Bonus Longueur Cachée:</strong> <span class="points-gain">+42% multiplicateur</span> (transforme 21 → 30 points)</li>
+            <li><strong>Activation Bonus:</strong> Garde la longueur du mot cachée pendant tout le tour</li>
+            <li><strong>Perte de Bonus:</strong> Utiliser le toggle de longueur supprime le bonus pour ce mot uniquement</li>
+        </ul>
+
+        <h3>🆘 Économie du Système d'Aide:</h3>
+        <p>Le système d'aide suit une structure de coûts équilibrée conçue pour ne jamais dépasser la valeur standard du mot:</p>
+        <ul>
+            <li><strong>Mots de 5 lettres:</strong> <span class="points-cost">-21 points</span> pour la première aide, puis complètement gratuit</li>
+            <li><strong>Mots de 6 lettres:</strong> <span class="points-cost">-10 points</span> première aide, <span class="points-cost">-11 points</span> deuxième aide, puis gratuit</li>
+            <li><strong>Mots de 7+ lettres:</strong> <span class="points-cost">-10 points per help</span> (pas de limite maximale)</li>
+            <li><strong>Plafond de Coûts:</strong> Pour les mots de 5-6 lettres, les coûts totaux d'aide ne dépassent jamais 21 points</li>
+        </ul>
+
+        <h3>⏱️ Système de Bonus de Temps:</h3>
+        <ul>
+            <li><strong>Bonus de Réponse Rapide:</strong> Le minuteur de 5 secondes démarre quand chaque mot est révélé</li>
+            <li><strong>Bonus Dynamique:</strong> Up to <span class="points-gain">+21 bonus points</span> pour les réponses immédiates</li>
+            <li><strong>Décroissance du Bonus:</strong> Le bonus diminue linéairement sur 5 secondes, atteignant 0 quand le minuteur expire</li>
+            <li><strong>Arrêt du Bonus:</strong> Le minuteur s'arrête immédiatement lors de l'utilisation d'AIDE ou de mauvaises suppositions</li>
+            <li><strong>Potentiel Maximum:</strong> Mot parfait (30 base) + bonus complet (21) = 51 points par mot</li>
+        </ul>
+
+        <h3>❌ Système de Pénalités:</h3>
+        <ul>
+            <li><strong>Deux Mauvaises Suppositions:</strong> <span class="points-cost">-10 points de pénalité</span> appliquée immédiatement</li>
+            <li><strong>Impact sur la Série:</strong> Toute mauvaise supposition remet votre série à 0</li>
+            <li><strong>Mécaniques de Tour:</strong> En multijoueur, après 2 mauvaises suppositions, le tour passe au joueur suivant</li>
+            <li><strong>Application Universelle:</strong> La pénalité s'applique aux modes solo et multijoueur</li>
+        </ul>
+
+        <h3>🔄 Conséquences des Actions:</h3>
+        <ul>
+            <li><strong>Passer:</strong> Préserve la série, n'attribue aucun point, compte vers l'achèvement du mot</li>
+            <li><strong>Aide:</strong> Garantit le progrès, coûte des points, compte vers l'achèvement du mot</li>
+            <li><strong>Deviner:</strong> Risque/récompense - le succès construit la série et marque des points, l'échec remet la série à zéro</li>
+        </ul>
+
+        <h2>🎮 CONTRÔLES DU JEU</h2>
+        <p>Maîtrisez ces contrôles essentiels pour naviguer dans le gameplay stratégique de BIPARDY:</p>
+        <ul>
+            <li><strong><span class="control-help">HELP</span>:</strong> Révèle la lettre suivante dans la séquence. Le coût varie selon la longueur du mot (voir Économie du Système d'Aide ci-dessus). Garantit le progrès mais réduit votre score.</li>
+            <li><strong><span class="control-skip">SKIP</span>:</strong> Contourne complètement le mot actuel. Préserve ta précieuse série, n'attribue aucun point, et compte comme un mot complété vers ton objectif.</li>
+            <li><strong><span class="control-submit">SUBMIT</span>:</strong> Soumets ta supposition de mot complétée pour validation. Ne s'active que lorsque tu as rempli toutes les lettres manquantes.</li>
+            <li><strong><span class="control-toggle">Commutateur de Longueur de Jeu</span>:</strong> Choisissez entre des jeux de 12 ou 24 mots (longueurs mnémotechniques standard BIP-39). À définir avant de commencer votre jeu.</li>
+            <li><strong><span class="control-toggle">Commutateur de Longueur de Mot</span>:</strong> Révélez ou cachez la longueur totale du mot. Vous montre combien de lettres contient le mot complet, mais supprime définitivement le bonus de 42% pour ce mot spécifique.</li>
+        </ul>
+
+        <h3>📊 Player Statistics:</h3>
+        <ul>
+            <li><strong>Score:</strong> Vos points totaux gagnés grâce aux complétions correctes de mots, moins tous les coûts d'aide et les pénalités de mauvaises suppositions. C'est le composant de base de votre score combiné.</li>
+            <li><strong>Série:</strong> Vos suppositions correctes consécutives actuelles. Se remet à 0 sur toute mauvaise réponse, mais passer préserve votre série. Critique pour les scores combinés multijoueur.</li>
+            <li><strong>Mots:</strong> Compte total de mots que vous avez traités - inclut les suppositions réussies, les mots complétés avec aide, et les mots passés. Exclut les mots où vous avez échoué avec 2 mauvaises suppositions.</li>
+        </ul>
+
+        <h2>👥 MÉCANIQUES MULTIJOUEUR</h2>
+        <p>Le mode multijoueur de BIPARDY transforme le jeu en bataille stratégique où le timing, la gestion des risques et l'optimisation des scores se heurtent.</p>
         
-        <h3>💎 Récompenses de Base</h3>
+        <h3>Structure des Tours:</h3>
         <ul>
-            <li><strong>Résolution Standard :</strong> <span class="points-gain">+21 points</span> par mot correct</li>
-            <li><strong>Bonus Longueur Cachée :</strong> <span class="points-gain">+9 points supplémentaires (42% extra = 30 total)</span></li>
-            <li><strong>Principe Fondamental :</strong> Le toggle de longueur sacrifie le bonus 42%</li>
-        </ul>
-
-        <h3>💸 Économie d'Aide (Coûts Plafonnés)</h3>
-        <p><em>Philosophie : Les coûts ne dépassent jamais la valeur standard de 21 points</em></p>
-        <ul>
-            <li><strong>5 Lettres :</strong> <span class="points-cost">Première aide -21pts</span>, reste GRATUIT</li>
-            <li><strong>6 Lettres :</strong> <span class="points-cost">1ère aide -10pts, 2e aide -11pts</span>, reste GRATUIT</li>
-            <li><strong>7+ Lettres :</strong> <span class="points-cost">Chaque aide -10pts</span> (sans limite)</li>
-            <li><strong>Pénalité Spéciale :</strong> Mots 5-lettres avec aide : <span class="points-cost">-1pt additionnel</span></li>
-        </ul>
-
-        <h3>⚡ Chronologie des Transactions</h3>
-        <ul>
-            <li><span class="points-cost">Coûts d'aide :</span> Déduction immédiate à l'utilisation</li>
-            <li><span class="points-gain">Points de résolution :</span> Accordés à la confirmation de bonne réponse</li>
-            <li><strong>Résultat net :</strong> Peut être négatif en cas d'abus d'aide</li>
-        </ul>
-
-        <h3>🚫 Système Punitif</h3>
-        <h4>Réponses Incorrectes :</h4>
-        <ul>
-            <li><strong>Limite de Tentatives :</strong> 2 réponses incorrectes par mot</li>
-            <li><strong>Pénalité :</strong> <span class="points-cost">-10 points</span> après la deuxième erreur</li>
-            <li><strong>En Multijoueur :</strong> Tour automatique au joueur suivant après pénalité</li>
-        </ul>
-
-        <h3>📊 Métriques du Joueur</h3>
-        <ul>
-            <li><strong>🎯 Score :</strong> Balance nette (récompenses - coûts - pénalités)</li>
-            <li><strong>🔥 Série :</strong> Bonnes réponses consécutives (erreurs remettent à zéro, passer préserve)</li>
-            <li><strong>📝 Mots :</strong> Total complété (corrects + résolus avec aide + passés)</li>
-        </ul>
-
-        <h2>⚔️ Protocole Multijoueur</h2>
-        <h3>🎯 Mécanique des Tours</h3>
-        <ul>
-            <li><strong>Rotation Cyclique :</strong> Les joueurs alternent automatiquement après chaque mot</li>
-            <li><strong>Limite par Tour :</strong> Maximum 2 réponses incorrectes par joueur par mot</li>
-            <li><strong>Transfert Forcé :</strong> Après pénalité pour erreurs, tour automatique au suivant</li>
-            <li><strong>Actions Valides par Tour :</strong> Résoudre, utiliser aide, passer, ou échouer (max 2 fois)</li>
+            <li><strong>Ordre des Tours:</strong> Les joueurs alternent en séquence, chacun obtenant son propre mot</li>
+            <li><strong>Limite de Tentatives:</strong> Chaque joueur obtient exactement 2 mauvaises suppositions par mot</li>
+            <li><strong>Achèvement du Tour:</strong> Après 2 mauvaises suppositions, le joueur reçoit la pénalité et le tour passe immédiatement</li>
+            <li><strong>Progrès Indépendant:</strong> Les mots, score et série de chaque joueur sont suivis séparément</li>
         </ul>
         
-        <h3>🏁 Condition de Fin</h3>
+        <h3>Conditions de Fin de Jeu:</h3>
         <ul>
-            <li><strong>Déclencheur :</strong> Quand N'IMPORTE QUEL joueur atteint exactement 21 mots</li>
-            <li><strong>Terminaison Immédiate :</strong> Pas de tours en attente complétés</li>
-            <li><strong>Détermination du Gagnant :</strong> Par score combiné, PAS par ordre d'arrivée</li>
+            <li><strong>Déclencheur:</strong> Le jeu se termine immédiatement quand N'IMPORTE QUEL joueur atteint le compte de mots cible (12 ou 24)</li>
+            <li><strong>Équité:</strong> Tous les joueurs obtiennent une opportunité égale - personne ne peut être "coupé" en milieu de tour</li>
+            <li><strong>Calcul Final:</strong> Les scores combinés sont calculés pour tous les joueurs simultanément</li>
         </ul>
 
-        <h2>🏆 Algorithme de Victoire</h2>
-        <p>La victoire est décidée par le <span class="points-gain">SCORE COMBINÉ MAXIMAL</span> - PAS par vitesse de complétion.</p>
+        <h2>🏆 DÉTERMINATION DE LA VICTOIRE</h2>
+        <p>C'est là que BIPARDY devient vraiment stratégique: <strong>le gagnant est déterminé par le SCORE COMBINÉ, pas qui finit en premier!</strong> Ce système de score révolutionnaire signifie qu'atteindre le compte de mots cible en premier pourrait ne pas garantir la victoire.</p>
         
-        <h3>🧮 Formule de Score Combiné</h3>
-        <p><strong>Concaténation Intelligente :</strong> Score + Série + Mots comme chaîne numérique</p>
-        <p><strong>Règle d'Exclusion des Zéros :</strong> Les composants = 0 ne sont pas inclus dans la concaténation</p>
+        <h3>🧮 Formule de Score Combiné Améliorée:</h3>
+        <p><strong>Score Combiné = Score + Série + Mots</strong> (concaténé en un seul nombre)</p>
+        <p><strong>Règle d'Omission de Zéro:</strong> Tout composant avec une valeur 0 est automatiquement exclu de la concaténation pour éviter l'inflation artificielle.</p>
         
         <div class="example-box">
-<strong>📊 Cas d'Exemples :</strong><br><br>
-🎯 Joueur 1 : 540pts, 2série, 21mots → "540" + "2" + "21" = <strong>540221</strong><br>
-🎯 Joueur 2 : 176pts, 19série, 20mots → "176" + "19" + "20" = <strong>1761920</strong><br>
-🏆 <strong>GAGNANT : Joueur 2</strong> (1,761,920 > 540,221)<br><br>
-<strong>🔍 Cas Spéciaux (Exclusion des Zéros) :</strong><br>
-• 211pts, 0série, 21mots → "211" + "21" = <strong>21121</strong><br>
-• 0pts, 0série, 21mots → "21" = <strong>21</strong><br>
-• 0pts, 0série, 0mots → <strong>0</strong>
+<strong>Exemples de Score Combiné Amélioré:</strong><br>
+🔵 Joueur 1: 540 points, 2 série, 24 mots = <strong>540,224</strong><br>
+🔴 Joueur 2: 176 points, 19 série, 23 mots = <strong>1,761,923</strong><br>
+🎉 <strong>Gagnant: Joueur 2!</strong> (Valeur concaténée plus élevée)<br><br>
+
+<strong>Exemples d'Omission de Zéro:</strong><br>
+211 points, 0 série, 24 mots = <strong>21,124</strong> (série zéro omise)<br>
+0 points, 15 série, 12 mots = <strong>1,512</strong> (points zéro omis)<br>
+0 points, 0 série, 24 mots = <strong>24</strong> (les deux zéros omis)<br>
+🔴 Joueur 2: 176 points, 19 série, 23 mots = <strong>1,761,923</strong><br>
+🎉 <strong>Gagnant: Joueur 2!</strong> (Malgré moins de points et ne pas finir en premier)<br><br>
+
+<strong>Exemples de Cas Limites:</strong><br>
+211 points, 0 série, 24 mots = <strong>21,124</strong> (série zéro omise)<br>
+0 points, 0 série, 24 mots = <strong>24</strong> (les deux zéros omis)<br>
+0 points, 0 série, 0 mots = <strong>0</strong> (état zéro complet)
         </div>
         
-        <p><em>🎨 Cette formule crée une tension stratégique - une série élevée peut battre un score plus haut</em></p>
-
-        <h2>🎯 Profondeur Stratégique</h2>
-        <p><em>BIPARDY n'est pas que de la vitesse - c'est de l'optimisation mathématique avancée</em></p>
-        
-        <h3>💡 Gestion des Ressources</h3>
+        <h3>🎯 Implications Stratégiques:</h3>
         <ul>
-            <li><strong>Dilemme du Toggle :</strong> Révéler longueur (±0pts) ou risquer pour bonus 42% ?</li>
-            <li><strong>Investissement en Aide :</strong> 21pts valent-ils la garantie de progression sur mot 5-lettres ?</li>
-            <li><strong>Préservation de Série :</strong> Passer maintient les multiplicateurs pour score combiné</li>
-        </ul>
-        
-        <h3>🔥 Théorie des Séries</h3>
-        <ul>
-            <li><strong>Impact Exponentiel :</strong> Série élevée peut dominer score brut</li>
-            <li><strong>Décision Critique :</strong> Risquer réponse douteuse ou passer ?</li>
-            <li><strong>En Multijoueur :</strong> Longues séries créent pression psychologique massive</li>
-        </ul>
-        
-        <h3>🧠 Psychologie du Risque</h3>
-        <ul>
-            <li><strong>Aversion aux Pertes :</strong> -10pts d'erreurs font plus mal que +21pts de réussite</li>
-            <li><strong>Sophisme du Joueur :</strong> Chaque mot est indépendant, pas de "tendances"</li>
-            <li><strong>Gestion de Pression :</strong> En multijoueur, décisions sous pression définissent victoires</li>
+            <li><strong>Priorité de Série:</strong> Les hautes séries peuvent considérablement surpasser les totaux de points bruts</li>
+            <li><strong>Paradoxe de la Ligne d'Arrivée:</strong> Se précipiter vers le compte de mots cible pourrait vous coûter la victoire</li>
+            <li><strong>Gestion des Risques:</strong> Parfois passer vaut mieux que risquer votre série</li>
+            <li><strong>Help vs. Deviner:</strong> L'utilisation stratégique de l'aide peut préserver les séries pour des scores combinés massifs</li>
         </ul>
 
-        <h2>📚 Base de Données BIP-39</h2>
-        <p><strong>Corpus Complet :</strong> 1626 mots uniques (filtré ≥5 lettres des 2048 officiels BIP-39)</p>
+        <h2>🧠 PROFONDEUR STRATÉGIQUE</h2>
+        <p>BIPARDY récompense la pensée stratégique plutôt que la pure connaissance des mots. Comprendre les mathématiques sous-jacentes du jeu et les calculs risque-récompense est essentiel pour le jeu avancé.</p>
         
-        <h3>🔍 Caractéristiques du Wordset :</h3>
+        <h3>🎭 Les Trois Voies:</h3>
         <ul>
-            <li><strong>Origine Cryptographique :</strong> Chaque mot fait partie du standard mnémotechnique Bitcoin</li>
-            <li><strong>Distribution :</strong> Longueurs 5-8 lettres avec variété équilibrée</li>
-            <li><strong>Complexité Variable :</strong> Des mots courants aux termes techniques</li>
-            <li><strong>Aléatoire Garanti :</strong> Sélection avec entropie cryptographique réelle</li>
+            <li><strong>🎯 Le Devineur:</strong> Risque élevé, récompense élevée. Parfait pour construire des séries massives mais vulnérable aux remises à zéro catastrophiques.</li>
+            <li><strong>🛡️ Le Calculateur:</strong> Utilisation stratégique de l'aide pour garantir le progrès tout en gérant les coûts. Plus sûr mais potentiellement avec un plafond plus bas.</li>
+            <li><strong>⚡ Le Sauteur:</strong> Préserve les séries impitoyablement, sacrifiant les points de mots individuels pour un énorme potentiel de score combiné.</li>
+        </ul>
+        
+        <h3>📐 Considérations Mathématiques:</h3>
+        <ul>
+            <li><strong>Bonus de Longueur Cachée:</strong> Le multiplicateur de 42% (9 points supplémentaires) peut considérablement impacter votre score final lorsqu'il s'accumule</li>
+            <li><strong>Analyse des Coûts d'Aide:</strong> Pour les mots de 5 lettres, payer 21 points pour une complétion garantie pourrait valoir la peine de préserver une série précieuse</li>
+            <li><strong>Évitement de Pénalité:</strong> La pénalité de 10 points pour mauvaise supposition plus la perte de série crée un coût d'opportunité massif</li>
+            <li><strong>Valeur Exponentielle de Série:</strong> En multijoueur, chaque point de série devient exponentiellement plus précieux dans le calcul du score combiné</li>
+        </ul>
+        
+        <h3>⚔️ Psychologie Multijoueur:</h3>
+        <ul>
+            <li><strong>Illusion de la Ligne d'Arrivée:</strong> D'autres joueurs se précipitant vers le compte de mots cible pourraient vous donner la victoire grâce à de mauvais scores combinés</li>
+            <li><strong>Gestion de la Pression:</strong> Savoir quand prendre des risques calculés vs. jouer la sécurité basé sur les progrès d'autres joueurs</li>
+            <li><strong>Allocation des Ressources:</strong> Vos points sont limités - dépensez-les judicieusement en aide quand cela compte vraiment</li>
         </ul>
 
-        <h2>🎬 Protocole de Finalisation</h2>
-        <h3>Séquence de Clôture :</h3>
-        <ol>
-            <li><strong>Déclencheur Automatique :</strong> N'importe quel joueur atteint exactement 21 mots</li>
-            <li><strong>Calcul Final :</strong> Évaluation immédiate des scores combinés</li>
-            <li><strong>Proclamation de Victoire :</strong> Annonce du gagnant par algorithme mathématique</li>
-            <li><strong>Dashboard Final :</strong> Statistiques complètes de tous les participants</li>
-            <li><strong>Portail de Support :</strong> Accès direct à la page de remerciements</li>
-        </ol>
+        <h2>🔐 LA LISTE DE MOTS BIP-39</h2>
+        <p>BIPARDY puise dans la légendaire liste de mots BIP-39 - les mêmes 2048 mots qui sécurisent des milliards de dollars en Bitcoin dans le monde entier. Nous avons filtré cette liste pour inclure uniquement les mots de 5 lettres ou plus, créant une collection organisée d'environ <strong>1626 mots difficiles</strong>.</p>
+        
+        <p>Chaque mot que vous rencontrez pourrait théoriquement faire partie de la phrase de récupération réelle du portefeuille Bitcoin de quelqu'un. Vous ne jouez pas seulement à un jeu - vous maîtrisez le vocabulaire de la finance numérique ! 💎</p>
+        
 
-        <h2>🧡 Support au Développement</h2>
-        <p>BIPARDY est un projet d'amour pour l'éducation Bitcoin et la gamification de l'apprentissage BIP-39. Si le jeu t'a diverti ou éduqué, considère soutenir le développement continu.</p>
-        
-        <p><strong>Philosophie V4V (Value 4 Value) :</strong> Échange direct de valeur sans intermédiaires - exactement comme Bitcoin lui-même.</p>
-        
         <div onclick="openZapPopup()" style="text-align: center; margin: 40px 0; padding: 30px; background: rgba(72, 219, 251, 0.1); border: 1px solid rgba(72, 219, 251, 0.3); border-radius: 15px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(72, 219, 251, 0.2)'; this.style.transform='scale(1.02)'" onmouseout="this.style.background='rgba(72, 219, 251, 0.1)'; this.style.transform='scale(1)'">
             <h3 style="color: #feca57; margin-bottom: 20px; font-size: 1.8rem;">⚡️ Zap me on NOSTR ⚡️</h3>
             <p style="color: #feca57; margin-bottom: 20px; font-size: 1.2rem;">🧡 V4V 🧡</p>
             <div style="background: white; border-radius: 15px; padding: 20px; margin: 0 auto; max-width: 460px; display: flex; justify-content: center;">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203 203" style="width: 280px; height: 280px; max-width: 100%; border-radius: 10px;" title="Scan to zap snick@primal.net">
-  <defs>
-    <linearGradient id="lightningGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFD700"/>
-      <stop offset="50%" stop-color="#FFA500"/>
-      <stop offset="100%" stop-color="#FF8C00"/>
-    </linearGradient>
-  </defs>
-  <rect width="203" height="203" fill="white"/>
-  <g fill="black">
-    <path d="M 0,0 l 7,0 0,7 -7,0 z M 7,0 l 7,0 0,7 -7,0 z M 14,0 l 7,0 0,7 -7,0 z M 21,0 l 7,0 0,7 -7,0 z M 28,0 l 7,0 0,7 -7,0 z M 35,0 l 7,0 0,7 -7,0 z M 42,0 l 7,0 0,7 -7,0 z M 77,0 l 7,0 0,7 -7,0 z M 98,0 l 7,0 0,7 -7,0 z M 105,0 l 7,0 0,7 -7,0 z M 112,0 l 7,0 0,7 -7,0 z M 119,0 l 7,0 0,7 -7,0 z M 126,0 l 7,0 0,7 -7,0 z M 133,0 l 7,0 0,7 -7,0 z M 140,0 l 7,0 0,7 -7,0 z M 154,0 l 7,0 0,7 -7,0 z M 161,0 l 7,0 0,7 -7,0 z M 168,0 l 7,0 0,7 -7,0 z M 175,0 l 7,0 0,7 -7,0 z M 182,0 l 7,0 0,7 -7,0 z M 189,0 l 7,0 0,7 -7,0 z M 196,0 l 7,0 0,7 -7,0 z M 0,7 l 7,0 0,7 -7,0 z M 42,7 l 7,0 0,7 -7,0 z M 56,7 l 7,0 0,7 -7,0 z M 63,7 l 7,0 0,7 -7,0 z M 77,7 l 7,0 0,7 -7,0 z M 84,7 l 7,0 0,7 -7,0 z M 98,7 l 7,0 0,7 -7,0 z M 140,7 l 7,0 0,7 -7,0 z M 161,7 l 7,0 0,7 -7,0 z M 196,7 l 7,0 0,7 -7,0 z M 0,14 l 7,0 0,7 -7,0 z M 14,14 l 7,0 0,7 -7,0 z M 21,14 l 7,0 0,7 -7,0 z M 28,14 l 7,0 0,7 -7,0 z M 42,14 l 7,0 0,7 -7,0 z M 63,14 l 7,0 0,7 -7,0 z M 77,14 l 7,0 0,7 -7,0 z M 84,14 l 7,0 0,7 -7,0 z M 98,14 l 7,0 0,7 -7,0 z M 112,14 l 7,0 0,7 -7,0 z M 119,14 l 7,0 0,7 -7,0 z M 126,14 l 7,0 0,7 -7,0 z M 140,14 l 7,0 0,7 -7,0 z M 154,14 l 7,0 0,7 -7,0 z M 161,14 l 7,0 0,7 -7,0 z M 168,14 l 7,0 0,7 -7,0 z M 175,14 l 7,0 0,7 -7,0 z M 196,14 l 7,0 0,7 -7,0 z M 0,21 l 7,0 0,7 -7,0 z M 14,21 l 7,0 0,7 -7,0 z M 21,21 l 7,0 0,7 -7,0 z M 28,21 l 7,0 0,7 -7,0 z M 42,21 l 7,0 0,7 -7,0 z M 56,21 l 7,0 0,7 -7,0 z M 63,21 l 7,0 0,7 -7,0 z M 77,21 l 7,0 0,7 -7,0 z M 84,21 l 7,0 0,7 -7,0 z M 98,21 l 7,0 0,7 -7,0 z M 112,21 l 7,0 0,7 -7,0 z M 119,21 l 7,0 0,7 -7,0 z M 126,21 l 7,0 0,7 -7,0 z M 140,21 l 7,0 0,7 -7,0 z M 154,21 l 7,0 0,7 -7,0 z M 161,21 l 7,0 0,7 -7,0 z M 168,21 l 7,0 0,7 -7,0 z M 175,21 l 7,0 0,7 -7,0 z M 196,21 l 7,0 0,7 -7,0 z M 0,28 l 7,0 0,7 -7,0 z M 14,28 l 7,0 0,7 -7,0 z M 21,28 l 7,0 0,7 -7,0 z M 28,28 l 7,0 0,7 -7,0 z M 42,28 l 7,0 0,7 -7,0 z M 70,28 l 7,0 0,7 -7,0 z M 98,28 l 7,0 0,7 -7,0 z M 154,28 l 7,0 0,7 -7,0 z M 161,28 l 7,0 0,7 -7,0 z M 168,28 l 7,0 0,7 -7,0 z M 175,28 l 7,0 0,7 -7,0 z M 196,28 l 7,0 0,7 -7,0 z M 0,35 l 7,0 0,7 -7,0 z M 42,35 l 7,0 0,7 -7,0 z M 56,35 l 7,0 0,7 -7,0 z M 63,35 l 7,0 0,7 -7,0 z M 70,35 l 7,0 0,7 -7,0 z M 77,35 l 7,0 0,7 -7,0 z M 84,35 l 7,0 0,7 -7,0 z M 91,35 l 7,0 0,7 -7,0 z M 98,35 l 7,0 0,7 -7,0 z M 105,35 l 7,0 0,7 -7,0 z M 119,35 l 7,0 0,7 -7,0 z M 133,35 l 7,0 0,7 -7,0 z M 154,35 l 7,0 0,7 -7,0 z M 196,35 l 7,0 0,7 -7,0 z M 0,42 l 7,0 0,7 -7,0 z M 7,42 l 7,0 0,7 -7,0 z M 14,42 l 7,0 0,7 -7,0 z M 21,42 l 7,0 0,7 -7,0 z M 28,42 l 7,0 0,7 -7,0 z M 35,42 l 7,0 0,7 -7,0 z M 42,42 l 7,0 0,7 -7,0 z M 56,42 l 7,0 0,7 -7,0 z M 70,42 l 7,0 0,7 -7,0 z M 84,42 l 7,0 0,7 -7,0 z M 91,42 l 7,0 0,7 -7,0 z M 98,42 l 7,0 0,7 -7,0 z M 105,42 l 7,0 0,7 -7,0 z M 112,42 l 7,0 0,7 -7,0 z M 126,42 l 7,0 0,7 -7,0 z M 140,42 l 7,0 0,7 -7,0 z M 154,42 l 7,0 0,7 -7,0 z M 161,42 l 7,0 0,7 -7,0 z M 168,42 l 7,0 0,7 -7,0 z M 175,42 l 7,0 0,7 -7,0 z M 182,42 l 7,0 0,7 -7,0 z M 189,42 l 7,0 0,7 -7,0 z M 196,42 l 7,0 0,7 -7,0 z M 70,49 l 7,0 0,7 -7,0 z M 0,56 l 7,0 0,7 -7,0 z M 7,56 l 7,0 0,7 -7,0 z M 14,56 l 7,0 0,7 -7,0 z M 21,56 l 7,0 0,7 -7,0 z M 28,56 l 7,0 0,7 -7,0 z M 42,56 l 7,0 0,7 -7,0 z M 49,56 l 7,0 0,7 -7,0 z M 56,56 l 7,0 0,7 -7,0 z M 63,56 l 7,0 0,7 -7,0 z M 77,56 l 7,0 0,7 -7,0 z M 91,56 l 7,0 0,7 -7,0 z M 105,56 l 7,0 0,7 -7,0 z M 119,56 l 7,0 0,7 -7,0 z M 133,56 l 7,0 0,7 -7,0 z M 35,63 l 7,0 0,7 -7,0 z M 63,63 l 7,0 0,7 -7,0 z M 70,63 l 7,0 0,7 -7,0 z M 112,63 l 7,0 0,7 -7,0 z M 119,63 l 7,0 0,7 -7,0 z M 140,63 l 7,0 0,7 -7,0 z M 0,70 l 7,0 0,7 -7,0 z M 7,70 l 7,0 0,7 -7,0 z M 14,70 l 7,0 0,7 -7,0 z M 35,70 l 7,0 0,7 -7,0 z M 42,70 l 7,0 0,7 -7,0 z M 56,70 l 7,0 0,7 -7,0 z M 63,70 l 7,0 0,7 -7,0 z M 70,70 l 7,0 0,7 -7,0 z M 77,70 l 7,0 0,7 -7,0 z M 84,70 l 7,0 0,7 -7,0 z M 98,70 l 7,0 0,7 -7,0 z M 133,70 l 7,0 0,7 -7,0 z M 21,77 l 7,0 0,7 -7,0 z M 35,77 l 7,0 0,7 -7,0 z M 70,77 l 7,0 0,7 -7,0 z M 91,77 l 7,0 0,7 -7,0 z M 105,77 l 7,0 0,7 -7,0 z M 119,77 l 7,0 0,7 -7,0 z M 126,77 l 7,0 0,7 -7,0 z M 133,77 l 7,0 0,7 -7,0 z M 140,77 l 7,0 0,7 -7,0 z M 7,84 l 7,0 0,7 -7,0 z M 14,84 l 7,0 0,7 -7,0 z M 21,84 l 7,0 0,7 -7,0 z M 28,84 l 7,0 0,7 -7,0 z M 35,84 l 7,0 0,7 -7,0 z M 42,84 l 7,0 0,7 -7,0 z M 49,84 l 7,0 0,7 -7,0 z M 70,84 l 7,0 0,7 -7,0 z M 77,84 l 7,0 0,7 -7,0 z M 98,84 l 7,0 0,7 -7,0 z M 105,84 l 7,0 0,7 -7,0 z M 56,91 l 7,0 0,7 -7,0 z M 63,91 l 7,0 0,7 -7,0 z M 98,91 l 7,0 0,7 -7,0 z M 112,91 l 7,0 0,7 -7,0 z M 133,91 l 7,0 0,7 -7,0 z M 140,91 l 7,0 0,7 -7,0 z M 0,98 l 7,0 0,7 -7,0 z M 7,98 l 7,0 0,7 -7,0 z M 14,98 l 7,0 0,7 -7,0 z M 21,98 l 7,0 0,7 -7,0 z M 28,98 l 7,0 0,7 -7,0 z M 35,98 l 7,0 0,7 -7,0 z M 42,98 l 7,0 0,7 -7,0 z M 56,98 l 7,0 0,7 -7,0 z M 70,98 l 7,0 0,7 -7,0 z M 84,98 l 7,0 0,7 -7,0 z M 91,98 l 7,0 0,7 -7,0 z M 119,98 l 7,0 0,7 -7,0 z M 126,98 l 7,0 0,7 -7,0 z M 133,98 l 7,0 0,7 -7,0 z M 0,105 l 7,0 0,7 -7,0 z M 42,105 l 7,0 0,7 -7,0 z M 70,105 l 7,0 0,7 -7,0 z M 84,105 l 7,0 0,7 -7,0 z M 91,105 l 7,0 0,7 -7,0 z M 105,105 l 7,0 0,7 -7,0 z M 119,105 l 7,0 0,7 -7,0 z M 126,105 l 7,0 0,7 -7,0 z M 0,112 l 7,0 0,7 -7,0 z M 14,112 l 7,0 0,7 -7,0 z M 21,112 l 7,0 0,7 -7,0 z M 28,112 l 7,0 0,7 -7,0 z M 42,112 l 7,0 0,7 -7,0 z M 56,112 l 7,0 0,7 -7,0 z M 63,112 l 7,0 0,7 -7,0 z M 77,112 l 7,0 0,7 -7,0 z M 98,112 l 7,0 0,7 -7,0 z M 105,112 l 7,0 0,7 -7,0 z M 0,119 l 7,0 0,7 -7,0 z M 14,119 l 7,0 0,7 -7,0 z M 21,119 l 7,0 0,7 -7,0 z M 28,119 l 7,0 0,7 -7,0 z M 42,119 l 7,0 0,7 -7,0 z M 56,119 l 7,0 0,7 -7,0 z M 63,119 l 7,0 0,7 -7,0 z M 70,119 l 7,0 0,7 -7,0 z M 91,119 l 7,0 0,7 -7,0 z M 98,119 l 7,0 0,7 -7,0 z M 105,119 l 7,0 0,7 -7,0 z M 126,119 l 7,0 0,7 -7,0 z M 133,119 l 7,0 0,7 -7,0 z M 0,126 l 7,0 0,7 -7,0 z M 14,126 l 7,0 0,7 -7,0 z M 21,126 l 7,0 0,7 -7,0 z M 28,126 l 7,0 0,7 -7,0 z M 42,126 l 7,0 0,7 -7,0 z M 56,126 l 7,0 0,7 -7,0 z M 77,126 l 7,0 0,7 -7,0 z M 84,126 l 7,0 0,7 -7,0 z M 91,126 l 7,0 0,7 -7,0 z M 119,126 l 7,0 0,7 -7,0 z M 0,133 l 7,0 0,7 -7,0 z M 42,133 l 7,0 0,7 -7,0 z M 56,133 l 7,0 0,7 -7,0 z M 63,133 l 7,0 0,7 -7,0 z M 77,133 l 7,0 0,7 -7,0 z M 84,133 l 7,0 0,7 -7,0 z M 91,133 l 7,0 0,7 -7,0 z M 112,133 l 7,0 0,7 -7,0 z M 126,133 l 7,0 0,7 -7,0 z M 0,140 l 7,0 0,7 -7,0 z M 7,140 l 7,0 0,7 -7,0 z M 14,140 l 7,0 0,7 -7,0 z M 21,140 l 7,0 0,7 -7,0 z M 28,140 l 7,0 0,7 -7,0 z M 35,140 l 7,0 0,7 -7,0 z M 42,140 l 7,0 0,7 -7,0 z M 56,140 l 7,0 0,7 -7,0 z M 63,140 l 7,0 0,7 -7,0 z M 70,140 l 7,0 0,7 -7,0 z M 84,140 l 7,0 0,7 -7,0 z M 98,140 l 7,0 0,7 -7,0 z M 112,140 l 7,0 0,7 -7,0 z M 133,140 l 7,0 0,7 -7,0 z M 154,140 l 7,0 0,7 -7,0 z M 161,140 l 7,0 0,7 -7,0 z M 168,140 l 7,0 0,7 -7,0 z M 175,140 l 7,0 0,7 -7,0 z M 182,140 l 7,0 0,7 -7,0 z M 189,140 l 7,0 0,7 -7,0 z M 196,140 l 7,0 0,7 -7,0 z M 154,147 l 7,0 0,7 -7,0 z M 0,154 l 7,0 0,7 -7,0 z M 7,154 l 7,0 0,7 -7,0 z M 14,154 l 7,0 0,7 -7,0 z M 21,154 l 7,0 0,7 -7,0 z M 28,154 l 7,0 0,7 -7,0 z M 42,154 l 7,0 0,7 -7,0 z M 49,154 l 7,0 0,7 -7,0 z M 56,154 l 7,0 0,7 -7,0 z M 63,154 l 7,0 0,7 -7,0 z M 77,154 l 7,0 0,7 -7,0 z M 91,154 l 7,0 0,7 -7,0 z M 105,154 l 7,0 0,7 -7,0 z M 119,154 l 7,0 0,7 -7,0 z M 133,154 l 7,0 0,7 -7,0 z M 35,161 l 7,0 0,7 -7,0 z M 63,161 l 7,0 0,7 -7,0 z M 70,161 l 7,0 0,7 -7,0 z M 112,161 l 7,0 0,7 -7,0 z M 119,161 l 7,0 0,7 -7,0 z M 140,161 l 7,0 0,7 -7,0 z M 154,161 l 7,0 0,7 -7,0 z M 161,161 l 7,0 0,7 -7,0 z M 168,161 l 7,0 0,7 -7,0 z M 175,161 l 7,0 0,7 -7,0 z M 182,161 l 7,0 0,7 -7,0 z M 189,161 l 7,0 0,7 -7,0 z M 196,161 l 7,0 0,7 -7,0 z M 0,168 l 7,0 0,7 -7,0 z M 7,168 l 7,0 0,7 -7,0 z M 14,168 l 7,0 0,7 -7,0 z M 35,168 l 7,0 0,7 -7,0 z M 42,168 l 7,0 0,7 -7,0 z M 56,168 l 7,0 0,7 -7,0 z M 63,168 l 7,0 0,7 -7,0 z M 70,168 l 7,0 0,7 -7,0 z M 77,168 l 7,0 0,7 -7,0 z M 84,168 l 7,0 0,7 -7,0 z M 98,168 l 7,0 0,7 -7,0 z M 133,168 l 7,0 0,7 -7,0 z M 154,168 l 7,0 0,7 -7,0 z M 196,168 l 7,0 0,7 -7,0 z M 21,175 l 7,0 0,7 -7,0 z M 35,175 l 7,0 0,7 -7,0 z M 70,175 l 7,0 0,7 -7,0 z M 91,175 l 7,0 0,7 -7,0 z M 105,175 l 7,0 0,7 -7,0 z M 119,175 l 7,0 0,7 -7,0 z M 126,175 l 7,0 0,7 -7,0 z M 133,175 l 7,0 0,7 -7,0 z M 140,175 l 7,0 0,7 -7,0 z M 154,175 l 7,0 0,7 -7,0 z M 168,175 l 7,0 0,7 -7,0 z M 182,175 l 7,0 0,7 -7,0 z M 7,182 l 7,0 0,7 -7,0 z M 14,182 l 7,0 0,7 -7,0 z M 21,182 l 7,0 0,7 -7,0 z M 28,182 l 7,0 0,7 -7,0 z M 35,182 l 7,0 0,7 -7,0 z M 42,182 l 7,0 0,7 -7,0 z M 49,182 l 7,0 0,7 -7,0 z M 70,182 l 7,0 0,7 -7,0 z M 77,182 l 7,0 0,7 -7,0 z M 91,182 l 7,0 0,7 -7,0 z M 98,182 l 7,0 0,7 -7,0 z M 112,182 l 7,0 0,7 -7,0 z M 154,182 l 7,0 0,7 -7,0 z M 168,182 l 7,0 0,7 -7,0 z M 182,182 l 7,0 0,7 -7,0 z M 56,189 l 7,0 0,7 -7,0 z M 63,189 l 7,0 0,7 -7,0 z M 98,189 l 7,0 0,7 -7,0 z M 112,189 l 7,0 0,7 -7,0 z M 133,189 l 7,0 0,7 -7,0 z M 140,189 l 7,0 0,7 -7,0 z M 154,189 l 7,0 0,7 -7,0 z M 161,189 l 7,0 0,7 -7,0 z M 168,189 l 7,0 0,7 -7,0 z M 0,196 l 7,0 0,7 -7,0 z M 7,196 l 7,0 0,7 -7,0 z M 14,196 l 7,0 0,7 -7,0 z M 21,196 l 7,0 0,7 -7,0 z M 28,196 l 7,0 0,7 -7,0 z M 35,196 l 7,0 0,7 -7,0 z M 42,196 l 7,0 0,7 -7,0 z M 56,196 l 7,0 0,7 -7,0 z M 70,196 l 7,0 0,7 -7,0 z M 84,196 l 7,0 0,7 -7,0 z M 91,196 l 7,0 0,7 -7,0 z M 119,196 l 7,0 0,7 -7,0 z M 126,196 l 7,0 0,7 -7,0 z M 133,196 l 7,0 0,7 -7,0 z M 154,196 l 7,0 0,7 -7,0 z " />
-  </g>
-  <g transform="translate(101.5,101.5)">
-    <circle cx="0" cy="0" r="28" fill="white" stroke="#333" stroke-width="2"/>
-    <path d="M10,-18 L-8,-2 L0,-2 L-12,18 L8,2 L0,2 Z" fill="url(#lightningGrad)" stroke="#FF6B00" stroke-width="1.5"/>
-    <path d="M6,-14 L-4,-4 L0,-4 L-6,8" fill="none" stroke="#FFFF99" stroke-width="1" opacity="0.8"/>
-  </g>
-</svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 203 203" style="width: 280px; height: 280px; max-width: 100%; border-radius: 10px;" title="Scan to zap snick@primal.net">
+                  <defs>
+                    <linearGradient id="lightningGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#FFD700"/>
+                      <stop offset="50%" stop-color="#FFA500"/>
+                      <stop offset="100%" stop-color="#FF8C00"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="203" height="203" fill="white"/>
+                  <g fill="black">
+                    <path d="M0.00,0.00h7.00v7.00h-7.00zM7.00,0.00h7.00v7.00h-7.00zM14.00,0.00h7.00v7.00h-7.00zM21.00,0.00h7.00v7.00h-7.00zM28.00,0.00h7.00v7.00h-7.00zM35.00,0.00h7.00v7.00h-7.00zM42.00,0.00h7.00v7.00h-7.00zM63.00,0.00h7.00v7.00h-7.00zM84.00,0.00h7.00v7.00h-7.00zM105.00,0.00h7.00v7.00h-7.00zM126.00,0.00h7.00v7.00h-7.00zM140.00,0.00h7.00v7.00h-7.00zM154.00,0.00h7.00v7.00h-7.00zM161.00,0.00h7.00v7.00h-7.00zM168.00,0.00h7.00v7.00h-7.00zM175.00,0.00h7.00v7.00h-7.00zM182.00,0.00h7.00v7.00h-7.00zM189.00,0.00h7.00v7.00h-7.00zM196.00,0.00h7.00v7.00h-7.00zM0.00,7.00h7.00v7.00h-7.00zM42.00,7.00h7.00v7.00h-7.00zM63.00,7.00h7.00v7.00h-7.00zM77.00,7.00h7.00v7.00h-7.00zM84.00,7.00h7.00v7.00h-7.00zM105.00,7.00h7.00v7.00h-7.00zM119.00,7.00h7.00v7.00h-7.00zM133.00,7.00h7.00v7.00h-7.00zM140.00,7.00h7.00v7.00h-7.00zM154.00,7.00h7.00v7.00h-7.00zM196.00,7.00h7.00v7.00h-7.00zM0.00,14.00h7.00v7.00h-7.00zM14.00,14.00h7.00v7.00h-7.00zM21.00,14.00h7.00v7.00h-7.00zM28.00,14.00h7.00v7.00h-7.00zM42.00,14.00h7.00v7.00h-7.00zM70.00,14.00h7.00v7.00h-7.00zM77.00,14.00h7.00v7.00h-7.00zM84.00,14.00h7.00v7.00h-7.00zM91.00,14.00h7.00v7.00h-7.00zM105.00,14.00h7.00v7.00h-7.00zM126.00,14.00h7.00v7.00h-7.00zM140.00,14.00h7.00v7.00h-7.00zM154.00,14.00h7.00v7.00h-7.00zM168.00,14.00h7.00v7.00h-7.00zM175.00,14.00h7.00v7.00h-7.00zM182.00,14.00h7.00v7.00h-7.00zM196.00,14.00h7.00v7.00h-7.00zM0.00,21.00h7.00v7.00h-7.00zM14.00,21.00h7.00v7.00h-7.00zM21.00,21.00h7.00v7.00h-7.00zM28.00,21.00h7.00v7.00h-7.00zM42.00,21.00h7.00v7.00h-7.00zM77.00,21.00h7.00v7.00h-7.00zM84.00,21.00h7.00v7.00h-7.00zM91.00,21.00h7.00v7.00h-7.00zM98.00,21.00h7.00v7.00h-7.00zM112.00,21.00h7.00v7.00h-7.00zM119.00,21.00h7.00v7.00h-7.00zM133.00,21.00h7.00v7.00h-7.00zM154.00,21.00h7.00v7.00h-7.00zM168.00,21.00h7.00v7.00h-7.00zM175.00,21.00h7.00v7.00h-7.00zM182.00,21.00h7.00v7.00h-7.00zM196.00,21.00h7.00v7.00h-7.00zM0.00,28.00h7.00v7.00h-7.00zM14.00,28.00h7.00v7.00h-7.00zM21.00,28.00h7.00v7.00h-7.00zM28.00,28.00h7.00v7.00h-7.00zM42.00,28.00h7.00v7.00h-7.00zM56.00,28.00h7.00v7.00h-7.00zM63.00,28.00h7.00v7.00h-7.00zM77.00,28.00h7.00v7.00h-7.00zM84.00,28.00h7.00v7.00h-7.00zM91.00,28.00h7.00v7.00h-7.00zM98.00,28.00h7.00v7.00h-7.00zM112.00,28.00h7.00v7.00h-7.00zM119.00,28.00h7.00v7.00h-7.00zM133.00,28.00h7.00v7.00h-7.00zM154.00,28.00h7.00v7.00h-7.00zM168.00,28.00h7.00v7.00h-7.00zM175.00,28.00h7.00v7.00h-7.00zM182.00,28.00h7.00v7.00h-7.00zM196.00,28.00h7.00v7.00h-7.00zM0.00,35.00h7.00v7.00h-7.00zM42.00,35.00h7.00v7.00h-7.00zM63.00,35.00h7.00v7.00h-7.00zM77.00,35.00h7.00v7.00h-7.00zM84.00,35.00h7.00v7.00h-7.00zM91.00,35.00h7.00v7.00h-7.00zM105.00,35.00h7.00v7.00h-7.00zM133.00,35.00h7.00v7.00h-7.00zM140.00,35.00h7.00v7.00h-7.00zM154.00,35.00h7.00v7.00h-7.00zM196.00,35.00h7.00v7.00h-7.00zM0.00,42.00h7.00v7.00h-7.00zM7.00,42.00h7.00v7.00h-7.00zM14.00,42.00h7.00v7.00h-7.00zM21.00,42.00h7.00v7.00h-7.00zM28.00,42.00h7.00v7.00h-7.00zM35.00,42.00h7.00v7.00h-7.00zM42.00,42.00h7.00v7.00h-7.00zM56.00,42.00h7.00v7.00h-7.00zM70.00,42.00h7.00v7.00h-7.00zM84.00,42.00h7.00v7.00h-7.00zM98.00,42.00h7.00v7.00h-7.00zM112.00,42.00h7.00v7.00h-7.00zM126.00,42.00h7.00v7.00h-7.00zM140.00,42.00h7.00v7.00h-7.00zM154.00,42.00h7.00v7.00h-7.00zM161.00,42.00h7.00v7.00h-7.00zM168.00,42.00h7.00v7.00h-7.00zM175.00,42.00h7.00v7.00h-7.00zM182.00,42.00h7.00v7.00h-7.00zM189.00,42.00h7.00v7.00h-7.00zM196.00,42.00h7.00v7.00h-7.00zM56.00,49.00h7.00v7.00h-7.00zM63.00,49.00h7.00v7.00h-7.00zM70.00,49.00h7.00v7.00h-7.00zM105.00,49.00h7.00v7.00h-7.00zM119.00,49.00h7.00v7.00h-7.00zM126.00,49.00h7.00v7.00h-7.00zM14.00,56.00h7.00v7.00h-7.00zM21.00,56.00h7.00v7.00h-7.00zM42.00,56.00h7.00v7.00h-7.00zM49.00,56.00h7.00v7.00h-7.00zM56.00,56.00h7.00v7.00h-7.00zM63.00,56.00h7.00v7.00h-7.00zM84.00,56.00h7.00v7.00h-7.00zM91.00,56.00h7.00v7.00h-7.00zM105.00,56.00h7.00v7.00h-7.00zM140.00,56.00h7.00v7.00h-7.00zM147.00,56.00h7.00v7.00h-7.00zM154.00,56.00h7.00v7.00h-7.00zM168.00,56.00h7.00v7.00h-7.00zM14.00,63.00h7.00v7.00h-7.00zM21.00,63.00h7.00v7.00h-7.00zM28.00,63.00h7.00v7.00h-7.00zM77.00,63.00h7.00v7.00h-7.00zM91.00,63.00h7.00v7.00h-7.00zM98.00,63.00h7.00v7.00h-7.00zM105.00,63.00h7.00v7.00h-7.00zM168.00,63.00h7.00v7.00h-7.00zM175.00,63.00h7.00v7.00h-7.00zM182.00,63.00h7.00v7.00h-7.00zM189.00,63.00h7.00v7.00h-7.00zM196.00,63.00h7.00v7.00h-7.00zM7.00,70.00h7.00v7.00h-7.00zM35.00,70.00h7.00v7.00h-7.00zM42.00,70.00h7.00v7.00h-7.00zM56.00,70.00h7.00v7.00h-7.00zM98.00,70.00h7.00v7.00h-7.00zM105.00,70.00h7.00v7.00h-7.00zM119.00,70.00h7.00v7.00h-7.00zM189.00,70.00h7.00v7.00h-7.00zM0.00,77.00h7.00v7.00h-7.00zM7.00,77.00h7.00v7.00h-7.00zM28.00,77.00h7.00v7.00h-7.00zM35.00,77.00h7.00v7.00h-7.00zM49.00,77.00h7.00v7.00h-7.00zM56.00,77.00h7.00v7.00h-7.00zM63.00,77.00h7.00v7.00h-7.00zM70.00,77.00h7.00v7.00h-7.00zM77.00,77.00h7.00v7.00h-7.00zM84.00,77.00h7.00v7.00h-7.00zM119.00,77.00h7.00v7.00h-7.00zM133.00,77.00h7.00v7.00h-7.00zM154.00,77.00h7.00v7.00h-7.00zM189.00,77.00h7.00v7.00h-7.00zM0.00,84.00h7.00v7.00h-7.00zM14.00,84.00h7.00v7.00h-7.00zM28.00,84.00h7.00v7.00h-7.00zM42.00,84.00h7.00v7.00h-7.00zM49.00,84.00h7.00v7.00h-7.00zM63.00,84.00h7.00v7.00h-7.00zM70.00,84.00h7.00v7.00h-7.00zM84.00,84.00h7.00v7.00h-7.00zM91.00,84.00h7.00v7.00h-7.00zM98.00,84.00h7.00v7.00h-7.00zM105.00,84.00h7.00v7.00h-7.00zM112.00,84.00h7.00v7.00h-7.00zM168.00,84.00h7.00v7.00h-7.00zM182.00,84.00h7.00v7.00h-7.00zM189.00,84.00h7.00v7.00h-7.00zM0.00,91.00h7.00v7.00h-7.00zM21.00,91.00h7.00v7.00h-7.00zM35.00,91.00h7.00v7.00h-7.00zM84.00,91.00h7.00v7.00h-7.00zM91.00,91.00h7.00v7.00h-7.00zM112.00,91.00h7.00v7.00h-7.00zM133.00,91.00h7.00v7.00h-7.00zM147.00,91.00h7.00v7.00h-7.00zM154.00,91.00h7.00v7.00h-7.00zM175.00,91.00h7.00v7.00h-7.00zM196.00,91.00h7.00v7.00h-7.00zM0.00,98.00h7.00v7.00h-7.00zM14.00,98.00h7.00v7.00h-7.00zM28.00,98.00h7.00v7.00h-7.00zM42.00,98.00h7.00v7.00h-7.00zM49.00,98.00h7.00v7.00h-7.00zM70.00,98.00h7.00v7.00h-7.00zM77.00,98.00h7.00v7.00h-7.00zM105.00,98.00h7.00v7.00h-7.00zM126.00,98.00h7.00v7.00h-7.00zM133.00,98.00h7.00v7.00h-7.00zM140.00,98.00h7.00v7.00h-7.00zM147.00,98.00h7.00v7.00h-7.00zM161.00,98.00h7.00v7.00h-7.00zM168.00,98.00h7.00v7.00h-7.00zM175.00,98.00h7.00v7.00h-7.00zM182.00,98.00h7.00v7.00h-7.00zM189.00,98.00h7.00v7.00h-7.00zM196.00,98.00h7.00v7.00h-7.00zM7.00,105.00h7.00v7.00h-7.00zM28.00,105.00h7.00v7.00h-7.00zM49.00,105.00h7.00v7.00h-7.00zM63.00,105.00h7.00v7.00h-7.00zM70.00,105.00h7.00v7.00h-7.00zM84.00,105.00h7.00v7.00h-7.00zM91.00,105.00h7.00v7.00h-7.00zM98.00,105.00h7.00v7.00h-7.00zM105.00,105.00h7.00v7.00h-7.00zM112.00,105.00h7.00v7.00h-7.00zM119.00,105.00h7.00v7.00h-7.00zM126.00,105.00h7.00v7.00h-7.00zM147.00,105.00h7.00v7.00h-7.00zM154.00,105.00h7.00v7.00h-7.00zM175.00,105.00h7.00v7.00h-7.00zM189.00,105.00h7.00v7.00h-7.00zM196.00,105.00h7.00v7.00h-7.00zM0.00,112.00h7.00v7.00h-7.00zM42.00,112.00h7.00v7.00h-7.00zM56.00,112.00h7.00v7.00h-7.00zM98.00,112.00h7.00v7.00h-7.00zM112.00,112.00h7.00v7.00h-7.00zM119.00,112.00h7.00v7.00h-7.00zM133.00,112.00h7.00v7.00h-7.00zM140.00,112.00h7.00v7.00h-7.00zM147.00,112.00h7.00v7.00h-7.00zM154.00,112.00h7.00v7.00h-7.00zM161.00,112.00h7.00v7.00h-7.00zM189.00,112.00h7.00v7.00h-7.00zM196.00,112.00h7.00v7.00h-7.00zM14.00,119.00h7.00v7.00h-7.00zM28.00,119.00h7.00v7.00h-7.00zM49.00,119.00h7.00v7.00h-7.00zM56.00,119.00h7.00v7.00h-7.00zM70.00,119.00h7.00v7.00h-7.00zM77.00,119.00h7.00v7.00h-7.00zM84.00,119.00h7.00v7.00h-7.00zM91.00,119.00h7.00v7.00h-7.00zM98.00,119.00h7.00v7.00h-7.00zM105.00,119.00h7.00v7.00h-7.00zM112.00,119.00h7.00v7.00h-7.00zM119.00,119.00h7.00v7.00h-7.00zM133.00,119.00h7.00v7.00h-7.00zM140.00,119.00h7.00v7.00h-7.00zM154.00,119.00h7.00v7.00h-7.00zM161.00,119.00h7.00v7.00h-7.00zM168.00,119.00h7.00v7.00h-7.00zM189.00,119.00h7.00v7.00h-7.00zM0.00,126.00h7.00v7.00h-7.00zM14.00,126.00h7.00v7.00h-7.00zM21.00,126.00h7.00v7.00h-7.00zM35.00,126.00h7.00v7.00h-7.00zM42.00,126.00h7.00v7.00h-7.00zM49.00,126.00h7.00v7.00h-7.00zM56.00,126.00h7.00v7.00h-7.00zM63.00,126.00h7.00v7.00h-7.00zM84.00,126.00h7.00v7.00h-7.00zM98.00,126.00h7.00v7.00h-7.00zM126.00,126.00h7.00v7.00h-7.00zM133.00,126.00h7.00v7.00h-7.00zM147.00,126.00h7.00v7.00h-7.00zM175.00,126.00h7.00v7.00h-7.00zM35.00,133.00h7.00v7.00h-7.00zM63.00,133.00h7.00v7.00h-7.00zM84.00,133.00h7.00v7.00h-7.00zM98.00,133.00h7.00v7.00h-7.00zM105.00,133.00h7.00v7.00h-7.00zM112.00,133.00h7.00v7.00h-7.00zM119.00,133.00h7.00v7.00h-7.00zM126.00,133.00h7.00v7.00h-7.00zM133.00,133.00h7.00v7.00h-7.00zM168.00,133.00h7.00v7.00h-7.00zM175.00,133.00h7.00v7.00h-7.00zM182.00,133.00h7.00v7.00h-7.00zM7.00,140.00h7.00v7.00h-7.00zM28.00,140.00h7.00v7.00h-7.00zM35.00,140.00h7.00v7.00h-7.00zM42.00,140.00h7.00v7.00h-7.00zM49.00,140.00h7.00v7.00h-7.00zM56.00,140.00h7.00v7.00h-7.00zM77.00,140.00h7.00v7.00h-7.00zM91.00,140.00h7.00v7.00h-7.00zM112.00,140.00h7.00v7.00h-7.00zM119.00,140.00h7.00v7.00h-7.00zM140.00,140.00h7.00v7.00h-7.00zM147.00,140.00h7.00v7.00h-7.00zM154.00,140.00h7.00v7.00h-7.00zM161.00,140.00h7.00v7.00h-7.00zM168.00,140.00h7.00v7.00h-7.00zM182.00,140.00h7.00v7.00h-7.00zM196.00,140.00h7.00v7.00h-7.00zM56.00,147.00h7.00v7.00h-7.00zM63.00,147.00h7.00v7.00h-7.00zM70.00,147.00h7.00v7.00h-7.00zM77.00,147.00h7.00v7.00h-7.00zM84.00,147.00h7.00v7.00h-7.00zM98.00,147.00h7.00v7.00h-7.00zM105.00,147.00h7.00v7.00h-7.00zM112.00,147.00h7.00v7.00h-7.00zM140.00,147.00h7.00v7.00h-7.00zM168.00,147.00h7.00v7.00h-7.00zM182.00,147.00h7.00v7.00h-7.00zM189.00,147.00h7.00v7.00h-7.00zM196.00,147.00h7.00v7.00h-7.00zM0.00,154.00h7.00v7.00h-7.00zM7.00,154.00h7.00v7.00h-7.00zM14.00,154.00h7.00v7.00h-7.00zM21.00,154.00h7.00v7.00h-7.00zM28.00,154.00h7.00v7.00h-7.00zM35.00,154.00h7.00v7.00h-7.00zM42.00,154.00h7.00v7.00h-7.00zM56.00,154.00h7.00v7.00h-7.00zM70.00,154.00h7.00v7.00h-7.00zM84.00,154.00h7.00v7.00h-7.00zM91.00,154.00h7.00v7.00h-7.00zM98.00,154.00h7.00v7.00h-7.00zM112.00,154.00h7.00v7.00h-7.00zM119.00,154.00h7.00v7.00h-7.00zM126.00,154.00h7.00v7.00h-7.00zM133.00,154.00h7.00v7.00h-7.00zM140.00,154.00h7.00v7.00h-7.00zM154.00,154.00h7.00v7.00h-7.00zM168.00,154.00h7.00v7.00h-7.00zM175.00,154.00h7.00v7.00h-7.00zM182.00,154.00h7.00v7.00h-7.00zM0.00,161.00h7.00v7.00h-7.00zM42.00,161.00h7.00v7.00h-7.00zM77.00,161.00h7.00v7.00h-7.00zM98.00,161.00h7.00v7.00h-7.00zM112.00,161.00h7.00v7.00h-7.00zM119.00,161.00h7.00v7.00h-7.00zM140.00,161.00h7.00v7.00h-7.00zM168.00,161.00h7.00v7.00h-7.00zM196.00,161.00h7.00v7.00h-7.00zM0.00,168.00h7.00v7.00h-7.00zM14.00,168.00h7.00v7.00h-7.00zM21.00,168.00h7.00v7.00h-7.00zM28.00,168.00h7.00v7.00h-7.00zM42.00,168.00h7.00v7.00h-7.00zM70.00,168.00h7.00v7.00h-7.00zM77.00,168.00h7.00v7.00h-7.00zM112.00,168.00h7.00v7.00h-7.00zM140.00,168.00h7.00v7.00h-7.00zM147.00,168.00h7.00v7.00h-7.00zM154.00,168.00h7.00v7.00h-7.00zM161.00,168.00h7.00v7.00h-7.00zM168.00,168.00h7.00v7.00h-7.00zM182.00,168.00h7.00v7.00h-7.00zM196.00,168.00h7.00v7.00h-7.00zM0.00,175.00h7.00v7.00h-7.00zM14.00,175.00h7.00v7.00h-7.00zM21.00,175.00h7.00v7.00h-7.00zM28.00,175.00h7.00v7.00h-7.00zM42.00,175.00h7.00v7.00h-7.00zM56.00,175.00h7.00v7.00h-7.00zM70.00,175.00h7.00v7.00h-7.00zM84.00,175.00h7.00v7.00h-7.00zM91.00,175.00h7.00v7.00h-7.00zM98.00,175.00h7.00v7.00h-7.00zM105.00,175.00h7.00v7.00h-7.00zM112.00,175.00h7.00v7.00h-7.00zM119.00,175.00h7.00v7.00h-7.00zM147.00,175.00h7.00v7.00h-7.00zM161.00,175.00h7.00v7.00h-7.00zM168.00,175.00h7.00v7.00h-7.00zM175.00,175.00h7.00v7.00h-7.00zM182.00,175.00h7.00v7.00h-7.00zM189.00,175.00h7.00v7.00h-7.00zM0.00,182.00h7.00v7.00h-7.00zM14.00,182.00h7.00v7.00h-7.00zM21.00,182.00h7.00v7.00h-7.00zM28.00,182.00h7.00v7.00h-7.00zM42.00,182.00h7.00v7.00h-7.00zM56.00,182.00h7.00v7.00h-7.00zM63.00,182.00h7.00v7.00h-7.00zM70.00,182.00h7.00v7.00h-7.00zM77.00,182.00h7.00v7.00h-7.00zM91.00,182.00h7.00v7.00h-7.00zM105.00,182.00h7.00v7.00h-7.00zM112.00,182.00h7.00v7.00h-7.00zM119.00,182.00h7.00v7.00h-7.00zM126.00,182.00h7.00v7.00h-7.00zM133.00,182.00h7.00v7.00h-7.00zM147.00,182.00h7.00v7.00h-7.00zM161.00,182.00h7.00v7.00h-7.00zM175.00,182.00h7.00v7.00h-7.00zM196.00,182.00h7.00v7.00h-7.00zM0.00,189.00h7.00v7.00h-7.00zM42.00,189.00h7.00v7.00h-7.00zM91.00,189.00h7.00v7.00h-7.00zM105.00,189.00h7.00v7.00h-7.00zM112.00,189.00h7.00v7.00h-7.00zM119.00,189.00h7.00v7.00h-7.00zM126.00,189.00h7.00v7.00h-7.00zM133.00,189.00h7.00v7.00h-7.00zM147.00,189.00h7.00v7.00h-7.00zM161.00,189.00h7.00v7.00h-7.00zM189.00,189.00h7.00v7.00h-7.00zM0.00,196.00h7.00v7.00h-7.00zM7.00,196.00h7.00v7.00h-7.00zM14.00,196.00h7.00v7.00h-7.00zM21.00,196.00h7.00v7.00h-7.00zM28.00,196.00h7.00v7.00h-7.00zM35.00,196.00h7.00v7.00h-7.00zM42.00,196.00h7.00v7.00h-7.00zM70.00,196.00h7.00v7.00h-7.00zM91.00,196.00h7.00v7.00h-7.00zM98.00,196.00h7.00v7.00h-7.00zM119.00,196.00h7.00v7.00h-7.00zM140.00,196.00h7.00v7.00h-7.00zM147.00,196.00h7.00v7.00h-7.00zM161.00,196.00h7.00v7.00h-7.00zM182.00,196.00h7.00v7.00h-7.00zM189.00,196.00h7.00v7.00h-7.00z" fill="black" />
+                  </g>
+                  <g transform="translate(101.5,101.5)">
+                    <circle cx="0" cy="0" r="28" fill="white" stroke="#333" stroke-width="2"/>
+                    <path d="M10,-18 L-8,-2 L0,-2 L-12,18 L8,2 L0,2 Z" fill="url(#lightningGrad)" stroke="#FF6B00" stroke-width="1.5"/>
+                    <path d="M6,-14 L-4,-4 L0,-4 L-6,8" fill="none" stroke="#FFFF99" stroke-width="1" opacity="0.8"/>
+                  </g>
+                </svg>
             </div>
         </div>
         
@@ -487,10 +605,18 @@
             }
         </script>
 
-        <a href="index.html" class="back-button">← Retour au Jeu</a>
-    </div>
 
-    <script>
+        <div class="play-button-container">
+            <a href="index.html" class="play-button">🚀 PLAY BIPARDY</a>
+        </div>
+
+        <script>
+        // Debug: Console commands for advanced users
+        console.log('🎲 BIPARDY Debug Console Commands:');
+        console.log('  bipardyStats() - View word selection statistics');
+        console.log('  bipardyEntropy() - View entropy collection statistics');
+        console.log('Advanced randomness system active!');
+
         function toggleDropdown() {
             const dropdown = document.getElementById('languageDropdown');
             const container = dropdown.parentElement;
@@ -498,6 +624,29 @@
             dropdown.classList.toggle('show');
             container.classList.toggle('open');
         }
+
+        // Jump to bottom functionality
+        function jumpToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // Show/hide jump to bottom button based on scroll position
+        window.addEventListener('scroll', function() {
+            const jumpBtn = document.getElementById('jumpToBottomBtn');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            
+            // Show button when user has scrolled at least 100px and isn't near the bottom
+            if (scrollTop > 100 && scrollTop < docHeight - windowHeight - 200) {
+                jumpBtn.classList.add('show');
+            } else {
+                jumpBtn.classList.remove('show');
+            }
+        });
 
         // Close dropdown when clicking outside
         window.addEventListener('click', function(event) {
@@ -511,6 +660,7 @@
                 }
             }
         });
-    </script>
+        </script>
+    </div>
 </body>
 </html>

@@ -16,11 +16,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  -->
 <!DOCTYPE html>
-<html lang="es"
+<html lang="da"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIPARDY - Reglas del Juego & Guía</title>
+    <title>BIPARDY - Spilleregler & Guide</title>
     <style>
         * {
             margin: 0;
@@ -374,24 +374,24 @@
 </head>
 <body>
     <!-- Jump to bottom button -->
-    <button class="jump-to-bottom" id="jumpToBottomBtn" onclick="jumpToBottom()" title="Volver arriba">
+    <button class="jump-to-bottom" id="jumpToBottomBtn" onclick="jumpToBottom()" title="Tilbage til toppen">
     </button>
     
     <div class="container">
         <div class="language-switcher">
             <div class="language-dropdown">
                 <div class="dropdown-button" onclick="toggleDropdown()">
-                    <span>🇪🇸 Español</span>
+                    <span>🇩🇰 Dansk</span>
                     <span class="dropdown-arrow">▼</span>
                 </div>
                 <div class="dropdown-content" id="languageDropdown">
                     <a href="readme-page.html">🇺🇸 English</a>
                     <a href="readme-de.html">🇩🇪 Deutsch</a>
-                    <a href="readme-es.html" class="active">🇪🇸 Español</a>
+                    <a href="readme-es.html">🇪🇸 Español</a>
                     <a href="readme-fr.html">🇫🇷 Français</a>
                     <a href="readme-it.html">🇮🇹 Italiano</a>
                     <a href="readme-ja.html">🇯🇵 日本語</a>
-                    <a href="readme-da.html">🇩🇰 Dansk</a>
+                    <a href="readme-da.html" class="active">🇩🇰 Dansk</a>
                 </div>
             </div>
         </div>
@@ -405,165 +405,165 @@
             </a>
         </div>
         
-        <p>¿Sabías que existen solo 2048 palabras que protegen toda la seguridad de Bitcoin? 🔐 BIPARDY convierte las palabras mnemotécnicas BIP-39 (la base de las frases semilla Bitcoin) en un desafío mental adictivo.</p>
+        <p>Vidste du at kun 2048 ord beskytter hele Bitcoins sikkerhed? 🔐 BIPARDY forvandler BIP-39 mnemoniske ord (fundamentet for Bitcoin seed-fraser) til en vanedannende mental udfordring.</p>
         
-        <p>Cada palabra que adivines es una palabra real de recuperación de wallet - ¡estás jugando literalmente con los ladrillos que construyeron el ecosistema Bitcoin! 🧱⚡</p>
+        <p>Hvert ord du gætter er et ægte wallet recovery ord - du spiller bogstaveligt talt med de byggesten der konstruerede Bitcoin økosystemet! 🧱⚡</p>
 
-        <h2>🎯 Concepto del Juego</h2>
-        <p>BIPARDY te desafía a completar palabras de la lista de palabras BIP-39 Bitcoin. Ves las primeras 4 letras de cada palabra - tu misión es averiguar el resto. Pero aquí está la trampa: cada decisión cuenta. ¿Saltar para preservar tu racha? ¿Usar ayuda costosa? ¿Apostar todo a una conjetura? La elección es tuya.</p>
+        <h2>🎯 Spil Koncept</h2>
+        <p>BIPARDY udfordrer dig til at fuldende ord fra Bitcoin BIP-39 ordlisten. Du ser de første 4 bogstaver af hvert ord - din mission er at gætte resten. Men her er fælden: hver beslutning tæller. Spring over for at bevare din stribe? Brug dyr hjælp? Satse alt på et gæt? Valget er dit.</p>
 
-        <h3>Mecánica Central:</h3>
+        <h3>Kerne Mekanikker:</h3>
         <ul>
-            <li>🎯 <strong>Fuente de Palabras:</strong> Todas las palabras provienen de la lista oficial BIP-39 (filtradas a palabras con 5 o más letras)</li>
-            <li>🔍 <strong>Sistema de Revelación:</strong> Las primeras 4 letras siempre se revelan</li>
-            <li>⚡ <strong>Límite de Intentos:</strong> Obtienes exactamente 2 intentos por palabra</li>
-            <li>🔥 <strong>Mecánica de Racha:</strong> Las respuestas incorrectas reinician tu racha a 0, pero saltear la preserva</li>
-            <li>🏁 <strong>Condición de Fin de Juego:</strong> Completa 12 o 24 palabras para terminar el juego (longitudes estándar BIP-39)</li>
-            <li>🎊 <strong>Condición de Victoria:</strong> En multijugador, gana la puntuación combinada más alta (¡no quien termine primero!)</li>
+            <li>🎯 <strong>Ordkilde:</strong> Alle ord kommer fra den officielle BIP-39 ordliste (filtreret til ord med 5 eller flere bogstaver)</li>
+            <li>🔍 <strong>Afslørings System:</strong> De første 4 bogstaver bliver altid afsløret</li>
+            <li>⚡ <strong>Forsøgs Grænse:</strong> Du får præcis 2 forsøg per ord</li>
+            <li>🔥 <strong>Stribe Mekanik:</strong> Forkerte svar nulstiller din stribe til 0, men spring over bevarer den</li>
+            <li>🏁 <strong>Spil Slut Betingelse:</strong> Fuldfør 12 eller 24 ord for at afslutte spillet (BIP-39 standard længder)</li>
+            <li>🎊 <strong>Sejrs Betingelse:</strong> I multiplayer vinder den højeste kombinerede score (ikke hvem der bliver færdig først!)</li>
         </ul>
 
-        <h2>🔢 Sistema de Puntuación Completo</h2>
-        <p>El sistema de puntuación de BIPARDY recompensa tanto la precisión como la toma de riesgos estratégicos. Cada acción tiene consecuencias, y entender la economía de puntos es crucial para dominar el juego.</p>
+        <h2>🔢 Komplet Scoring System</h2>
+        <p>BIPARDYs scoring system belønner både nøjagtighed og strategisk risikotagning. Hver handling har konsekvenser, og at forstå punkt økonomien er afgørende for at mestre spillet.</p>
 
-        <h3>📈 Puntuación Base:</h3>
+        <h3>📈 Basis Scoring:</h3>
         <ul>
-            <li><strong>Finalización de Palabra Estándar:</strong> <span class="points-gain">+21 puntos</span></li>
-            <li><strong>Bonus de Longitud Oculta:</strong> <span class="points-gain">+42% multiplicador</span> (transforma 21 → 30 puntos)</li>
-            <li><strong>Activación de Bonus:</strong> Mantén la longitud de palabra oculta durante toda la ronda</li>
-            <li><strong>Pérdida de Bonus:</strong> Usar el toggle de longitud elimina el bonus solo para esa palabra específica</li>
+            <li><strong>Standard Ord Fuldførelse:</strong> <span class="points-gain">+21 point</span></li>
+            <li><strong>Skjult Længde Bonus:</strong> <span class="points-gain">+42% multiplikator</span> (transformerer 21 → 30 point)</li>
+            <li><strong>Bonus Aktivering:</strong> Hold ordlængden skjult gennem hele runden</li>
+            <li><strong>Bonus Tab:</strong> At bruge længde toggle fjerner bonussen kun for det specifikke ord</li>
         </ul>
 
-        <h3>🆘 Economía del Sistema de Ayuda:</h3>
-        <p>El sistema de ayuda sigue una estructura de costos equilibrada diseñada para nunca exceder el valor estándar de palabra:</p>
+        <h3>🆘 Hjælp System Økonomi:</h3>
+        <p>Hjælp systemet følger en afbalanceret omkostningsstruktur designet til aldrig at overstige standard ordværdien:</p>
         <ul>
-            <li><strong>Palabras de 5 letras:</strong> <span class="points-cost">-21 points</span> por primera ayuda, luego completamente gratis</li>
-            <li><strong>Palabras de 6 letras:</strong> <span class="points-cost">-10 points</span> primera ayuda, <span class="points-cost">-11 points</span> segunda ayuda, luego gratis</li>
-            <li><strong>Palabras de 7+ letras:</strong> <span class="points-cost">-10 points per help</span> (sin límite máximo)</li>
-            <li><strong>Techo de Costos:</strong> Para palabras de 5-6 letras, los costos totales de ayuda nunca exceden 21 puntos</li>
+            <li><strong>5-bogstavs ord:</strong> <span class="points-cost">-21 points</span> for første hjælp, derefter helt gratis</li>
+            <li><strong>6-bogstavs ord:</strong> <span class="points-cost">-10 points</span> første hjælp, <span class="points-cost">-11 points</span> anden hjælp, derefter gratis</li>
+            <li><strong>7+ bogstavs ord:</strong> <span class="points-cost">-10 points per help</span> (ingen maksimal grænse)</li>
+            <li><strong>Omkostningsloft:</strong> For 5-6 bogstavs ord overstiger samlede hjælpeomkostninger aldrig 21 point</li>
         </ul>
 
-        <h3>⏱️ Sistema de Bonificación por Tiempo:</h3>
+        <h3>⏱️ Timer Bonus System:</h3>
         <ul>
-            <li><strong>Bonus de Respuesta Rápida:</strong> El temporizador de 5 segundos comienza cuando se revela cada palabra</li>
-            <li><strong>Bonus Dinámico:</strong> Up to <span class="points-gain">+21 bonus points</span> por respuestas inmediatas</li>
-            <li><strong>Degradación del Bonus:</strong> El bonus disminuye linealmente durante 5 segundos, alcanzando 0 cuando expira el temporizador</li>
-            <li><strong>Parada del Bonus:</strong> El temporizador se detiene inmediatamente al usar AYUDA o hacer conjeturas incorrectas</li>
-            <li><strong>Potencial Máximo:</strong> Palabra perfecta (30 base) + bonus completo (21) = 51 puntos por palabra</li>
+            <li><strong>Hurtig Respons Bonus:</strong> 5-sekunder timer starter når hvert ord afsløres</li>
+            <li><strong>Dynamisk Bonus:</strong> Up to <span class="points-gain">+21 bonus points</span> for øjeblikkelige svar</li>
+            <li><strong>Bonus Forfald:</strong> Bonus falder lineært over 5 sekunder, når 0 når timeren udløber</li>
+            <li><strong>Bonus Stop:</strong> Timer stopper øjeblikkeligt når du bruger HJÆLP eller laver forkerte gæt</li>
+            <li><strong>Maksimalt Potentiale:</strong> Perfekt ord (30 basis) + fuld bonus (21) = 51 point per ord</li>
         </ul>
 
-        <h3>❌ Sistema de Penalizaciones:</h3>
+        <h3>❌ Straffesystem:</h3>
         <ul>
-            <li><strong>Dos Conjeturas Incorrectas:</strong> <span class="points-cost">-10 puntos de penalización</span> aplicado inmediatamente</li>
-            <li><strong>Impacto en la Racha:</strong> Cualquier conjetura incorrecta reinicia tu racha a 0</li>
-            <li><strong>Mecánica de Turnos:</strong> En multijugador, después de 2 conjeturas incorrectas, el turno pasa al siguiente jugador</li>
-            <li><strong>Aplicación Universal:</strong> La penalización se aplica tanto a modos de un solo jugador como multijugador</li>
+            <li><strong>To Forkerte Gæt:</strong> <span class="points-cost">-10 point straf</span> anvendt øjeblikkeligt</li>
+            <li><strong>Streak Påvirkning:</strong> Ethvert forkert gæt nulstiller din streak til 0</li>
+            <li><strong>Turn Mekanik:</strong> I multiplayer, efter 2 forkerte gæt, går turen til næste spiller</li>
+            <li><strong>Universel Anvendelse:</strong> Straffen gælder både for enkelt-spiller og multiplayer tilstande</li>
         </ul>
 
-        <h3>🔄 Consecuencias de las Acciones:</h3>
+        <h3>🔄 Handlingskonsekvenser:</h3>
         <ul>
-            <li><strong>Saltar:</strong> Preserva la racha, no otorga puntos, cuenta hacia la finalización de palabras</li>
-            <li><strong>Ayuda:</strong> Garantiza progreso, cuesta puntos, cuenta hacia la finalización de palabras</li>
-            <li><strong>Conjeturar:</strong> Riesgo/recompensa - el éxito construye racha y anota puntos, el fracaso reinicia la racha</li>
+            <li><strong>Spring over:</strong> Bevarer stribe, giver ingen point, tæller mod ordfuldførelse</li>
+            <li><strong>Hjælp:</strong> Garanterer fremskridt, koster point, tæller mod ordfuldførelse</li>
+            <li><strong>Gæt:</strong> Risiko/belønning - succes opbygger stribe og scorer point, fiasko nulstiller stribe</li>
         </ul>
 
-        <h2>🎮 CONTROLES DEL JUEGO</h2>
-        <p>Domina estos controles esenciales para navegar por el juego estratégico de BIPARDY:</p>
+        <h2>🎮 SPILKONTROLLER</h2>
+        <p>Mestre disse væsentlige kontroller for at navigere gennem BIPARDYs strategiske gameplay:</p>
         <ul>
-            <li><strong><span class="control-help">HELP</span>:</strong> Revela la siguiente letra en secuencia. El costo varía según la longitud de la palabra (ver Economía del Sistema de Ayuda arriba). Garantiza progreso pero reduce tu puntuación.</li>
-            <li><strong><span class="control-skip">SKIP</span>:</strong> Omite la palabra actual por completo. Preserva tu valiosa racha, otorga cero puntos, y cuenta como una palabra completada hacia tu objetivo.</li>
-            <li><strong><span class="control-submit">SUBMIT</span>:</strong> Envía tu conjetura de palabra completada para validación. Solo se activa cuando has llenado todas las letras faltantes.</li>
-            <li><strong><span class="control-toggle">Alternador de Longitud de Juego</span>:</strong> Elige entre juegos de 12 o 24 palabras (longitudes mnemotécnicas estándar BIP-39). Configúralo antes de comenzar tu juego.</li>
-            <li><strong><span class="control-toggle">Alternador de Longitud de Palabra</span>:</strong> Revela u oculta la longitud total de la palabra. Te muestra cuántas letras contiene la palabra completa, pero elimina permanentemente el bono del 42% para esa palabra específica.</li>
+            <li><strong><span class="control-help">HELP</span>:</strong> Afslører det næste bogstav i sekvens. Omkostningerne varierer efter ordlængde (se Hjælp System Økonomi ovenfor). Garanterer fremskridt men reducerer din score.</li>
+            <li><strong><span class="control-skip">SKIP</span>:</strong> Springer helt over det nuværende ord. Bevarer din værdifulde stribe, tildeler nul point, og tæller som et fuldført ord mod dit målmål.</li>
+            <li><strong><span class="control-submit">SUBMIT</span>:</strong> Indsend dit færdige ord gæt til validering. Bliver kun aktiv når du har udfyldt alle de manglende bogstaver.</li>
+            <li><strong><span class="control-toggle">Spil Længde Omskifter</span>:</strong> Vælg mellem 12 eller 24 ord spil (standard BIP-39 mnemoniske længder). Indstil før du starter dit spil.</li>
+            <li><strong><span class="control-toggle">Ord Længde Omskifter</span>:</strong> Afslør eller skjul den samlede ordlængde. Viser dig hvor mange bogstaver det komplette ord indeholder, men fjerner permanent 42% bonussen for det specifikke ord.</li>
         </ul>
 
         <h3>📊 Player Statistics:</h3>
         <ul>
-            <li><strong>Puntuación:</strong> Tus puntos totales ganados de completaciones correctas de palabras, menos todos los costos de ayuda y penalizaciones por conjeturas incorrectas. Este es el componente base de tu puntuación combinada.</li>
-            <li><strong>Racha:</strong> Tus conjeturas correctas consecutivas actuales. Se reinicia a 0 con cualquier respuesta incorrecta, pero saltear preserva tu racha. Crítico para puntuaciones combinadas multijugador.</li>
-            <li><strong>Palabras:</strong> Conteo total de palabras que has manejado - incluye conjeturas exitosas, palabras completadas con ayuda, y palabras saltadas. Excluye palabras donde fallaste con 2 conjeturas incorrectas.</li>
+            <li><strong>Score:</strong> Dine samlede point optjent fra korrekte ord fuldførelser, minus alle hjælpeomkostninger og forkerte-gæt straffe. Dette er basiskomponenten af din kombinerede score.</li>
+            <li><strong>Stribe:</strong> Dine nuværende på hinanden følgende korrekte gæt. Nulstilles til 0 ved ethvert forkert svar, men spring over bevarer din stribe. Kritisk for multiplayer kombinerede scores.</li>
+            <li><strong>Ord:</strong> Samlet antal ord du har håndteret - inkluderer succesfulde gæt, hjælp-fuldførte ord, og oversprungne ord. Udelukker ord hvor du fejlede med 2 forkerte gæt.</li>
         </ul>
 
-        <h2>👥 MECÁNICAS MULTIJUGADOR</h2>
-        <p>El modo multijugador de BIPARDY transforma el juego en una batalla estratégica donde el tiempo, la gestión de riesgos y la optimización de puntuaciones colisionan.</p>
+        <h2>👥 MULTIPLAYER MEKANIKKER</h2>
+        <p>BIPARDYs multiplayer tilstand forvandler spillet til en strategisk kamp hvor timing, risikostyring og scoreoptimering kolliderer.</p>
         
-        <h3>Estructura de Turnos:</h3>
+        <h3>Turn Struktur:</h3>
         <ul>
-            <li><strong>Orden de Turnos:</strong> Los jugadores alternan en secuencia, cada uno obteniendo su propia palabra</li>
-            <li><strong>Límite de Intentos:</strong> Cada jugador obtiene exactamente 2 conjeturas incorrectas por palabra</li>
-            <li><strong>Finalización de Turno:</strong> Después de 2 conjeturas incorrectas, el jugador recibe la penalización y el turno pasa inmediatamente</li>
-            <li><strong>Progreso Independiente:</strong> Las palabras, puntuación y racha de cada jugador se rastrean por separado</li>
+            <li><strong>Turn Rækkefølge:</strong> Spillere skiftes i rækkefølge, hver får sit eget ord</li>
+            <li><strong>Forsøg Grænse:</strong> Hver spiller får præcis 2 forkerte gæt per ord</li>
+            <li><strong>Turn Afslutning:</strong> Efter 2 forkerte gæt, modtager spilleren straffen og turen går øjeblikkeligt videre</li>
+            <li><strong>Uafhængig Fremgang:</strong> Hver spillers ord, score og stribe spores separat</li>
         </ul>
         
-        <h3>Condiciones de Fin de Juego:</h3>
+        <h3>Spil Slut Betingelser:</h3>
         <ul>
-            <li><strong>Disparador:</strong> El juego termina inmediatamente cuando CUALQUIER jugador alcanza el conteo de palabras objetivo (12 o 24)</li>
-            <li><strong>Equidad:</strong> Todos los jugadores obtienen igual oportunidad - nadie puede ser "cortado" a mitad de turno</li>
-            <li><strong>Cálculo Final:</strong> Las puntuaciones combinadas se calculan para todos los jugadores simultáneamente</li>
+            <li><strong>Udløser:</strong> Spillet slutter øjeblikkeligt når ENHVER spiller når målord antallet (12 eller 24)</li>
+            <li><strong>Retfærdighed:</strong> Alle spillere får lige muligheder - ingen kan blive "afskåret" midt i turen</li>
+            <li><strong>Endelig Beregning:</strong> Kombinerede scores beregnes for alle spillere samtidigt</li>
         </ul>
 
-        <h2>🏆 DETERMINACIÓN DE VICTORIA</h2>
-        <p>Aquí es donde BIPARDY se vuelve verdaderamente estratégico: <strong>¡el ganador se determina por PUNTUACIÓN COMBINADA, no por quién termina primero!</strong> Este sistema de puntuación revolucionario significa que alcanzar el conteo de palabras objetivo primero podría no garantizar la victoria.</p>
+        <h2>🏆 SEJRS BESTEMMELSE</h2>
+        <p>Her bliver BIPARDY virkelig strategisk: <strong>vinderen bestemmes af KOMBINERET SCORE, ikke hvem der bliver færdig først!</strong> Dette revolutionære scoringssystem betyder at nå målord antallet først måske ikke garanterer sejr.</p>
         
-        <h3>🧮 Fórmula de Puntuación Combinada Mejorada:</h3>
-        <p><strong>Puntuación Combinada = Puntuación + Racha + Palabras</strong> (concatenado como un solo número)</p>
-        <p><strong>Regla de Omisión de Ceros:</strong> Cualquier componente con valor 0 se excluye automáticamente de la concatenación para prevenir inflación artificial.</p>
+        <h3>🧮 Forbedret Kombineret Score Formel:</h3>
+        <p><strong>Kombineret Score = Score + Stribe + Ord</strong> (sammenkædet som et enkelt nummer)</p>
+        <p><strong>Nul Udeladelse Regel:</strong> Enhver komponent med værdi 0 udelukkes automatisk fra sammenkædning for at forhindre kunstig oppustning.</p>
         
         <div class="example-box">
-<strong>Ejemplos de Puntuación Combinada Mejorada:</strong><br>
-🔵 Jugador 1: 540 puntos, 2 racha, 24 palabras = <strong>540,224</strong><br>
-🔴 Jugador 2: 176 puntos, 19 racha, 23 palabras = <strong>1,761,923</strong><br>
-🎉 <strong>Ganador: ¡Jugador 2!</strong> (Valor concatenado más alto)<br><br>
+<strong>Forbedrede Kombinerede Score Eksempler:</strong><br>
+🔵 Spiller 1: 540 point, 2 stribe, 24 ord = <strong>540,224</strong><br>
+🔴 Spiller 2: 176 point, 19 stribe, 23 ord = <strong>1,761,923</strong><br>
+🎉 <strong>Vinder: Spiller 2!</strong> (Højere sammenkædet værdi)<br><br>
 
-<strong>Ejemplos de Omisión de Ceros:</strong><br>
-211 puntos, 0 racha, 24 palabras = <strong>21,124</strong> (racha cero omitida)<br>
-0 puntos, 15 racha, 12 palabras = <strong>1,512</strong> (puntos cero omitidos)<br>
-0 puntos, 0 racha, 24 palabras = <strong>24</strong> (ambos ceros omitidos)<br>
-🔴 Jugador 2: 176 puntos, 19 racha, 23 palabras = <strong>1,761,923</strong><br>
-🎉 <strong>Ganador: ¡Jugador 2!</strong> (A pesar de tener menos puntos y no terminar primero)<br><br>
+<strong>Nul Udeladelse Eksempler:</strong><br>
+211 point, 0 stribe, 24 ord = <strong>21,124</strong> (nul stribe udeladt)<br>
+0 point, 15 stribe, 12 ord = <strong>1,512</strong> (nul point udeladt)<br>
+0 point, 0 stribe, 24 ord = <strong>24</strong> (begge nuller udeladt)<br>
+🔴 Spiller 2: 176 point, 19 stribe, 23 ord = <strong>1,761,923</strong><br>
+🎉 <strong>Vinder: Spiller 2!</strong> (På trods af færre point og ikke at blive færdig først)<br><br>
 
-<strong>Ejemplos de Casos Límite:</strong><br>
-211 puntos, 0 racha, 24 palabras = <strong>21,124</strong> (racha cero omitida)<br>
-0 puntos, 0 racha, 24 palabras = <strong>24</strong> (ambos ceros omitidos)<br>
-0 puntos, 0 racha, 0 palabras = <strong>0</strong> (estado cero completo)
+<strong>Grænsetilfælde Eksempler:</strong><br>
+211 point, 0 stribe, 24 ord = <strong>21,124</strong> (nul stribe udeladt)<br>
+0 point, 0 stribe, 24 ord = <strong>24</strong> (begge nuller udeladt)<br>
+0 point, 0 stribe, 0 ord = <strong>0</strong> (komplet nul tilstand)
         </div>
         
-        <h3>🎯 Implicaciones Estratégicas:</h3>
+        <h3>🎯 Strategiske Implikationer:</h3>
         <ul>
-            <li><strong>Prioridad de Racha:</strong> Las rachas altas pueden superar dramáticamente los totales de puntos brutos</li>
-            <li><strong>Paradoja de la Línea de Meta:</strong> Apresurarse al conteo de palabras objetivo podría costarte la victoria</li>
-            <li><strong>Gestión de Riesgos:</strong> A veces saltear es mejor que arriesgar tu racha</li>
-            <li><strong>Help vs. Conjeturar:</strong> El uso estratégico de ayuda puede preservar rachas para puntuaciones combinadas masivas</li>
+            <li><strong>Stribe Prioritet:</strong> Høje striber kan dramatisk opveje rå point totaler</li>
+            <li><strong>Målstreg Paradoks:</strong> At skynde sig til målord antallet kan koste dig sejren</li>
+            <li><strong>Risiko Styring:</strong> Nogle gange er det bedre at springe over end at risikere din stribe</li>
+            <li><strong>Help vs. Gæt:</strong> Strategisk hjælp brug kan bevare striber for massive kombinerede scores</li>
         </ul>
 
-        <h2>🧠 PROFUNDIDAD ESTRATÉGICA</h2>
-        <p>BIPARDY recompensa el pensamiento estratégico sobre el conocimiento puro de palabras. Entender las matemáticas subyacentes del juego y los cálculos de riesgo-recompensa es esencial para el juego avanzado.</p>
+        <h2>🧠 STRATEGISK DYBDE</h2>
+        <p>BIPARDY belønner strategisk tænkning frem for ren ordviden. At forstå spillets underliggende matematik og risiko-belønning beregninger er væsentligt for avanceret spil.</p>
         
-        <h3>🎭 Los Tres Caminos:</h3>
+        <h3>🎭 De Tre Veje:</h3>
         <ul>
-            <li><strong>🎯 El Adivinador:</strong> Alto riesgo, alta recompensa. Perfecto para construir rachas masivas pero vulnerable a reinicios catastróficos.</li>
-            <li><strong>🛡️ El Calculador:</strong> Uso estratégico de ayuda para garantizar progreso mientras se gestionan costos. Más seguro pero potencialmente con techo más bajo.</li>
-            <li><strong>⚡ El Saltador:</strong> Preserva rachas despiadadamente, sacrificando puntos de palabras individuales por potencial de puntuación combinada enorme.</li>
+            <li><strong>🎯 Gætteren:</strong> Høj risiko, høj belønning. Perfekt til at bygge massive striber men sårbar over for katastrofale nulstillinger.</li>
+            <li><strong>🛡️ Kalkulatoren:</strong> Strategisk hjælp brug for at garantere fremskridt mens omkostninger styres. Sikrere men potentielt lavere loft.</li>
+            <li><strong>⚡ Springeren:</strong> Bevarer striber nådesløst, ofrer individuelle ord point for enormt kombineret score potentiale.</li>
         </ul>
         
-        <h3>📐 Consideraciones Matemáticas:</h3>
+        <h3>📐 Matematiske Overvejelser:</h3>
         <ul>
-            <li><strong>Bonus de Longitud Oculta:</strong> El multiplicador del 42% (9 puntos extra) puede impactar significativamente tu puntuación final cuando se acumula</li>
-            <li><strong>Análisis de Costos de Ayuda:</strong> Para palabras de 5 letras, pagar 21 puntos por finalización garantizada podría valer la pena para preservar una racha valiosa</li>
-            <li><strong>Evitación de Penalizaciones:</strong> La penalización de 10 puntos por conjetura incorrecta más la pérdida de racha crea un costo de oportunidad masivo</li>
-            <li><strong>Valor Exponencial de Racha:</strong> En multijugador, cada punto de racha se vuelve exponencialmente más valioso en el cálculo de puntuación combinada</li>
+            <li><strong>Skjult Længde Bonus:</strong> Den 42% multiplikator (9 ekstra point) kan betydeligt påvirke din endelige score når den akkumuleres</li>
+            <li><strong>Hjælp Omkostnings Analyse:</strong> For 5-bogstav ord, kan det være værd at betale 21 point for garanteret fuldførelse for at bevare en værdifuld stribe</li>
+            <li><strong>Straf Undgåelse:</strong> Den 10-point forkert-gæt straf plus stribe tab skaber massive mulighedsomkostninger</li>
+            <li><strong>Stribe Eksponentiel Værdi:</strong> I multiplayer bliver hvert stribe punkt eksponentielt mere værdifuldt i den kombinerede score beregning</li>
         </ul>
         
-        <h3>⚔️ Psicología Multijugador:</h3>
+        <h3>⚔️ Multiplayer Psykologi:</h3>
         <ul>
-            <li><strong>Ilusión de la Línea de Meta:</strong> Otros jugadores que se apresuren al conteo de palabras objetivo podrían entregarte la victoria a través de puntuaciones combinadas pobres</li>
-            <li><strong>Gestión de Presión:</strong> Saber cuándo tomar riesgos calculados vs. jugar a lo seguro basándose en el progreso de otros jugadores</li>
-            <li><strong>Asignación de Recursos:</strong> Tus puntos son limitados - gástalos sabiamente en ayuda cuando realmente importa</li>
+            <li><strong>Målstreg Illusion:</strong> Andre spillere der skynder sig til målord antallet kan give dig sejren gennem dårlige kombinerede scores</li>
+            <li><strong>Pres Styring:</strong> At vide hvornår man skal tage beregnede risici vs. spille sikkert baseret på andre spilleres fremgang</li>
+            <li><strong>Ressource Allokering:</strong> Dine point er begrænsede - brug dem klogt på hjælp når det virkelig betyder noget</li>
         </ul>
 
-        <h2>🔐 LA LISTA DE PALABRAS BIP-39</h2>
-        <p>BIPARDY se basa en la legendaria lista de palabras BIP-39 - las mismas 2048 palabras que aseguran miles de millones de dólares en Bitcoin en todo el mundo. Hemos filtrado esta lista para incluir solo palabras con 5 o más letras, creando una colección curada de aproximadamente <strong>1626 palabras desafiantes</strong>.</p>
+        <h2>🔐 BIP-39 ORDLISTEN</h2>
+        <p>BIPARDY trækker fra den legendariske BIP-39 ordliste - de samme 2048 ord der sikrer milliarder af dollars i Bitcoin verden over. Vi har filtreret denne liste til kun at inkludere ord med 5 eller flere bogstaver, og skabt en kurateret samling af cirka <strong>1626 udfordrende ord</strong>.</p>
         
-        <p>Cada palabra que encuentras podría teóricamente ser parte de la frase semilla de la billetera Bitcoin real de alguien. ¡No solo estás jugando un juego - estás dominando el vocabulario de las finanzas digitales! 💎</p>
+        <p>Hvert ord du støder på kunne teoretisk være en del af nogens faktiske Bitcoin wallet seed sætning. Du spiller ikke bare et spil - du mestrer ordforrådet for digital økonomi! 💎</p>
         
 
         <div onclick="openZapPopup()" style="text-align: center; margin: 40px 0; padding: 30px; background: rgba(72, 219, 251, 0.1); border: 1px solid rgba(72, 219, 251, 0.3); border-radius: 15px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(72, 219, 251, 0.2)'; this.style.transform='scale(1.02)'" onmouseout="this.style.background='rgba(72, 219, 251, 0.1)'; this.style.transform='scale(1)'">

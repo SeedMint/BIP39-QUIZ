@@ -1,3 +1,20 @@
+<!--
+ * Bipardy - BIP39 Word Search Game
+ * Copyright (C) 2025 BIPARDY
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -225,27 +242,29 @@
         }
 
         .jump-to-bottom {
-            position: fixed;
-            bottom: 100px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #ff6b6b 50%, #feca57 100%);
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            text-decoration: none;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
+            position: fixed !important;
+            bottom: 100px !important;
+            right: 30px !important;
+            width: 60px !important;
+            height: 60px !important;
+            background: linear-gradient(145deg, #ff6b6b, #feca57) !important;
+            border: none !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            z-index: 99999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            color: white !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            box-shadow: 
+                0 16px 50px rgba(255, 107, 107, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.2) !important;
+            transition: all 0.3s ease !important;
         }
 
         .jump-to-bottom.show {
@@ -256,35 +275,42 @@
 
         .jump-to-bottom:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(135deg, #764ba2 0%, #ff8c94 50%, #ffeaa7 100%);
+            box-shadow: 
+                0 24px 70px rgba(255, 107, 107, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+            background: linear-gradient(145deg, #ff7b7b, #ffd467);
         }
 
         .jump-to-bottom:active {
             transform: translateY(-2px);
+            box-shadow: 
+                0 12px 40px rgba(255, 107, 107, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.3);
         }
 
-        /* Arrow down animation */
+        /* Pulsing down symbol */
         .jump-to-bottom::before {
-            content: '';
-            width: 12px;
-            height: 12px;
-            border-right: 2px solid white;
-            border-bottom: 2px solid white;
-            transform: rotate(45deg);
-            margin-top: -4px;
-            animation: bounce 2s infinite;
+            content: '⬇';
+            font-size: 28px;
+            animation: pulse 2s infinite;
         }
 
-        @keyframes bounce {
+        @keyframes pulse {
             0%, 20%, 50%, 80%, 100% {
-                transform: rotate(45deg) translateY(0);
+                transform: translateY(0);
+                opacity: 1;
             }
             40% {
-                transform: rotate(45deg) translateY(-5px);
+                transform: translateY(3px);
+                opacity: 0.8;
             }
             60% {
-                transform: rotate(45deg) translateY(-2px);
+                transform: translateY(1px);
+                opacity: 0.9;
             }
         }
 
@@ -295,7 +321,7 @@
 
         .play-button {
             display: inline-block;
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            background: linear-gradient(145deg, #ff6b6b, #feca57);
             color: #0f0c29;
             text-decoration: none;
             padding: 15px 40px;
@@ -304,12 +330,30 @@
             font-size: 1.2rem;
             transition: all 0.3s;
             text-transform: uppercase;
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+            box-shadow: 
+                0 10px 25px rgba(255, 107, 107, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.2);
         }
 
         .play-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+            background: linear-gradient(145deg, #ff7b7b, #ffd467);
+            box-shadow: 
+                0 15px 35px rgba(255, 107, 107, 0.4),
+                0 6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .play-button:active {
+            transform: translateY(-1px);
+            box-shadow: 
+                0 8px 20px rgba(255, 107, 107, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.4);
         }
 
         @media (max-width: 600px) {
@@ -329,6 +373,10 @@
     </style>
 </head>
 <body>
+    <!-- Jump to bottom button -->
+    <button class="jump-to-bottom" id="jumpToBottomBtn" onclick="jumpToBottom()" title="Jump to bottom">
+    </button>
+    
     <div class="container">
         <div class="language-switcher">
             <div class="language-dropdown">
@@ -343,12 +391,20 @@
                     <a href="readme-fr.html">🇫🇷 Français</a>
                     <a href="readme-it.html">🇮🇹 Italiano</a>
                     <a href="readme-ja.html">🇯🇵 日本語</a>
+                    <a href="readme-da.html">🇩🇰 Dansk</a>
                 </div>
             </div>
         </div>
         
 
         <h1>🎲 BIPARDY</h1>
+        
+        <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(45deg, rgba(255, 107, 107, 0.15), rgba(254, 202, 87, 0.15)); border: 2px solid rgba(255, 107, 107, 0.3); border-radius: 15px; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 12px 35px rgba(255, 107, 107, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.2)'">
+            <a href="https://github.com/SeedMint/BIP39-QUIZ" style="color: #feca57; text-decoration: none; font-weight: bold; font-size: 1.1rem;">
+                🔗 Open Source Code on GitHub 🔗
+            </a>
+        </div>
+        
         <p>Step into the electrifying world of BIPARDY, where Bitcoin meets wordplay! This isn't just another word game - it's a strategic battle of wits using the legendary BIP-39 wordlist that secures billions in digital assets.</p>
         
         <p>Every word you encounter could be part of someone's Bitcoin wallet seed phrase. Can you decode them all while building massive scoring streaks? Welcome to the most crypto-native word game ever created! 🚀</p>
@@ -384,6 +440,15 @@
             <li><strong>6-letter words:</strong> <span class="points-cost">-10 points</span> first help, <span class="points-cost">-11 points</span> second help, then free</li>
             <li><strong>7+ letter words:</strong> <span class="points-cost">-10 points per help</span> (no maximum limit)</li>
             <li><strong>Cost Ceiling:</strong> For 5-6 letter words, total help costs never exceed 21 points</li>
+        </ul>
+
+        <h3>⏱️ Timer Bonus System:</h3>
+        <ul>
+            <li><strong>Quick Response Bonus:</strong> 5-second timer starts when each word is revealed</li>
+            <li><strong>Dynamic Bonus:</strong> Up to <span class="points-gain">+21 bonus points</span> for immediate answers</li>
+            <li><strong>Bonus Decay:</strong> Bonus decreases linearly over 5 seconds, reaching 0 when timer expires</li>
+            <li><strong>Bonus Stoppage:</strong> Timer stops immediately when using HELP or making wrong guesses</li>
+            <li><strong>Maximum Potential:</strong> Perfect word (30 base) + full bonus (21) = 51 points per word</li>
         </ul>
 
         <h3>❌ Penalty System:</h3>
@@ -439,13 +504,20 @@
         <h2>🏆 VICTORY DETERMINATION</h2>
         <p>Here's where BIPARDY gets truly strategic: <strong>the winner is determined by COMBINED SCORE, not who finishes first!</strong> This revolutionary scoring system means reaching the target word count first might not guarantee victory.</p>
         
-        <h3>🧮 Combined Score Formula:</h3>
+        <h3>🧮 Enhanced Combined Score Formula:</h3>
         <p><strong>Combined Score = Score + Streak + Words</strong> (concatenated as a single number)</p>
-        <p><em>Zero values are automatically excluded to prevent artificial inflation.</em></p>
+        <p><strong>Zero Omission Rule:</strong> Any component with value 0 is automatically excluded from concatenation to prevent artificial inflation.</p>
         
         <div class="example-box">
-<strong>Example Battle:</strong><br>
+<strong>Enhanced Combined Score Examples:</strong><br>
 🔵 Player 1: 540 points, 2 streak, 24 words = <strong>540,224</strong><br>
+🔴 Player 2: 176 points, 19 streak, 23 words = <strong>1,761,923</strong><br>
+🎉 <strong>Winner: Player 2!</strong> (Higher concatenated value)<br><br>
+
+<strong>Zero Omission Examples:</strong><br>
+211 points, 0 streak, 24 words = <strong>21,124</strong> (zero streak omitted)<br>
+0 points, 15 streak, 12 words = <strong>1,512</strong> (zero points omitted)<br>
+0 points, 0 streak, 24 words = <strong>24</strong> (both zeros omitted)<br>
 🔴 Player 2: 176 points, 19 streak, 23 words = <strong>1,761,923</strong><br>
 🎉 <strong>Winner: Player 2!</strong> (Despite having fewer points and not finishing first)<br><br>
 
@@ -498,7 +570,7 @@
             <h3 style="color: #feca57; margin-bottom: 20px; font-size: 1.8rem;">⚡️ Zap me on NOSTR ⚡️</h3>
             <p style="color: #feca57; margin-bottom: 20px; font-size: 1.2rem;">🧡 V4V 🧡</p>
             <div style="background: white; border-radius: 15px; padding: 20px; margin: 0 auto; max-width: 460px; display: flex; justify-content: center;">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203 203" style="width: 280px; height: 280px; max-width: 100%; border-radius: 10px;" title="Scan to zap snick@primal.net">
+                <svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 203 203" style="width: 280px; height: 280px; max-width: 100%; border-radius: 10px;" title="Scan to zap snick@primal.net">
                   <defs>
                     <linearGradient id="lightningGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stop-color="#FFD700"/>
@@ -508,7 +580,7 @@
                   </defs>
                   <rect width="203" height="203" fill="white"/>
                   <g fill="black">
-                    <path d="M 0,0 l 7,0 0,7 -7,0 z M 7,0 l 7,0 0,7 -7,0 z M 14,0 l 7,0 0,7 -7,0 z M 21,0 l 7,0 0,7 -7,0 z M 28,0 l 7,0 0,7 -7,0 z M 35,0 l 7,0 0,7 -7,0 z M 42,0 l 7,0 0,7 -7,0 z M 77,0 l 7,0 0,7 -7,0 z M 98,0 l 7,0 0,7 -7,0 z M 105,0 l 7,0 0,7 -7,0 z M 112,0 l 7,0 0,7 -7,0 z M 119,0 l 7,0 0,7 -7,0 z M 126,0 l 7,0 0,7 -7,0 z M 133,0 l 7,0 0,7 -7,0 z M 140,0 l 7,0 0,7 -7,0 z M 154,0 l 7,0 0,7 -7,0 z M 161,0 l 7,0 0,7 -7,0 z M 168,0 l 7,0 0,7 -7,0 z M 175,0 l 7,0 0,7 -7,0 z M 182,0 l 7,0 0,7 -7,0 z M 189,0 l 7,0 0,7 -7,0 z M 196,0 l 7,0 0,7 -7,0 z M 0,7 l 7,0 0,7 -7,0 z M 42,7 l 7,0 0,7 -7,0 z M 56,7 l 7,0 0,7 -7,0 z M 63,7 l 7,0 0,7 -7,0 z M 77,7 l 7,0 0,7 -7,0 z M 84,7 l 7,0 0,7 -7,0 z M 98,7 l 7,0 0,7 -7,0 z M 140,7 l 7,0 0,7 -7,0 z M 161,7 l 7,0 0,7 -7,0 z M 196,7 l 7,0 0,7 -7,0 z M 0,14 l 7,0 0,7 -7,0 z M 14,14 l 7,0 0,7 -7,0 z M 21,14 l 7,0 0,7 -7,0 z M 28,14 l 7,0 0,7 -7,0 z M 42,14 l 7,0 0,7 -7,0 z M 63,14 l 7,0 0,7 -7,0 z M 77,14 l 7,0 0,7 -7,0 z M 84,14 l 7,0 0,7 -7,0 z M 98,14 l 7,0 0,7 -7,0 z M 112,14 l 7,0 0,7 -7,0 z M 119,14 l 7,0 0,7 -7,0 z M 126,14 l 7,0 0,7 -7,0 z M 140,14 l 7,0 0,7 -7,0 z M 154,14 l 7,0 0,7 -7,0 z M 161,14 l 7,0 0,7 -7,0 z M 168,14 l 7,0 0,7 -7,0 z M 175,14 l 7,0 0,7 -7,0 z M 196,14 l 7,0 0,7 -7,0 z M 0,21 l 7,0 0,7 -7,0 z M 14,21 l 7,0 0,7 -7,0 z M 21,21 l 7,0 0,7 -7,0 z M 28,21 l 7,0 0,7 -7,0 z M 42,21 l 7,0 0,7 -7,0 z M 56,21 l 7,0 0,7 -7,0 z M 63,21 l 7,0 0,7 -7,0 z M 77,21 l 7,0 0,7 -7,0 z M 84,21 l 7,0 0,7 -7,0 z M 98,21 l 7,0 0,7 -7,0 z M 112,21 l 7,0 0,7 -7,0 z M 119,21 l 7,0 0,7 -7,0 z M 126,21 l 7,0 0,7 -7,0 z M 140,21 l 7,0 0,7 -7,0 z M 154,21 l 7,0 0,7 -7,0 z M 161,21 l 7,0 0,7 -7,0 z M 168,21 l 7,0 0,7 -7,0 z M 175,21 l 7,0 0,7 -7,0 z M 196,21 l 7,0 0,7 -7,0 z M 0,28 l 7,0 0,7 -7,0 z M 14,28 l 7,0 0,7 -7,0 z M 21,28 l 7,0 0,7 -7,0 z M 28,28 l 7,0 0,7 -7,0 z M 42,28 l 7,0 0,7 -7,0 z M 70,28 l 7,0 0,7 -7,0 z M 98,28 l 7,0 0,7 -7,0 z M 154,28 l 7,0 0,7 -7,0 z M 161,28 l 7,0 0,7 -7,0 z M 168,28 l 7,0 0,7 -7,0 z M 175,28 l 7,0 0,7 -7,0 z M 196,28 l 7,0 0,7 -7,0 z M 0,35 l 7,0 0,7 -7,0 z M 42,35 l 7,0 0,7 -7,0 z M 56,35 l 7,0 0,7 -7,0 z M 63,35 l 7,0 0,7 -7,0 z M 70,35 l 7,0 0,7 -7,0 z M 77,35 l 7,0 0,7 -7,0 z M 84,35 l 7,0 0,7 -7,0 z M 91,35 l 7,0 0,7 -7,0 z M 98,35 l 7,0 0,7 -7,0 z M 105,35 l 7,0 0,7 -7,0 z M 119,35 l 7,0 0,7 -7,0 z M 133,35 l 7,0 0,7 -7,0 z M 154,35 l 7,0 0,7 -7,0 z M 196,35 l 7,0 0,7 -7,0 z M 0,42 l 7,0 0,7 -7,0 z M 7,42 l 7,0 0,7 -7,0 z M 14,42 l 7,0 0,7 -7,0 z M 21,42 l 7,0 0,7 -7,0 z M 28,42 l 7,0 0,7 -7,0 z M 35,42 l 7,0 0,7 -7,0 z M 42,42 l 7,0 0,7 -7,0 z M 56,42 l 7,0 0,7 -7,0 z M 70,42 l 7,0 0,7 -7,0 z M 84,42 l 7,0 0,7 -7,0 z M 91,42 l 7,0 0,7 -7,0 z M 98,42 l 7,0 0,7 -7,0 z M 105,42 l 7,0 0,7 -7,0 z M 112,42 l 7,0 0,7 -7,0 z M 126,42 l 7,0 0,7 -7,0 z M 140,42 l 7,0 0,7 -7,0 z M 154,42 l 7,0 0,7 -7,0 z M 161,42 l 7,0 0,7 -7,0 z M 168,42 l 7,0 0,7 -7,0 z M 175,42 l 7,0 0,7 -7,0 z M 182,42 l 7,0 0,7 -7,0 z M 189,42 l 7,0 0,7 -7,0 z M 196,42 l 7,0 0,7 -7,0 z M 70,49 l 7,0 0,7 -7,0 z M 0,56 l 7,0 0,7 -7,0 z M 7,56 l 7,0 0,7 -7,0 z M 14,56 l 7,0 0,7 -7,0 z M 21,56 l 7,0 0,7 -7,0 z M 28,56 l 7,0 0,7 -7,0 z M 42,56 l 7,0 0,7 -7,0 z M 49,56 l 7,0 0,7 -7,0 z M 56,56 l 7,0 0,7 -7,0 z M 63,56 l 7,0 0,7 -7,0 z M 77,56 l 7,0 0,7 -7,0 z M 91,56 l 7,0 0,7 -7,0 z M 105,56 l 7,0 0,7 -7,0 z M 119,56 l 7,0 0,7 -7,0 z M 133,56 l 7,0 0,7 -7,0 z M 35,63 l 7,0 0,7 -7,0 z M 63,63 l 7,0 0,7 -7,0 z M 70,63 l 7,0 0,7 -7,0 z M 112,63 l 7,0 0,7 -7,0 z M 119,63 l 7,0 0,7 -7,0 z M 140,63 l 7,0 0,7 -7,0 z M 0,70 l 7,0 0,7 -7,0 z M 7,70 l 7,0 0,7 -7,0 z M 14,70 l 7,0 0,7 -7,0 z M 35,70 l 7,0 0,7 -7,0 z M 42,70 l 7,0 0,7 -7,0 z M 56,70 l 7,0 0,7 -7,0 z M 63,70 l 7,0 0,7 -7,0 z M 70,70 l 7,0 0,7 -7,0 z M 77,70 l 7,0 0,7 -7,0 z M 84,70 l 7,0 0,7 -7,0 z M 98,70 l 7,0 0,7 -7,0 z M 133,70 l 7,0 0,7 -7,0 z M 21,77 l 7,0 0,7 -7,0 z M 35,77 l 7,0 0,7 -7,0 z M 70,77 l 7,0 0,7 -7,0 z M 91,77 l 7,0 0,7 -7,0 z M 105,77 l 7,0 0,7 -7,0 z M 119,77 l 7,0 0,7 -7,0 z M 126,77 l 7,0 0,7 -7,0 z M 133,77 l 7,0 0,7 -7,0 z M 140,77 l 7,0 0,7 -7,0 z M 7,84 l 7,0 0,7 -7,0 z M 14,84 l 7,0 0,7 -7,0 z M 21,84 l 7,0 0,7 -7,0 z M 28,84 l 7,0 0,7 -7,0 z M 35,84 l 7,0 0,7 -7,0 z M 42,84 l 7,0 0,7 -7,0 z M 49,84 l 7,0 0,7 -7,0 z M 70,84 l 7,0 0,7 -7,0 z M 77,84 l 7,0 0,7 -7,0 z M 98,84 l 7,0 0,7 -7,0 z M 105,84 l 7,0 0,7 -7,0 z M 56,91 l 7,0 0,7 -7,0 z M 63,91 l 7,0 0,7 -7,0 z M 98,91 l 7,0 0,7 -7,0 z M 112,91 l 7,0 0,7 -7,0 z M 133,91 l 7,0 0,7 -7,0 z M 140,91 l 7,0 0,7 -7,0 z M 0,98 l 7,0 0,7 -7,0 z M 7,98 l 7,0 0,7 -7,0 z M 14,98 l 7,0 0,7 -7,0 z M 21,98 l 7,0 0,7 -7,0 z M 28,98 l 7,0 0,7 -7,0 z M 35,98 l 7,0 0,7 -7,0 z M 42,98 l 7,0 0,7 -7,0 z M 56,98 l 7,0 0,7 -7,0 z M 70,98 l 7,0 0,7 -7,0 z M 84,98 l 7,0 0,7 -7,0 z M 91,98 l 7,0 0,7 -7,0 z M 119,98 l 7,0 0,7 -7,0 z M 126,98 l 7,0 0,7 -7,0 z M 133,98 l 7,0 0,7 -7,0 z M 0,105 l 7,0 0,7 -7,0 z M 42,105 l 7,0 0,7 -7,0 z M 70,105 l 7,0 0,7 -7,0 z M 84,105 l 7,0 0,7 -7,0 z M 91,105 l 7,0 0,7 -7,0 z M 105,105 l 7,0 0,7 -7,0 z M 119,105 l 7,0 0,7 -7,0 z M 126,105 l 7,0 0,7 -7,0 z M 0,112 l 7,0 0,7 -7,0 z M 14,112 l 7,0 0,7 -7,0 z M 21,112 l 7,0 0,7 -7,0 z M 28,112 l 7,0 0,7 -7,0 z M 42,112 l 7,0 0,7 -7,0 z M 56,112 l 7,0 0,7 -7,0 z M 63,112 l 7,0 0,7 -7,0 z M 77,112 l 7,0 0,7 -7,0 z M 98,112 l 7,0 0,7 -7,0 z M 105,112 l 7,0 0,7 -7,0 z M 0,119 l 7,0 0,7 -7,0 z M 14,119 l 7,0 0,7 -7,0 z M 21,119 l 7,0 0,7 -7,0 z M 28,119 l 7,0 0,7 -7,0 z M 42,119 l 7,0 0,7 -7,0 z M 56,119 l 7,0 0,7 -7,0 z M 63,119 l 7,0 0,7 -7,0 z M 70,119 l 7,0 0,7 -7,0 z M 91,119 l 7,0 0,7 -7,0 z M 98,119 l 7,0 0,7 -7,0 z M 105,119 l 7,0 0,7 -7,0 z M 126,119 l 7,0 0,7 -7,0 z M 133,119 l 7,0 0,7 -7,0 z M 0,126 l 7,0 0,7 -7,0 z M 14,126 l 7,0 0,7 -7,0 z M 21,126 l 7,0 0,7 -7,0 z M 28,126 l 7,0 0,7 -7,0 z M 42,126 l 7,0 0,7 -7,0 z M 56,126 l 7,0 0,7 -7,0 z M 77,126 l 7,0 0,7 -7,0 z M 84,126 l 7,0 0,7 -7,0 z M 91,126 l 7,0 0,7 -7,0 z M 119,126 l 7,0 0,7 -7,0 z M 0,133 l 7,0 0,7 -7,0 z M 42,133 l 7,0 0,7 -7,0 z M 56,133 l 7,0 0,7 -7,0 z M 63,133 l 7,0 0,7 -7,0 z M 77,133 l 7,0 0,7 -7,0 z M 84,133 l 7,0 0,7 -7,0 z M 91,133 l 7,0 0,7 -7,0 z M 112,133 l 7,0 0,7 -7,0 z M 126,133 l 7,0 0,7 -7,0 z M 0,140 l 7,0 0,7 -7,0 z M 7,140 l 7,0 0,7 -7,0 z M 14,140 l 7,0 0,7 -7,0 z M 21,140 l 7,0 0,7 -7,0 z M 28,140 l 7,0 0,7 -7,0 z M 35,140 l 7,0 0,7 -7,0 z M 42,140 l 7,0 0,7 -7,0 z M 56,140 l 7,0 0,7 -7,0 z M 63,140 l 7,0 0,7 -7,0 z M 70,140 l 7,0 0,7 -7,0 z M 84,140 l 7,0 0,7 -7,0 z M 98,140 l 7,0 0,7 -7,0 z M 112,140 l 7,0 0,7 -7,0 z M 133,140 l 7,0 0,7 -7,0 z M 154,140 l 7,0 0,7 -7,0 z M 161,140 l 7,0 0,7 -7,0 z M 168,140 l 7,0 0,7 -7,0 z M 175,140 l 7,0 0,7 -7,0 z M 182,140 l 7,0 0,7 -7,0 z M 189,140 l 7,0 0,7 -7,0 z M 196,140 l 7,0 0,7 -7,0 z M 154,147 l 7,0 0,7 -7,0 z M 0,154 l 7,0 0,7 -7,0 z M 7,154 l 7,0 0,7 -7,0 z M 14,154 l 7,0 0,7 -7,0 z M 21,154 l 7,0 0,7 -7,0 z M 28,154 l 7,0 0,7 -7,0 z M 42,154 l 7,0 0,7 -7,0 z M 49,154 l 7,0 0,7 -7,0 z M 56,154 l 7,0 0,7 -7,0 z M 63,154 l 7,0 0,7 -7,0 z M 77,154 l 7,0 0,7 -7,0 z M 91,154 l 7,0 0,7 -7,0 z M 105,154 l 7,0 0,7 -7,0 z M 119,154 l 7,0 0,7 -7,0 z M 133,154 l 7,0 0,7 -7,0 z M 35,161 l 7,0 0,7 -7,0 z M 63,161 l 7,0 0,7 -7,0 z M 70,161 l 7,0 0,7 -7,0 z M 112,161 l 7,0 0,7 -7,0 z M 119,161 l 7,0 0,7 -7,0 z M 140,161 l 7,0 0,7 -7,0 z M 154,161 l 7,0 0,7 -7,0 z M 161,161 l 7,0 0,7 -7,0 z M 168,161 l 7,0 0,7 -7,0 z M 175,161 l 7,0 0,7 -7,0 z M 182,161 l 7,0 0,7 -7,0 z M 189,161 l 7,0 0,7 -7,0 z M 196,161 l 7,0 0,7 -7,0 z M 0,168 l 7,0 0,7 -7,0 z M 7,168 l 7,0 0,7 -7,0 z M 14,168 l 7,0 0,7 -7,0 z M 35,168 l 7,0 0,7 -7,0 z M 42,168 l 7,0 0,7 -7,0 z M 56,168 l 7,0 0,7 -7,0 z M 63,168 l 7,0 0,7 -7,0 z M 70,168 l 7,0 0,7 -7,0 z M 77,168 l 7,0 0,7 -7,0 z M 84,168 l 7,0 0,7 -7,0 z M 98,168 l 7,0 0,7 -7,0 z M 133,168 l 7,0 0,7 -7,0 z M 154,168 l 7,0 0,7 -7,0 z M 196,168 l 7,0 0,7 -7,0 z M 21,175 l 7,0 0,7 -7,0 z M 35,175 l 7,0 0,7 -7,0 z M 70,175 l 7,0 0,7 -7,0 z M 91,175 l 7,0 0,7 -7,0 z M 105,175 l 7,0 0,7 -7,0 z M 119,175 l 7,0 0,7 -7,0 z M 126,175 l 7,0 0,7 -7,0 z M 133,175 l 7,0 0,7 -7,0 z M 140,175 l 7,0 0,7 -7,0 z M 154,175 l 7,0 0,7 -7,0 z M 168,175 l 7,0 0,7 -7,0 z M 182,175 l 7,0 0,7 -7,0 z M 7,182 l 7,0 0,7 -7,0 z M 14,182 l 7,0 0,7 -7,0 z M 21,182 l 7,0 0,7 -7,0 z M 28,182 l 7,0 0,7 -7,0 z M 35,182 l 7,0 0,7 -7,0 z M 42,182 l 7,0 0,7 -7,0 z M 49,182 l 7,0 0,7 -7,0 z M 70,182 l 7,0 0,7 -7,0 z M 77,182 l 7,0 0,7 -7,0 z M 91,182 l 7,0 0,7 -7,0 z M 98,182 l 7,0 0,7 -7,0 z M 112,182 l 7,0 0,7 -7,0 z M 154,182 l 7,0 0,7 -7,0 z M 168,182 l 7,0 0,7 -7,0 z M 182,182 l 7,0 0,7 -7,0 z M 56,189 l 7,0 0,7 -7,0 z M 63,189 l 7,0 0,7 -7,0 z M 98,189 l 7,0 0,7 -7,0 z M 112,189 l 7,0 0,7 -7,0 z M 133,189 l 7,0 0,7 -7,0 z M 140,189 l 7,0 0,7 -7,0 z M 154,189 l 7,0 0,7 -7,0 z M 161,189 l 7,0 0,7 -7,0 z M 168,189 l 7,0 0,7 -7,0 z M 0,196 l 7,0 0,7 -7,0 z M 7,196 l 7,0 0,7 -7,0 z M 14,196 l 7,0 0,7 -7,0 z M 21,196 l 7,0 0,7 -7,0 z M 28,196 l 7,0 0,7 -7,0 z M 35,196 l 7,0 0,7 -7,0 z M 42,196 l 7,0 0,7 -7,0 z M 56,196 l 7,0 0,7 -7,0 z M 70,196 l 7,0 0,7 -7,0 z M 84,196 l 7,0 0,7 -7,0 z M 91,196 l 7,0 0,7 -7,0 z M 119,196 l 7,0 0,7 -7,0 z M 126,196 l 7,0 0,7 -7,0 z M 133,196 l 7,0 0,7 -7,0 z M 154,196 l 7,0 0,7 -7,0 z " />
+                    <path d="M0.00,0.00h7.00v7.00h-7.00zM7.00,0.00h7.00v7.00h-7.00zM14.00,0.00h7.00v7.00h-7.00zM21.00,0.00h7.00v7.00h-7.00zM28.00,0.00h7.00v7.00h-7.00zM35.00,0.00h7.00v7.00h-7.00zM42.00,0.00h7.00v7.00h-7.00zM63.00,0.00h7.00v7.00h-7.00zM84.00,0.00h7.00v7.00h-7.00zM105.00,0.00h7.00v7.00h-7.00zM126.00,0.00h7.00v7.00h-7.00zM140.00,0.00h7.00v7.00h-7.00zM154.00,0.00h7.00v7.00h-7.00zM161.00,0.00h7.00v7.00h-7.00zM168.00,0.00h7.00v7.00h-7.00zM175.00,0.00h7.00v7.00h-7.00zM182.00,0.00h7.00v7.00h-7.00zM189.00,0.00h7.00v7.00h-7.00zM196.00,0.00h7.00v7.00h-7.00zM0.00,7.00h7.00v7.00h-7.00zM42.00,7.00h7.00v7.00h-7.00zM63.00,7.00h7.00v7.00h-7.00zM77.00,7.00h7.00v7.00h-7.00zM84.00,7.00h7.00v7.00h-7.00zM105.00,7.00h7.00v7.00h-7.00zM119.00,7.00h7.00v7.00h-7.00zM133.00,7.00h7.00v7.00h-7.00zM140.00,7.00h7.00v7.00h-7.00zM154.00,7.00h7.00v7.00h-7.00zM196.00,7.00h7.00v7.00h-7.00zM0.00,14.00h7.00v7.00h-7.00zM14.00,14.00h7.00v7.00h-7.00zM21.00,14.00h7.00v7.00h-7.00zM28.00,14.00h7.00v7.00h-7.00zM42.00,14.00h7.00v7.00h-7.00zM70.00,14.00h7.00v7.00h-7.00zM77.00,14.00h7.00v7.00h-7.00zM84.00,14.00h7.00v7.00h-7.00zM91.00,14.00h7.00v7.00h-7.00zM105.00,14.00h7.00v7.00h-7.00zM126.00,14.00h7.00v7.00h-7.00zM140.00,14.00h7.00v7.00h-7.00zM154.00,14.00h7.00v7.00h-7.00zM168.00,14.00h7.00v7.00h-7.00zM175.00,14.00h7.00v7.00h-7.00zM182.00,14.00h7.00v7.00h-7.00zM196.00,14.00h7.00v7.00h-7.00zM0.00,21.00h7.00v7.00h-7.00zM14.00,21.00h7.00v7.00h-7.00zM21.00,21.00h7.00v7.00h-7.00zM28.00,21.00h7.00v7.00h-7.00zM42.00,21.00h7.00v7.00h-7.00zM77.00,21.00h7.00v7.00h-7.00zM84.00,21.00h7.00v7.00h-7.00zM91.00,21.00h7.00v7.00h-7.00zM98.00,21.00h7.00v7.00h-7.00zM112.00,21.00h7.00v7.00h-7.00zM119.00,21.00h7.00v7.00h-7.00zM133.00,21.00h7.00v7.00h-7.00zM154.00,21.00h7.00v7.00h-7.00zM168.00,21.00h7.00v7.00h-7.00zM175.00,21.00h7.00v7.00h-7.00zM182.00,21.00h7.00v7.00h-7.00zM196.00,21.00h7.00v7.00h-7.00zM0.00,28.00h7.00v7.00h-7.00zM14.00,28.00h7.00v7.00h-7.00zM21.00,28.00h7.00v7.00h-7.00zM28.00,28.00h7.00v7.00h-7.00zM42.00,28.00h7.00v7.00h-7.00zM56.00,28.00h7.00v7.00h-7.00zM63.00,28.00h7.00v7.00h-7.00zM77.00,28.00h7.00v7.00h-7.00zM84.00,28.00h7.00v7.00h-7.00zM91.00,28.00h7.00v7.00h-7.00zM98.00,28.00h7.00v7.00h-7.00zM112.00,28.00h7.00v7.00h-7.00zM119.00,28.00h7.00v7.00h-7.00zM133.00,28.00h7.00v7.00h-7.00zM154.00,28.00h7.00v7.00h-7.00zM168.00,28.00h7.00v7.00h-7.00zM175.00,28.00h7.00v7.00h-7.00zM182.00,28.00h7.00v7.00h-7.00zM196.00,28.00h7.00v7.00h-7.00zM0.00,35.00h7.00v7.00h-7.00zM42.00,35.00h7.00v7.00h-7.00zM63.00,35.00h7.00v7.00h-7.00zM77.00,35.00h7.00v7.00h-7.00zM84.00,35.00h7.00v7.00h-7.00zM91.00,35.00h7.00v7.00h-7.00zM105.00,35.00h7.00v7.00h-7.00zM133.00,35.00h7.00v7.00h-7.00zM140.00,35.00h7.00v7.00h-7.00zM154.00,35.00h7.00v7.00h-7.00zM196.00,35.00h7.00v7.00h-7.00zM0.00,42.00h7.00v7.00h-7.00zM7.00,42.00h7.00v7.00h-7.00zM14.00,42.00h7.00v7.00h-7.00zM21.00,42.00h7.00v7.00h-7.00zM28.00,42.00h7.00v7.00h-7.00zM35.00,42.00h7.00v7.00h-7.00zM42.00,42.00h7.00v7.00h-7.00zM56.00,42.00h7.00v7.00h-7.00zM70.00,42.00h7.00v7.00h-7.00zM84.00,42.00h7.00v7.00h-7.00zM98.00,42.00h7.00v7.00h-7.00zM112.00,42.00h7.00v7.00h-7.00zM126.00,42.00h7.00v7.00h-7.00zM140.00,42.00h7.00v7.00h-7.00zM154.00,42.00h7.00v7.00h-7.00zM161.00,42.00h7.00v7.00h-7.00zM168.00,42.00h7.00v7.00h-7.00zM175.00,42.00h7.00v7.00h-7.00zM182.00,42.00h7.00v7.00h-7.00zM189.00,42.00h7.00v7.00h-7.00zM196.00,42.00h7.00v7.00h-7.00zM56.00,49.00h7.00v7.00h-7.00zM63.00,49.00h7.00v7.00h-7.00zM70.00,49.00h7.00v7.00h-7.00zM105.00,49.00h7.00v7.00h-7.00zM119.00,49.00h7.00v7.00h-7.00zM126.00,49.00h7.00v7.00h-7.00zM14.00,56.00h7.00v7.00h-7.00zM21.00,56.00h7.00v7.00h-7.00zM42.00,56.00h7.00v7.00h-7.00zM49.00,56.00h7.00v7.00h-7.00zM56.00,56.00h7.00v7.00h-7.00zM63.00,56.00h7.00v7.00h-7.00zM84.00,56.00h7.00v7.00h-7.00zM91.00,56.00h7.00v7.00h-7.00zM105.00,56.00h7.00v7.00h-7.00zM140.00,56.00h7.00v7.00h-7.00zM147.00,56.00h7.00v7.00h-7.00zM154.00,56.00h7.00v7.00h-7.00zM168.00,56.00h7.00v7.00h-7.00zM14.00,63.00h7.00v7.00h-7.00zM21.00,63.00h7.00v7.00h-7.00zM28.00,63.00h7.00v7.00h-7.00zM77.00,63.00h7.00v7.00h-7.00zM91.00,63.00h7.00v7.00h-7.00zM98.00,63.00h7.00v7.00h-7.00zM105.00,63.00h7.00v7.00h-7.00zM168.00,63.00h7.00v7.00h-7.00zM175.00,63.00h7.00v7.00h-7.00zM182.00,63.00h7.00v7.00h-7.00zM189.00,63.00h7.00v7.00h-7.00zM196.00,63.00h7.00v7.00h-7.00zM7.00,70.00h7.00v7.00h-7.00zM35.00,70.00h7.00v7.00h-7.00zM42.00,70.00h7.00v7.00h-7.00zM56.00,70.00h7.00v7.00h-7.00zM98.00,70.00h7.00v7.00h-7.00zM105.00,70.00h7.00v7.00h-7.00zM119.00,70.00h7.00v7.00h-7.00zM189.00,70.00h7.00v7.00h-7.00zM0.00,77.00h7.00v7.00h-7.00zM7.00,77.00h7.00v7.00h-7.00zM28.00,77.00h7.00v7.00h-7.00zM35.00,77.00h7.00v7.00h-7.00zM49.00,77.00h7.00v7.00h-7.00zM56.00,77.00h7.00v7.00h-7.00zM63.00,77.00h7.00v7.00h-7.00zM70.00,77.00h7.00v7.00h-7.00zM77.00,77.00h7.00v7.00h-7.00zM84.00,77.00h7.00v7.00h-7.00zM119.00,77.00h7.00v7.00h-7.00zM133.00,77.00h7.00v7.00h-7.00zM154.00,77.00h7.00v7.00h-7.00zM189.00,77.00h7.00v7.00h-7.00zM0.00,84.00h7.00v7.00h-7.00zM14.00,84.00h7.00v7.00h-7.00zM28.00,84.00h7.00v7.00h-7.00zM42.00,84.00h7.00v7.00h-7.00zM49.00,84.00h7.00v7.00h-7.00zM63.00,84.00h7.00v7.00h-7.00zM70.00,84.00h7.00v7.00h-7.00zM84.00,84.00h7.00v7.00h-7.00zM91.00,84.00h7.00v7.00h-7.00zM98.00,84.00h7.00v7.00h-7.00zM105.00,84.00h7.00v7.00h-7.00zM112.00,84.00h7.00v7.00h-7.00zM168.00,84.00h7.00v7.00h-7.00zM182.00,84.00h7.00v7.00h-7.00zM189.00,84.00h7.00v7.00h-7.00zM0.00,91.00h7.00v7.00h-7.00zM21.00,91.00h7.00v7.00h-7.00zM35.00,91.00h7.00v7.00h-7.00zM84.00,91.00h7.00v7.00h-7.00zM91.00,91.00h7.00v7.00h-7.00zM112.00,91.00h7.00v7.00h-7.00zM133.00,91.00h7.00v7.00h-7.00zM147.00,91.00h7.00v7.00h-7.00zM154.00,91.00h7.00v7.00h-7.00zM175.00,91.00h7.00v7.00h-7.00zM196.00,91.00h7.00v7.00h-7.00zM0.00,98.00h7.00v7.00h-7.00zM14.00,98.00h7.00v7.00h-7.00zM28.00,98.00h7.00v7.00h-7.00zM42.00,98.00h7.00v7.00h-7.00zM49.00,98.00h7.00v7.00h-7.00zM70.00,98.00h7.00v7.00h-7.00zM77.00,98.00h7.00v7.00h-7.00zM105.00,98.00h7.00v7.00h-7.00zM126.00,98.00h7.00v7.00h-7.00zM133.00,98.00h7.00v7.00h-7.00zM140.00,98.00h7.00v7.00h-7.00zM147.00,98.00h7.00v7.00h-7.00zM161.00,98.00h7.00v7.00h-7.00zM168.00,98.00h7.00v7.00h-7.00zM175.00,98.00h7.00v7.00h-7.00zM182.00,98.00h7.00v7.00h-7.00zM189.00,98.00h7.00v7.00h-7.00zM196.00,98.00h7.00v7.00h-7.00zM7.00,105.00h7.00v7.00h-7.00zM28.00,105.00h7.00v7.00h-7.00zM49.00,105.00h7.00v7.00h-7.00zM63.00,105.00h7.00v7.00h-7.00zM70.00,105.00h7.00v7.00h-7.00zM84.00,105.00h7.00v7.00h-7.00zM91.00,105.00h7.00v7.00h-7.00zM98.00,105.00h7.00v7.00h-7.00zM105.00,105.00h7.00v7.00h-7.00zM112.00,105.00h7.00v7.00h-7.00zM119.00,105.00h7.00v7.00h-7.00zM126.00,105.00h7.00v7.00h-7.00zM147.00,105.00h7.00v7.00h-7.00zM154.00,105.00h7.00v7.00h-7.00zM175.00,105.00h7.00v7.00h-7.00zM189.00,105.00h7.00v7.00h-7.00zM196.00,105.00h7.00v7.00h-7.00zM0.00,112.00h7.00v7.00h-7.00zM42.00,112.00h7.00v7.00h-7.00zM56.00,112.00h7.00v7.00h-7.00zM98.00,112.00h7.00v7.00h-7.00zM112.00,112.00h7.00v7.00h-7.00zM119.00,112.00h7.00v7.00h-7.00zM133.00,112.00h7.00v7.00h-7.00zM140.00,112.00h7.00v7.00h-7.00zM147.00,112.00h7.00v7.00h-7.00zM154.00,112.00h7.00v7.00h-7.00zM161.00,112.00h7.00v7.00h-7.00zM189.00,112.00h7.00v7.00h-7.00zM196.00,112.00h7.00v7.00h-7.00zM14.00,119.00h7.00v7.00h-7.00zM28.00,119.00h7.00v7.00h-7.00zM49.00,119.00h7.00v7.00h-7.00zM56.00,119.00h7.00v7.00h-7.00zM70.00,119.00h7.00v7.00h-7.00zM77.00,119.00h7.00v7.00h-7.00zM84.00,119.00h7.00v7.00h-7.00zM91.00,119.00h7.00v7.00h-7.00zM98.00,119.00h7.00v7.00h-7.00zM105.00,119.00h7.00v7.00h-7.00zM112.00,119.00h7.00v7.00h-7.00zM119.00,119.00h7.00v7.00h-7.00zM133.00,119.00h7.00v7.00h-7.00zM140.00,119.00h7.00v7.00h-7.00zM154.00,119.00h7.00v7.00h-7.00zM161.00,119.00h7.00v7.00h-7.00zM168.00,119.00h7.00v7.00h-7.00zM189.00,119.00h7.00v7.00h-7.00zM0.00,126.00h7.00v7.00h-7.00zM14.00,126.00h7.00v7.00h-7.00zM21.00,126.00h7.00v7.00h-7.00zM35.00,126.00h7.00v7.00h-7.00zM42.00,126.00h7.00v7.00h-7.00zM49.00,126.00h7.00v7.00h-7.00zM56.00,126.00h7.00v7.00h-7.00zM63.00,126.00h7.00v7.00h-7.00zM84.00,126.00h7.00v7.00h-7.00zM98.00,126.00h7.00v7.00h-7.00zM126.00,126.00h7.00v7.00h-7.00zM133.00,126.00h7.00v7.00h-7.00zM147.00,126.00h7.00v7.00h-7.00zM175.00,126.00h7.00v7.00h-7.00zM35.00,133.00h7.00v7.00h-7.00zM63.00,133.00h7.00v7.00h-7.00zM84.00,133.00h7.00v7.00h-7.00zM98.00,133.00h7.00v7.00h-7.00zM105.00,133.00h7.00v7.00h-7.00zM112.00,133.00h7.00v7.00h-7.00zM119.00,133.00h7.00v7.00h-7.00zM126.00,133.00h7.00v7.00h-7.00zM133.00,133.00h7.00v7.00h-7.00zM168.00,133.00h7.00v7.00h-7.00zM175.00,133.00h7.00v7.00h-7.00zM182.00,133.00h7.00v7.00h-7.00zM7.00,140.00h7.00v7.00h-7.00zM28.00,140.00h7.00v7.00h-7.00zM35.00,140.00h7.00v7.00h-7.00zM42.00,140.00h7.00v7.00h-7.00zM49.00,140.00h7.00v7.00h-7.00zM56.00,140.00h7.00v7.00h-7.00zM77.00,140.00h7.00v7.00h-7.00zM91.00,140.00h7.00v7.00h-7.00zM112.00,140.00h7.00v7.00h-7.00zM119.00,140.00h7.00v7.00h-7.00zM140.00,140.00h7.00v7.00h-7.00zM147.00,140.00h7.00v7.00h-7.00zM154.00,140.00h7.00v7.00h-7.00zM161.00,140.00h7.00v7.00h-7.00zM168.00,140.00h7.00v7.00h-7.00zM182.00,140.00h7.00v7.00h-7.00zM196.00,140.00h7.00v7.00h-7.00zM56.00,147.00h7.00v7.00h-7.00zM63.00,147.00h7.00v7.00h-7.00zM70.00,147.00h7.00v7.00h-7.00zM77.00,147.00h7.00v7.00h-7.00zM84.00,147.00h7.00v7.00h-7.00zM98.00,147.00h7.00v7.00h-7.00zM105.00,147.00h7.00v7.00h-7.00zM112.00,147.00h7.00v7.00h-7.00zM140.00,147.00h7.00v7.00h-7.00zM168.00,147.00h7.00v7.00h-7.00zM182.00,147.00h7.00v7.00h-7.00zM189.00,147.00h7.00v7.00h-7.00zM196.00,147.00h7.00v7.00h-7.00zM0.00,154.00h7.00v7.00h-7.00zM7.00,154.00h7.00v7.00h-7.00zM14.00,154.00h7.00v7.00h-7.00zM21.00,154.00h7.00v7.00h-7.00zM28.00,154.00h7.00v7.00h-7.00zM35.00,154.00h7.00v7.00h-7.00zM42.00,154.00h7.00v7.00h-7.00zM56.00,154.00h7.00v7.00h-7.00zM70.00,154.00h7.00v7.00h-7.00zM84.00,154.00h7.00v7.00h-7.00zM91.00,154.00h7.00v7.00h-7.00zM98.00,154.00h7.00v7.00h-7.00zM112.00,154.00h7.00v7.00h-7.00zM119.00,154.00h7.00v7.00h-7.00zM126.00,154.00h7.00v7.00h-7.00zM133.00,154.00h7.00v7.00h-7.00zM140.00,154.00h7.00v7.00h-7.00zM154.00,154.00h7.00v7.00h-7.00zM168.00,154.00h7.00v7.00h-7.00zM175.00,154.00h7.00v7.00h-7.00zM182.00,154.00h7.00v7.00h-7.00zM0.00,161.00h7.00v7.00h-7.00zM42.00,161.00h7.00v7.00h-7.00zM77.00,161.00h7.00v7.00h-7.00zM98.00,161.00h7.00v7.00h-7.00zM112.00,161.00h7.00v7.00h-7.00zM119.00,161.00h7.00v7.00h-7.00zM140.00,161.00h7.00v7.00h-7.00zM168.00,161.00h7.00v7.00h-7.00zM196.00,161.00h7.00v7.00h-7.00zM0.00,168.00h7.00v7.00h-7.00zM14.00,168.00h7.00v7.00h-7.00zM21.00,168.00h7.00v7.00h-7.00zM28.00,168.00h7.00v7.00h-7.00zM42.00,168.00h7.00v7.00h-7.00zM70.00,168.00h7.00v7.00h-7.00zM77.00,168.00h7.00v7.00h-7.00zM112.00,168.00h7.00v7.00h-7.00zM140.00,168.00h7.00v7.00h-7.00zM147.00,168.00h7.00v7.00h-7.00zM154.00,168.00h7.00v7.00h-7.00zM161.00,168.00h7.00v7.00h-7.00zM168.00,168.00h7.00v7.00h-7.00zM182.00,168.00h7.00v7.00h-7.00zM196.00,168.00h7.00v7.00h-7.00zM0.00,175.00h7.00v7.00h-7.00zM14.00,175.00h7.00v7.00h-7.00zM21.00,175.00h7.00v7.00h-7.00zM28.00,175.00h7.00v7.00h-7.00zM42.00,175.00h7.00v7.00h-7.00zM56.00,175.00h7.00v7.00h-7.00zM70.00,175.00h7.00v7.00h-7.00zM84.00,175.00h7.00v7.00h-7.00zM91.00,175.00h7.00v7.00h-7.00zM98.00,175.00h7.00v7.00h-7.00zM105.00,175.00h7.00v7.00h-7.00zM112.00,175.00h7.00v7.00h-7.00zM119.00,175.00h7.00v7.00h-7.00zM147.00,175.00h7.00v7.00h-7.00zM161.00,175.00h7.00v7.00h-7.00zM168.00,175.00h7.00v7.00h-7.00zM175.00,175.00h7.00v7.00h-7.00zM182.00,175.00h7.00v7.00h-7.00zM189.00,175.00h7.00v7.00h-7.00zM0.00,182.00h7.00v7.00h-7.00zM14.00,182.00h7.00v7.00h-7.00zM21.00,182.00h7.00v7.00h-7.00zM28.00,182.00h7.00v7.00h-7.00zM42.00,182.00h7.00v7.00h-7.00zM56.00,182.00h7.00v7.00h-7.00zM63.00,182.00h7.00v7.00h-7.00zM70.00,182.00h7.00v7.00h-7.00zM77.00,182.00h7.00v7.00h-7.00zM91.00,182.00h7.00v7.00h-7.00zM105.00,182.00h7.00v7.00h-7.00zM112.00,182.00h7.00v7.00h-7.00zM119.00,182.00h7.00v7.00h-7.00zM126.00,182.00h7.00v7.00h-7.00zM133.00,182.00h7.00v7.00h-7.00zM147.00,182.00h7.00v7.00h-7.00zM161.00,182.00h7.00v7.00h-7.00zM175.00,182.00h7.00v7.00h-7.00zM196.00,182.00h7.00v7.00h-7.00zM0.00,189.00h7.00v7.00h-7.00zM42.00,189.00h7.00v7.00h-7.00zM91.00,189.00h7.00v7.00h-7.00zM105.00,189.00h7.00v7.00h-7.00zM112.00,189.00h7.00v7.00h-7.00zM119.00,189.00h7.00v7.00h-7.00zM126.00,189.00h7.00v7.00h-7.00zM133.00,189.00h7.00v7.00h-7.00zM147.00,189.00h7.00v7.00h-7.00zM161.00,189.00h7.00v7.00h-7.00zM189.00,189.00h7.00v7.00h-7.00zM0.00,196.00h7.00v7.00h-7.00zM7.00,196.00h7.00v7.00h-7.00zM14.00,196.00h7.00v7.00h-7.00zM21.00,196.00h7.00v7.00h-7.00zM28.00,196.00h7.00v7.00h-7.00zM35.00,196.00h7.00v7.00h-7.00zM42.00,196.00h7.00v7.00h-7.00zM70.00,196.00h7.00v7.00h-7.00zM91.00,196.00h7.00v7.00h-7.00zM98.00,196.00h7.00v7.00h-7.00zM119.00,196.00h7.00v7.00h-7.00zM140.00,196.00h7.00v7.00h-7.00zM147.00,196.00h7.00v7.00h-7.00zM161.00,196.00h7.00v7.00h-7.00zM182.00,196.00h7.00v7.00h-7.00zM189.00,196.00h7.00v7.00h-7.00z" fill="black" />
                   </g>
                   <g transform="translate(101.5,101.5)">
                     <circle cx="0" cy="0" r="28" fill="white" stroke="#333" stroke-width="2"/>
@@ -533,9 +605,6 @@
             }
         </script>
 
-        <!-- Jump to bottom button -->
-        <button class="jump-to-bottom" id="jumpToBottomBtn" onclick="jumpToBottom()">
-        </button>
 
         <div class="play-button-container">
             <a href="index.html" class="play-button">🚀 PLAY BIPARDY</a>
@@ -571,8 +640,8 @@
             const windowHeight = window.innerHeight;
             const docHeight = document.documentElement.scrollHeight;
             
-            // Show button when user has scrolled at least 300px and isn't near the bottom
-            if (scrollTop > 300 && scrollTop < docHeight - windowHeight - 200) {
+            // Show button when user has scrolled at least 100px and isn't near the bottom
+            if (scrollTop > 100 && scrollTop < docHeight - windowHeight - 200) {
                 jumpBtn.classList.add('show');
             } else {
                 jumpBtn.classList.remove('show');

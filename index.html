@@ -1,3 +1,20 @@
+<!--
+ * Bipardy - BIP39 Word Search Game
+ * Copyright (C) 2025 BIPARDY
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -664,6 +681,11 @@
             .keyboard {
                 display: block !important;
             }
+            
+            .timer-bonus {
+                top: 35px;
+                right: 0;
+            }
         }
 
         .keyboard-row {
@@ -979,7 +1001,7 @@
 
         .game-end-content {
             background: rgba(36, 36, 62, 0.95);
-            padding: 40px;
+            padding: 40px 40px 90px 40px;
             border-radius: 20px;
             border: 2px solid rgba(255, 255, 255, 0.2);
             text-align: center;
@@ -1686,6 +1708,13 @@
                     install: 'インストール',
                     later: '後で',
                     iosInstructions: 'インストールするには：下の共有ボタンをタップして「ホーム画面に追加」を選択してください'
+                },
+                'da': {
+                    title: 'Installer BIPardy',
+                    description: 'Installer denne app på din hjemmeskærm for den bedste oplevelse!',
+                    install: 'Installer',
+                    later: 'Senere',
+                    iosInstructions: 'For at installere: Tryk på del-knappen nedenfor og vælg "Tilføj til hjemmeskærm"'
                 }
             };
             
