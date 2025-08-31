@@ -7,6 +7,7 @@ const urlsToCache = [
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
+  '/donate.html',
   '/readme-page.html',
   '/readme-de.html',
   '/readme-es.html',
