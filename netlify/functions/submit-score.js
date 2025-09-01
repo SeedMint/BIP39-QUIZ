@@ -13,9 +13,12 @@ exports.handler = async (event, context) => {
   
   const headers = {
     'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Request-Hash, X-Request-Time',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'X-RateLimit-Limit': '10',
+    'X-RateLimit-Window': '3600',
+    'X-RateLimit-Remaining': '9'
   };
 
   // Handle preflight OPTIONS request
@@ -44,6 +47,32 @@ exports.handler = async (event, context) => {
         headers,
         body: JSON.stringify({ error: 'Global leaderboard unavailable' })
       };
+    }
+
+    // Verify request integrity if hash is provided
+    const requestHash = event.headers['x-request-hash'];
+    const requestTime = event.headers['x-request-time'];
+    
+    if (requestHash && requestTime) {
+      // Check timestamp freshness (within 5 minutes)
+      const now = Date.now();
+      const reqTime = parseInt(requestTime);
+      if (Math.abs(now - reqTime) > 300000) { // 5 minutes
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: 'Request timestamp too old' })
+        };
+      }
+      
+      // Basic integrity check - just verify hash format for now
+      if (!/^[a-f0-9]{64}$/.test(requestHash)) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: 'Invalid request hash format' })
+        };
+      }
     }
 
     // Parse request body

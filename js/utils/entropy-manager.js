@@ -157,7 +157,9 @@ function initializeEntropyCollection() {
         addEntropy('periodic', (performance.now() * Math.random()) % 0xFFFFFFFF);
     }, 5000);
     
-    console.log('Client-side entropy collection initialized');
+    // Only log in development mode
+    const DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (DEBUG) console.log('Client-side entropy collection initialized');
 }
 
 // Export functions for use by other modules

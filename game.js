@@ -5,6 +5,9 @@
 // Detect if mobile
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 
+// Debug flag for development vs production logging
+const DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
 
 // Keyboard toggle for desktop
 if (!isMobile) {
@@ -512,7 +515,7 @@ function initializeEntropyCollection() {
         addEntropy('periodic', (performance.now() * Math.random()) % 0xFFFFFFFF);
     }, 5000);
     
-    console.log('Client-side entropy collection initialized');
+    if (DEBUG) console.log('Client-side entropy collection initialized');
 }
 
 // Fisher-Yates shuffle algorithm with crypto random
@@ -529,7 +532,7 @@ function shuffleArray(array) {
 function initializeWordPool() {
     wordPool = shuffleArray(bip39Words);
     poolIndex = 0;
-    console.log(`Word pool initialized with ${wordPool.length} words`);
+    if (DEBUG) console.log(`Word pool initialized with ${wordPool.length} words`);
 }
 
 // Get random word with advanced selection
@@ -558,7 +561,7 @@ function getRandomWord() {
         // clear some of the recently used list
         if (attempts > 50) {
             recentlyUsedWords = recentlyUsedWords.slice(-100); // Keep only last 100
-            console.log('Recently used list trimmed to prevent infinite loop');
+            if (DEBUG) console.log('Recently used list trimmed to prevent infinite loop');
         }
         
     } while (recentlyUsedWords.includes(selectedWord) && attempts <= 60);
@@ -576,7 +579,7 @@ function getRandomWord() {
     sessionWordStats.set(selectedWord, currentCount + 1);
 
     // Debug logging
-    console.log(`Selected word: "${selectedWord}" (attempt ${attempts}, recently used: ${recentlyUsedWords.length})`);
+    if (DEBUG) console.log(`Selected word: "${selectedWord}" (attempt ${attempts}, recently used: ${recentlyUsedWords.length})`);
     
     return selectedWord;
 }
@@ -653,10 +656,12 @@ function initializeWordSelectionSystem() {
     window.bipardyStats = logSessionStats;
     window.bipardyEntropy = logEntropyStats;
     
-    console.log('Advanced word selection system with client-side entropy initialized!');
-    console.log('Debug commands:');
-    console.log('  - bipardyStats() - Word selection statistics');
-    console.log('  - bipardyEntropy() - Entropy collection statistics');
+    if (DEBUG) {
+        console.log('Advanced word selection system with client-side entropy initialized!');
+        console.log('Debug commands:');
+        console.log('  - bipardyStats() - Word selection statistics');
+        console.log('  - bipardyEntropy() - Entropy collection statistics');
+    }
 }
 
 // Display word
@@ -836,13 +841,15 @@ async function checkGuess() {
     } else {
         // Wrong guess - increment counter
         wrongGuessCount++;
-        players[currentPlayer].streak = 0;
         updateScoreDisplay();
         
         // Check if player has reached 2 wrong guesses (applies to both single and multiplayer)
         if (wrongGuessCount >= 2) {
             // Stop timer when player fails
             stopTimer();
+            
+            // Reset streak only after second wrong guess
+            players[currentPlayer].streak = 0;
             
             // Apply 10-point penalty for 2 wrong guesses
             players[currentPlayer].score = Math.max(0, players[currentPlayer].score - 10);
@@ -1095,12 +1102,12 @@ function editPlayerName(playerIndex, nameElement) {
         const original = inputEl.value;
         const filtered = sanitizeName(original);
         if (original !== filtered) {
-            console.log('🔄 FILTERING NAME INPUT:', original, '->', filtered);
+            if (DEBUG) console.log('🔄 FILTERING NAME INPUT:', original, '->', filtered);
             inputEl.value = filtered;
         }
     }
     
-    console.log('✅ Name filtering function attached to input element');
+    if (DEBUG) console.log('✅ Name filtering function attached to input element');
     
     input.addEventListener('input', (e) => filterInput(e.target));
     input.addEventListener('paste', (e) => {
@@ -1581,18 +1588,28 @@ async function loadGlobalLeaderboard() {
 async function submitGlobalScore(name, scoreData) {
     try {
         const gameTime = Math.round((Date.now() - gameStartTime) / 1000);
+        const timestamp = Date.now();
         const payload = {
             ...scoreData,
             name: name.trim(),
-            gameTime: gameTime
+            gameTime: gameTime,
+            timestamp: timestamp
         };
+
+        // Add basic request integrity check
+        const payloadString = JSON.stringify(payload);
+        const payloadHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(payloadString + timestamp));
+        const hashArray = Array.from(new Uint8Array(payloadHash));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
         const response = await fetch('/.netlify/functions/submit-score', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Request-Hash': hashHex,
+                'X-Request-Time': timestamp.toString()
             },
-            body: JSON.stringify(payload)
+            body: payloadString
         });
 
         if (!response.ok) {
@@ -1690,32 +1707,46 @@ function displayLeaderboard(leaderboard, currentPlayerRank = null, highlightScor
     
     if (leaderboard.length === 0) {
         const viewType = currentLeaderboardView === 'local' ? 'local scores' : 'global scores';
-        leaderboardList.innerHTML = `
-            <div class="leaderboard-header">
-                <div class="leaderboard-rank">Rank</div>
-                <div class="leaderboard-name">Name</div>
-                <div class="leaderboard-game-length">Words</div>
-                <div class="leaderboard-game-time">Time</div>
-                <div class="leaderboard-score">Score</div>
-            </div>
-            <div style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 20px;">
-                No ${viewType} yet. ${currentLeaderboardView === 'local' ? 'Play a game!' : 'Be the first!'}
-            </div>
-        `;
+        
+        // Clear and create header using safer DOM methods
+        leaderboardList.innerHTML = '';
+        
+        const header = document.createElement('div');
+        header.className = 'leaderboard-header';
+        
+        ['Rank', 'Name', 'Words', 'Time', 'Score'].forEach(text => {
+            const div = document.createElement('div');
+            div.className = `leaderboard-${text.toLowerCase()}`;
+            div.textContent = text;
+            header.appendChild(div);
+        });
+        
+        const emptyMessage = document.createElement('div');
+        emptyMessage.style.cssText = 'text-align: center; color: rgba(255, 255, 255, 0.6); padding: 20px;';
+        emptyMessage.textContent = `No ${viewType} yet. ${currentLeaderboardView === 'local' ? 'Play a game!' : 'Be the first!'}`;
+        
+        leaderboardList.appendChild(header);
+        leaderboardList.appendChild(emptyMessage);
         return;
     }
 
-    const headerHtml = `
-        <div class="leaderboard-header">
-            <div class="leaderboard-rank">Rank</div>
-            <div class="leaderboard-name">Name</div>
-            <div class="leaderboard-game-length">Words</div>
-            <div class="leaderboard-game-time">Time</div>
-            <div class="leaderboard-score">Score</div>
-        </div>
-    `;
+    // Clear and create header using safer DOM methods
+    leaderboardList.innerHTML = '';
+    
+    const header = document.createElement('div');
+    header.className = 'leaderboard-header';
+    
+    ['Rank', 'Name', 'Words', 'Time', 'Score'].forEach(text => {
+        const div = document.createElement('div');
+        div.className = `leaderboard-${text.toLowerCase()}`;
+        div.textContent = text;
+        header.appendChild(div);
+    });
+    
+    leaderboardList.appendChild(header);
 
-    const entriesHtml = leaderboard.map((entry, index) => {
+    // Create entries using safer DOM methods
+    leaderboard.forEach((entry, index) => {
         const rank = index + 1;
         const isCurrentPlayer = currentPlayerRank === rank;
         const isHighlighted = highlightScore && 
@@ -1724,18 +1755,44 @@ function displayLeaderboard(leaderboard, currentPlayerRank = null, highlightScor
         const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : '';
         const currentClass = (isCurrentPlayer || isHighlighted) ? 'current-player' : '';
         
-        return `
-            <div class="leaderboard-entry ${rankClass} ${currentClass}" ${(isCurrentPlayer || isHighlighted) ? 'id="current-player-entry"' : ''}>
-                <div class="leaderboard-rank">#${rank}</div>
-                <div class="leaderboard-name">${safeDisplayUserData(entry.name)}</div>
-                <div class="leaderboard-game-length">${entry.words || 0}</div>
-                <div class="leaderboard-game-time">${entry.gameTime || 0}s</div>
-                <div class="leaderboard-score">${entry.combined.toLocaleString()}</div>
-            </div>
-        `;
-    }).join('');
-
-    leaderboardList.innerHTML = headerHtml + entriesHtml;
+        const entryDiv = document.createElement('div');
+        entryDiv.className = `leaderboard-entry ${rankClass} ${currentClass}`.trim();
+        if (isCurrentPlayer || isHighlighted) {
+            entryDiv.id = 'current-player-entry';
+        }
+        
+        // Create rank element
+        const rankDiv = document.createElement('div');
+        rankDiv.className = 'leaderboard-rank';
+        rankDiv.textContent = `#${rank}`;
+        
+        // Create name element with safe text content
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'leaderboard-name';
+        nameDiv.textContent = sanitizeForDisplay(entry.name);
+        
+        // Create other elements
+        const wordsDiv = document.createElement('div');
+        wordsDiv.className = 'leaderboard-game-length';
+        wordsDiv.textContent = entry.words || 0;
+        
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'leaderboard-game-time';
+        timeDiv.textContent = `${entry.gameTime || 0}s`;
+        
+        const scoreDiv = document.createElement('div');
+        scoreDiv.className = 'leaderboard-score';
+        scoreDiv.textContent = entry.combined.toLocaleString();
+        
+        // Append all elements
+        entryDiv.appendChild(rankDiv);
+        entryDiv.appendChild(nameDiv);
+        entryDiv.appendChild(wordsDiv);
+        entryDiv.appendChild(timeDiv);
+        entryDiv.appendChild(scoreDiv);
+        
+        leaderboardList.appendChild(entryDiv);
+    });
 
     // Scroll to current player if they're not visible
     if ((currentPlayerRank && currentPlayerRank > 7) || highlightScore) {

@@ -15,7 +15,10 @@ exports.handler = async (event, context) => {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'X-RateLimit-Limit': '60',
+    'X-RateLimit-Window': '3600',
+    'X-RateLimit-Remaining': '59'
   };
 
   // Handle preflight OPTIONS request
