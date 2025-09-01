@@ -1,0 +1,67 @@
+/* Shared styles for all README pages */
+
+/* CSS Variables matching main game design system */
+:root {
+    --color-white-01: rgba(255, 255, 255, 0.1);
+    --color-white-04: rgba(255, 255, 255, 0.4);
+    --color-black-02: rgba(0, 0, 0, 0.2);
+    --color-black-03: rgba(0, 0, 0, 0.3);
+    --color-blue-04: rgba(102, 126, 234, 0.4);
+}
+
+/* Active player box styling - reusable */
+.active-player-style {
+    background: var(--color-white-01);
+    transform: scale(1.05);
+    box-shadow: 
+        0 12px 30px var(--color-blue-04),
+        0 8px 20px var(--color-white-04),
+        0 5px 10px var(--color-black-03),
+        inset 0 3px 0 var(--color-white-04),
+        inset 0 -2px 0 var(--color-black-02);
+    transition: all 0.3s ease;
+}
+
+/* GitHub link container styling */
+.github-link-container {
+    text-align: center; 
+    margin: 30px 0; 
+    padding: 20px; 
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+/* Apply active player styling to GitHub links */
+.github-link-container.featured {
+    background: var(--color-white-01);
+    transform: scale(1.05);
+    box-shadow: 
+        0 12px 30px var(--color-blue-04),
+        0 8px 20px var(--color-white-04),
+        0 5px 10px var(--color-black-03),
+        inset 0 3px 0 var(--color-white-04),
+        inset 0 -2px 0 var(--color-black-02);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+}
+
+.github-link-container.featured:hover {
+    transform: scale(1.08);
+    box-shadow: 
+        0 15px 40px var(--color-blue-04),
+        0 10px 25px var(--color-white-04),
+        0 7px 15px var(--color-black-03),
+        inset 0 3px 0 var(--color-white-04),
+        inset 0 -2px 0 var(--color-black-02);
+}
+
+.github-link {
+    color: #feca57; 
+    text-decoration: none; 
+    font-weight: bold; 
+    font-size: 1.1rem;
+    display: block;
+}
+
+.github-link:hover {
+    color: #ff9ff3;
+}

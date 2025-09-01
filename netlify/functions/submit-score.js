@@ -155,6 +155,50 @@ exports.handler = async (event, context) => {
       // Continue with empty scores if fetch fails
     }
 
+    // Server-side eligibility check to prevent API abuse
+    const MINIMUM_THRESHOLD = 500; // Minimum score to allow any submission
+    
+    // Check if score meets minimum threshold
+    if (calculatedCombined < MINIMUM_THRESHOLD) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ 
+          error: 'Score does not meet minimum threshold',
+          minRequired: MINIMUM_THRESHOLD,
+          yourScore: calculatedCombined
+        })
+      };
+    }
+    
+    // If leaderboard has 21+ entries, check if score qualifies for top 21
+    if (currentScoresData.scores.length >= 21) {
+      // Sort current scores to find the 21st place score
+      const sortedScores = [...currentScoresData.scores].sort((a, b) => b.combined - a.combined);
+      
+      // Ensure we have at least 21 scores and get the 21st place score
+      if (sortedScores.length >= 21) {
+        const minQualifyingScore = sortedScores[20].combined; // 21st place (0-indexed)
+        
+        if (calculatedCombined <= minQualifyingScore) {
+          // Calculate where this score would rank
+          const wouldRank = sortedScores.findIndex(s => s.combined < calculatedCombined) + 1;
+          
+          return {
+            statusCode: 400,
+            headers,
+            body: JSON.stringify({ 
+              error: 'Score does not qualify for global leaderboard',
+              minRequired: minQualifyingScore + 1,
+              yourScore: calculatedCombined,
+              currentRank: wouldRank > 0 ? wouldRank : 'below top 100',
+              leaderboardSize: sortedScores.length
+            })
+          };
+        }
+      }
+    }
+
     // Add new score and sort
     currentScoresData.scores.push(scoreEntry);
     currentScoresData.scores.sort((a, b) => b.combined - a.combined);

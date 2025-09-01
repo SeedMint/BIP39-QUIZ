@@ -40,7 +40,7 @@ const englishTextMap = {
     da: 'Vidste du at kun 2048 ord beskytter hele Bitcoins sikkerhed? 🔐 BIPARDY forvandler BIP-39 mnemoniske ord (fundamentet for Bitcoin seed-fraser) til en vanedannende mental udfordring.'
   },
   
-  'Every word you encounter could be part of someone\'s Bitcoin wallet seed phrase. Can you decode them all while building massive scoring streaks? Welcome to the most crypto-native word game ever created! 🚀': {
+  'Every word you encounter could be part of someone\'s Bitcoin wallet seed phrase. Can you decode them all while building massive scoring streaks? Welcome to the most Bitcoin-native word game ever created! 🚀': {
     de: 'Jedes Wort, dem du begegnest, könnte Teil einer echten Bitcoin-Wallet Seed-Phrase sein. Kannst du sie alle entschlüsseln und dabei massive Punkteserien aufbauen? Willkommen beim bitcoin-nativsten Wortspiel aller Zeiten! 🚀',
     es: 'Cada palabra que adivines es una palabra real de recuperación de wallet - ¡estás jugando literalmente con los ladrillos que construyeron el ecosistema Bitcoin! 🧱⚡',
     fr: 'Chaque mot que tu devines est un véritable mot de récupération de portefeuille - tu joues littéralement avec les briques qui ont construit l\'écosystème Bitcoin ! 🧱⚡',

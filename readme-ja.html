@@ -16,12 +16,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  -->
 <!DOCTYPE html>
-<html lang="ja"
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>BIPARDY - ゲームルール＆ガイド</title>
+    <link rel="stylesheet" href="readme-styles.css">
     <style>
         * {
             margin: 0;
@@ -400,8 +401,8 @@
 
         <h1>🎲 BIPARDY</h1>
         
-        <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(45deg, rgba(255, 107, 107, 0.15), rgba(254, 202, 87, 0.15)); border: 2px solid rgba(255, 107, 107, 0.3); border-radius: 15px; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 12px 35px rgba(255, 107, 107, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.2)'">
-            <a href="https://github.com/SeedMint/BIP39-QUIZ" style="color: #feca57; text-decoration: none; font-weight: bold; font-size: 1.1rem;">
+        <div class="github-link-container featured">
+            <a href="https://github.com/SeedMint/BIP39-QUIZ" class="github-link">
                 🔗 Open Source Code on GitHub 🔗
             </a>
         </div>
@@ -437,16 +438,16 @@
         <h3>🆘 ヘルプシステム経済学:</h3>
         <p>ヘルプシステムは、標準単語値を決して超えないように設計されたバランスの取れたコスト構造に従います:</p>
         <ul>
-            <li><strong>5文字単語:</strong> <span class="points-cost">-21 points</span> 最初のヘルプで、その後完全に無料</li>
-            <li><strong>6文字単語:</strong> <span class="points-cost">-10 points</span> 最初のヘルプ, <span class="points-cost">-11 points</span> 2番目のヘルプ、その後無料</li>
-            <li><strong>7+文字単語:</strong> <span class="points-cost">-10 points per help</span> （最大制限なし）</li>
+            <li><strong>5文字単語:</strong> <span class="points-cost">-21ポイント</span> 最初のヘルプで、その後完全に無料</li>
+            <li><strong>6文字単語:</strong> <span class="points-cost">-10ポイント</span> 最初のヘルプ, <span class="points-cost">-11ポイント</span> 2番目のヘルプ、その後無料</li>
+            <li><strong>7+文字単語:</strong> <span class="points-cost">-10ポイント/ヘルプ</span> （最大制限なし）</li>
             <li><strong>コスト上限:</strong> 5-6文字単語の場合、総ヘルプコストは21ポイントを決して超えません</li>
         </ul>
 
         <h3>⏱️ タイマーボーナスシステム:</h3>
         <ul>
             <li><strong>クイックレスポンスボーナス:</strong> 各単語が明らかになったときに5秒タイマーが開始されます</li>
-            <li><strong>ダイナミックボーナス:</strong> Up to <span class="points-gain">+21 bonus points</span> 即座の回答で</li>
+            <li><strong>ダイナミックボーナス:</strong> 最大 <span class="points-gain">+21ボーナスポイント</span> 即座の回答で</li>
             <li><strong>ボーナス減衰:</strong> ボーナスは5秒間で線形に減少し、タイマーが切れると0に達します</li>
             <li><strong>ボーナス停止:</strong> HELPを使用したり間違った推測をしたりすると、タイマーは即座に停止します</li>
             <li><strong>最大ポテンシャル:</strong> 完璧な単語（30ベース）+ フルボーナス（21）= 単語あたり51ポイント</li>

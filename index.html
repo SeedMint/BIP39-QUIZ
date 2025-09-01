@@ -162,6 +162,8 @@
                 <!-- Stats will be populated here -->
             </div>
             
+            <button class="continue-button" id="continueButton">Continue</button>
+            
             <!-- Leaderboard Section (only shown for single player) -->
             <div class="leaderboard-section" id="leaderboardSection" style="display: none;">
                 <h3 class="leaderboard-title">🏆 BIP39 Masters Leaderboard 🏆</h3>
@@ -175,8 +177,11 @@
                     <input type="text" 
                            class="name-input" 
                            id="playerNameInput" 
-                           placeholder="Enter your name"
-                           maxlength="20">
+                           placeholder="Enter your name (A-Z, 0-9, 3-12 chars)"
+                           maxlength="12">
+                    <div class="eligibility-notice" id="eligibilityNotice" style="display: none;">
+                        <!-- Dynamically populated based on score eligibility -->
+                    </div>
                     <div class="submit-options">
                         <button class="submit-score-btn local" id="submitLocalBtn">
                             💾 Save Locally Only
@@ -203,13 +208,20 @@
                     </div>
                 </div>
             </div>
-            
-            <button class="continue-button" id="continueButton">Continue</button>
         </div>
     </div>
 
     
     <!-- External Scripts -->
+    <script type="module">
+        // Import modules
+        import { initializePWA } from './js/utils/pwa-manager.js';
+        import { initializeEntropyCollection } from './js/utils/entropy-manager.js';
+        
+        // Initialize modules
+        initializePWA();
+        initializeEntropyCollection();
+    </script>
     <script src="game.js"></script>
 </body>
 </html>

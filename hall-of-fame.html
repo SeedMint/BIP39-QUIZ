@@ -1,0 +1,252 @@
+<!--
+ * Bipardy - BIP39 Word Search Game - Hall of Fame
+ * Copyright (C) 2025 BIPARDY
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    <title>BIPARDY - Hall of Fame</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="readme-styles.css">
+    <style>
+        body {
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .hall-of-fame-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(36, 36, 62, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hall-title {
+            font-size: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #feca57, #ff9ff3, #54a0ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .hall-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--gradient-orange);
+            color: #0f0c29;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-base);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .enhanced-leaderboard {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--color-white-01);
+            margin-top: 20px;
+        }
+
+        .enhanced-leaderboard .leaderboard-header {
+            background: rgba(254, 202, 87, 0.1);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .enhanced-leaderboard .leaderboard-entry {
+            margin-bottom: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            padding: 12px;
+        }
+
+        .enhanced-leaderboard .leaderboard-entry:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .enhanced-leaderboard .leaderboard-score {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .testing-controls {
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .testing-controls h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .test-button.clear {
+            background: linear-gradient(135deg, #ea5455, #feb692);
+        }
+
+        .filter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .filter-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button.active {
+            background: var(--gradient-orange);
+            color: #0f0c29;
+            border-color: #feca57;
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .hall-of-fame-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .hall-title {
+                font-size: 2rem;
+            }
+            
+            .back-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">
+        ← Back to Game
+    </a>
+
+    <div class="hall-of-fame-container">
+        <h1 class="hall-title">🏆 Hall of Fame 🏆</h1>
+        <p class="hall-subtitle">BIP-39 Masters Leaderboard</p>
+
+        <!-- Testing Controls -->
+        <div class="testing-controls">
+            <h3>🧪 Testing Controls</h3>
+            <button class="test-button" id="fillLocalBtn">Fill Local Leaderboard</button>
+            <button class="test-button" id="fillGlobalBtn">Fill Global Leaderboard</button>
+            <button class="test-button clear" id="clearAllBtn">Clear All Data</button>
+        </div>
+
+        <!-- Leaderboard Tabs -->
+        <div class="leaderboard-tabs">
+            <button class="tab-btn active" id="localTabBtn">📱 Local Champions</button>
+            <button class="tab-btn" id="globalTabBtn">🌍 Global Legends</button>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filter-controls">
+            <button class="filter-button active" data-filter="all">All Games</button>
+            <button class="filter-button" data-filter="12">12 Words</button>
+            <button class="filter-button" data-filter="24">24 Words</button>
+        </div>
+
+        <!-- Enhanced Leaderboard Display -->
+        <div class="enhanced-leaderboard" id="leaderboardDisplay">
+            <div class="no-data-message">
+                <p>🎮 No scores yet!</p>
+                <p>Use the testing controls above to populate the leaderboards and see how they look.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="hall-of-fame.js"></script>
+</body>
+</html>

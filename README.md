@@ -2,6 +2,17 @@
 
 A PWA implementation of a Bitcoin word game using the BIP-39 wordlist with offline-first scoring and optional global leaderboard.
 
+## Educational Value
+
+BIPARDY is an educational word game that helps you:
+- **Master English Vocabulary**: Learn and practice carefully selected common English words
+- **Improve Language Skills**: Perfect for English language learners and native speakers alike
+- **Enhance Memory & Cognition**: Train your brain through word pattern recognition, association, and recall
+- **Build Mental Agility**: Develop faster thinking and word retrieval skills through timed challenges
+- **Track Your Progress**: Monitor your vocabulary improvement over time with detailed scoring
+
+With English being the most widely spoken language globally, BIPARDY provides an engaging way to expand your vocabulary while having fun. The carefully curated word list ensures you're learning practical, commonly-used English words.
+
 ## Features
 
 - **Offline-First**: Scores are saved locally and work without internet
@@ -19,7 +30,7 @@ A PWA implementation of a Bitcoin word game using the BIP-39 wordlist with offli
 - Top 50 local scores maintained
 
 ### Global Leaderboard (Optional)
-- Powered by GitHub as a database
+- Decentralized score storage system
 - Players can optionally share scores publicly
 - Top 21 global scores displayed
 - Full Git history for analytics

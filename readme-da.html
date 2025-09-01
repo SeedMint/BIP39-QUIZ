@@ -16,12 +16,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  -->
 <!DOCTYPE html>
-<html lang="da"
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>BIPARDY - Spilleregler & Guide</title>
+    <link rel="stylesheet" href="readme-styles.css">
     <style>
         * {
             margin: 0;
@@ -400,8 +401,8 @@
 
         <h1>🎲 BIPARDY</h1>
         
-        <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(45deg, rgba(255, 107, 107, 0.15), rgba(254, 202, 87, 0.15)); border: 2px solid rgba(255, 107, 107, 0.3); border-radius: 15px; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 12px 35px rgba(255, 107, 107, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.2)'">
-            <a href="https://github.com/SeedMint/BIP39-QUIZ" style="color: #feca57; text-decoration: none; font-weight: bold; font-size: 1.1rem;">
+        <div class="github-link-container featured">
+            <a href="https://github.com/SeedMint/BIP39-QUIZ" class="github-link">
                 🔗 Open Source Code on GitHub 🔗
             </a>
         </div>
@@ -437,16 +438,16 @@
         <h3>🆘 Hjælp System Økonomi:</h3>
         <p>Hjælp systemet følger en afbalanceret omkostningsstruktur designet til aldrig at overstige standard ordværdien:</p>
         <ul>
-            <li><strong>5-bogstavs ord:</strong> <span class="points-cost">-21 points</span> for første hjælp, derefter helt gratis</li>
-            <li><strong>6-bogstavs ord:</strong> <span class="points-cost">-10 points</span> første hjælp, <span class="points-cost">-11 points</span> anden hjælp, derefter gratis</li>
-            <li><strong>7+ bogstavs ord:</strong> <span class="points-cost">-10 points per help</span> (ingen maksimal grænse)</li>
+            <li><strong>5-bogstavs ord:</strong> <span class="points-cost">-21 point</span> for første hjælp, derefter helt gratis</li>
+            <li><strong>6-bogstavs ord:</strong> <span class="points-cost">-10 point</span> første hjælp, <span class="points-cost">-11 point</span> anden hjælp, derefter gratis</li>
+            <li><strong>7+ bogstavs ord:</strong> <span class="points-cost">-10 point per hjælp</span> (ingen maksimal grænse)</li>
             <li><strong>Omkostningsloft:</strong> For 5-6 bogstavs ord overstiger samlede hjælpeomkostninger aldrig 21 point</li>
         </ul>
 
         <h3>⏱️ Timer Bonus System:</h3>
         <ul>
             <li><strong>Hurtig Respons Bonus:</strong> 5-sekunder timer starter når hvert ord afsløres</li>
-            <li><strong>Dynamisk Bonus:</strong> Up to <span class="points-gain">+21 bonus points</span> for øjeblikkelige svar</li>
+            <li><strong>Dynamisk Bonus:</strong> Op til <span class="points-gain">+21 bonuspoint</span> for øjeblikkelige svar</li>
             <li><strong>Bonus Forfald:</strong> Bonus falder lineært over 5 sekunder, når 0 når timeren udløber</li>
             <li><strong>Bonus Stop:</strong> Timer stopper øjeblikkeligt når du bruger HJÆLP eller laver forkerte gæt</li>
             <li><strong>Maksimalt Potentiale:</strong> Perfekt ord (30 basis) + fuld bonus (21) = 51 point per ord</li>

@@ -16,12 +16,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  -->
 <!DOCTYPE html>
-<html lang="es"
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>BIPARDY - Reglas del Juego & Guía</title>
+    <link rel="stylesheet" href="readme-styles.css">
     <style>
         * {
             margin: 0;
@@ -400,8 +401,8 @@
 
         <h1>🎲 BIPARDY</h1>
         
-        <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(45deg, rgba(255, 107, 107, 0.15), rgba(254, 202, 87, 0.15)); border: 2px solid rgba(255, 107, 107, 0.3); border-radius: 15px; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 12px 35px rgba(255, 107, 107, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.2)'">
-            <a href="https://github.com/SeedMint/BIP39-QUIZ" style="color: #feca57; text-decoration: none; font-weight: bold; font-size: 1.1rem;">
+        <div class="github-link-container featured">
+            <a href="https://github.com/SeedMint/BIP39-QUIZ" class="github-link">
                 🔗 Open Source Code on GitHub 🔗
             </a>
         </div>
@@ -437,16 +438,16 @@
         <h3>🆘 Economía del Sistema de Ayuda:</h3>
         <p>El sistema de ayuda sigue una estructura de costos equilibrada diseñada para nunca exceder el valor estándar de palabra:</p>
         <ul>
-            <li><strong>Palabras de 5 letras:</strong> <span class="points-cost">-21 points</span> por primera ayuda, luego completamente gratis</li>
-            <li><strong>Palabras de 6 letras:</strong> <span class="points-cost">-10 points</span> primera ayuda, <span class="points-cost">-11 points</span> segunda ayuda, luego gratis</li>
-            <li><strong>Palabras de 7+ letras:</strong> <span class="points-cost">-10 points per help</span> (sin límite máximo)</li>
+            <li><strong>Palabras de 5 letras:</strong> <span class="points-cost">-21 puntos</span> por primera ayuda, luego completamente gratis</li>
+            <li><strong>Palabras de 6 letras:</strong> <span class="points-cost">-10 puntos</span> primera ayuda, <span class="points-cost">-11 puntos</span> segunda ayuda, luego gratis</li>
+            <li><strong>Palabras de 7+ letras:</strong> <span class="points-cost">-10 puntos por ayuda</span> (sin límite máximo)</li>
             <li><strong>Techo de Costos:</strong> Para palabras de 5-6 letras, los costos totales de ayuda nunca exceden 21 puntos</li>
         </ul>
 
         <h3>⏱️ Sistema de Bonificación por Tiempo:</h3>
         <ul>
             <li><strong>Bonus de Respuesta Rápida:</strong> El temporizador de 5 segundos comienza cuando se revela cada palabra</li>
-            <li><strong>Bonus Dinámico:</strong> Up to <span class="points-gain">+21 bonus points</span> por respuestas inmediatas</li>
+            <li><strong>Bonus Dinámico:</strong> Hasta <span class="points-gain">+21 puntos de bonus</span> por respuestas inmediatas</li>
             <li><strong>Degradación del Bonus:</strong> El bonus disminuye linealmente durante 5 segundos, alcanzando 0 cuando expira el temporizador</li>
             <li><strong>Parada del Bonus:</strong> El temporizador se detiene inmediatamente al usar AYUDA o hacer conjeturas incorrectas</li>
             <li><strong>Potencial Máximo:</strong> Palabra perfecta (30 base) + bonus completo (21) = 51 puntos por palabra</li>

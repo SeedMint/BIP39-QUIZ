@@ -16,12 +16,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  -->
 <!DOCTYPE html>
-<html lang="fr"
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>BIPARDY - Règles du Jeu & Guide</title>
+    <link rel="stylesheet" href="readme-styles.css">
     <style>
         * {
             margin: 0;
@@ -400,8 +401,8 @@
 
         <h1>🎲 BIPARDY</h1>
         
-        <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(45deg, rgba(255, 107, 107, 0.15), rgba(254, 202, 87, 0.15)); border: 2px solid rgba(255, 107, 107, 0.3); border-radius: 15px; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 12px 35px rgba(255, 107, 107, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.2)'">
-            <a href="https://github.com/SeedMint/BIP39-QUIZ" style="color: #feca57; text-decoration: none; font-weight: bold; font-size: 1.1rem;">
+        <div class="github-link-container featured">
+            <a href="https://github.com/SeedMint/BIP39-QUIZ" class="github-link">
                 🔗 Open Source Code on GitHub 🔗
             </a>
         </div>
@@ -439,14 +440,14 @@
         <ul>
             <li><strong>Mots de 5 lettres:</strong> <span class="points-cost">-21 points</span> pour la première aide, puis complètement gratuit</li>
             <li><strong>Mots de 6 lettres:</strong> <span class="points-cost">-10 points</span> première aide, <span class="points-cost">-11 points</span> deuxième aide, puis gratuit</li>
-            <li><strong>Mots de 7+ lettres:</strong> <span class="points-cost">-10 points per help</span> (pas de limite maximale)</li>
+            <li><strong>Mots de 7+ lettres:</strong> <span class="points-cost">-10 points par aide</span> (pas de limite maximale)</li>
             <li><strong>Plafond de Coûts:</strong> Pour les mots de 5-6 lettres, les coûts totaux d'aide ne dépassent jamais 21 points</li>
         </ul>
 
         <h3>⏱️ Système de Bonus de Temps:</h3>
         <ul>
             <li><strong>Bonus de Réponse Rapide:</strong> Le minuteur de 5 secondes démarre quand chaque mot est révélé</li>
-            <li><strong>Bonus Dynamique:</strong> Up to <span class="points-gain">+21 bonus points</span> pour les réponses immédiates</li>
+            <li><strong>Bonus Dynamique:</strong> Jusqu'à <span class="points-gain">+21 points bonus</span> pour les réponses immédiates</li>
             <li><strong>Décroissance du Bonus:</strong> Le bonus diminue linéairement sur 5 secondes, atteignant 0 quand le minuteur expire</li>
             <li><strong>Arrêt du Bonus:</strong> Le minuteur s'arrête immédiatement lors de l'utilisation d'AIDE ou de mauvaises suppositions</li>
             <li><strong>Potentiel Maximum:</strong> Mot parfait (30 base) + bonus complet (21) = 51 points par mot</li>

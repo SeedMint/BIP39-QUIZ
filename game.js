@@ -164,10 +164,10 @@ if ('serviceWorker' in navigator) {
 /* GAME DATA & STATE */
 /* =========================================== */
 
-// BIP-39 wordlist - filtered to only include words with 5+ letters
+// BIP-39 wordlist - contains only words with 5+ letters
 const bip39Words = [
-		  "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act", "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit", "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "age", "agent", "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien", "all", "alley", "allow", "almost", "alone", "alpha", "already", "also", "alter", "always", "amateur", "amazing", "among", "amount", "amused", "analyst", "analyze", "anchor", "ancient", "anger", "angle", "angry", "animal", "ankle", "announce", "annual", "another", "answer", "ant", "anxiety", "any", "apart", "apology", "appear", "apple", "approve", "april", "arch", "arctic", "area", "arena", "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive", "arrow", "art", "artist", "artwork", "ask", "aspect", "assault", "asset", "assist", "assume", "asthma", "athlete", "athletic", "atlas", "atom", "attack", "attend", "attitude", "attorney", "attract", "auction", "audit", "august", "aunt", "author", "auto", "autumn", "average", "avocado", "avoid", "awake", "aware", "away", "awesome", "awful", "awkward", "axis", "baby", "bachelor", "bacon", "badge", "bag", "balance", "balcony", "ball", "bamboo", "banana", "banner", "bar", "barely", "bargain", "barrel", "base", "basic", "basket", "battle", "beach", "bean", "beauty", "because", "become", "beef", "before", "begin", "behave", "behind", "believe", "below", "belt", "bench", "benefit", "best", "betray", "better", "between", "beyond", "bicycle", "bid", "bike", "bind", "biology", "bird", "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "blood", "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body", "boil", "bomb", "bone", "bonus", "book", "boost", "border", "boring", "borrow", "boss", "bottom", "bounce", "box", "boy", "bracket", "brain", "brand", "brass", "brave", "bread", "breeze", "brick", "bridge", "brief", "bright", "bring", "brisk", "broccoli", "broken", "bronze", "broom", "brother", "brown", "brush", "bubble", "buddy", "budget", "buffalo", "build", "bulb", "bulk", "bullet", "bundle", "bunker", "burden", "burger", "burst", "bus", "business", "butter", "buyer", "buzz", "cabbage", "cabin", "cable", "cactus", "cage", "cake", "call", "calm", "camera", "camp", "can", "canal", "cancel", "candy", "cannon", "canoe", "canvas", "canyon", "capable", "capital", "captain", "car", "carbon", "card", "cargo", "carpet", "carry", "cart", "case", "cash", "casino", "castle", "casual", "cat", "catalog", "catch", "category", "cattle", "caught", "cause", "caution", "cave", "ceiling", "celery", "cement", "census", "century", "ceramic", "certain", "chair", "chalk", "champion", "change", "chaos", "chapter", "charge", "cheap", "check", "cheese", "chef", "cherry", "chest", "chicken", "chief", "child", "chimney", "choice", "choose", "chronic", "chuckle", "chunk", "churn", "cigar", "cinnamon", "circle", "citizen", "city", "civil", "claim", "clap", "clarify", "claw", "clay", "clean", "clerk", "clever", "click", "client", "cliff", "climb", "clinic", "clip", "clock", "clog", "clone", "close", "cloth", "cloud", "club", "clump", "cluster", "clutch", "coach", "coast", "coconut", "code", "coffee", "coil", "coin", "collect", "color", "column", "combine", "come", "comfort", "comic", "common", "company", "concert", "conduct", "confirm", "connect", "consist", "console", "construct", "contact", "contain", "contest", "context", "continue", "control", "convey", "convince", "cook", "cool", "copper", "copy", "coral", "core", "corn", "correct", "cost", "cotton", "couch", "country", "couple", "course", "cousin", "cover", "coyote", "crack", "cradle", "craft", "cram", "crane", "crash", "crater", "crawl", "crazy", "cream", "credit", "creek", "crew", "cricket", "crime", "crisp", "critic", "crop", "cross", "crouch", "crowd", "crown", "crucial", "cruel", "cruise", "crumble", "crunch", "crush", "cry", "crystal", "cube", "culture", "cup", "cupboard", "curious", "current", "curve", "cushion", "custom", "cute", "cycle", "dad", "damage", "damp", "dance", "danger", "daring", "dash", "daughter", "dawn", "day", "deal", "debate", "debris", "decade", "december", "decide", "decline", "decorate", "decrease", "deer", "defense", "define", "degree", "delay", "deliver", "demand", "demise", "deny", "depart", "depend", "deposit", "depth", "deputy", "derive", "describe", "desert", "design", "desk", "despair", "destroy", "detail", "detect", "develop", "device", "devote", "diagram", "dial", "diamond", "diary", "dice", "diesel", "diet", "differ", "digital", "dignity", "dilemma", "dinner", "dinosaur", "direct", "dirt", "disagree", "discover", "disease", "dish", "dismiss", "disorder", "display", "distance", "divide", "divine", "divorce", "dizzy", "doctor", "document", "dog", "doll", "dolphin", "domain", "donate", "donkey", "donor", "door", "dose", "double", "dove", "draft", "dragon", "drama", "drastic", "draw", "dream", "dress", "drift", "drill", "drink", "drip", "drive", "drop", "drum", "dry", "duck", "dumb", "dune", "during", "dust", "dutch", "duty", "dwarf", "dynamic", "eager", "eagle", "early", "earn", "earth", "easily", "east", "easy", "echo", "ecology", "economy", "edge", "edit", "educate", "effort", "egg", "eight", "either", "elbow", "elder", "electric", "elegant", "element", "elephant", "elevator", "elite", "else", "embark", "embody", "embrace", "emerge", "emotion", "employ", "empower", "empty", "enable", "enact", "end", "endless", "endorse", "enemy", "energy", "enforce", "engage", "engine", "enhance", "enjoy", "enlist", "enough", "enrich", "enroll", "ensure", "enter", "entire", "entry", "envelope", "episode", "equal", "equip", "era", "erase", "erupt", "escape", "essay", "estate", "eternal", "ethics", "evidence", "evil", "evoke", "evolve", "exact", "example", "excess", "exchange", "excite", "exclude", "excuse", "execute", "exercise", "exhaust", "exhibit", "exile", "exist", "exit", "exotic", "expand", "expect", "expire", "explain", "expose", "express", "extend", "extra", "eye", "eyebrow", "fabric", "face", "faculty", "fade", "faint", "faith", "fall", "false", "fame", "family", "famous", "fan", "fancy", "fantasy", "farm", "fashion", "fast", "fat", "fatal", "father", "fatigue", "fault", "favorite", "feature", "february", "federal", "fee", "feed", "feel", "female", "fence", "festival", "fetch", "fever", "few", "fiber", "fiction", "field", "figure", "file", "film", "filter", "final", "find", "fine", "finger", "finish", "fire", "firm", "first", "fiscal", "fish", "fit", "fitness", "fix", "flag", "flame", "flash", "flat", "flavor", "flee", "flight", "flip", "float", "flock", "floor", "flower", "fluid", "flush", "fly", "foam", "focus", "fog", "foil", "fold", "follow", "food", "foot", "force", "forest", "forget", "fork", "fortune", "forum", "forward", "fossil", "foster", "found", "fox", "fragile", "frame", "frequent", "fresh", "friend", "fringe", "frog", "front", "frost", "frown", "frozen", "fruit", "fuel", "fun", "funny", "furnace", "fury", "future", "gadget", "gain", "galaxy", "gallery", "game", "gap", "garage", "garbage", "garden", "garlic", "garment", "gas", "gasp", "gate", "gather", "gauge", "gaze", "general", "genius", "genre", "gentle", "genuine", "gesture", "ghost", "giant", "gift", "giggle", "ginger", "giraffe", "girl", "give", "glad", "glance", "glare", "glass", "glide", "glimpse", "globe", "gloom", "glory", "glove", "glow", "glue", "goat", "goblin", "gold", "good", "goose", "gorilla", "gospel", "gossip", "govern", "gown", "grab", "grace", "grain", "grant", "grape", "grass", "gravity", "great", "green", "grid", "grief", "grit", "grocery", "group", "grow", "grunt", "guard", "guess", "guide", "guilt", "guitar", "gun", "gym", "habit", "hair", "half", "hammer", "hamster", "hand", "happy", "harbor", "hard", "harsh", "harvest", "hat", "have", "hawk", "hazard", "head", "health", "heart", "heavy", "hedgehog", "height", "hello", "helmet", "help", "hen", "hero", "hidden", "high", "hill", "hint", "hip", "hire", "history", "hobby", "hockey", "hold", "hole", "holiday", "hollow", "home", "honey", "hood", "hope", "horn", "horror", "horse", "hospital", "host", "hotel", "hour", "hover", "hub", "huge", "human", "humble", "humor", "hundred", "hungry", "hunt", "hurdle", "hurry", "hurt", "husband", "hybrid", "ice", "icon", "idea", "identify", "idle", "ignore", "ill", "illegal", "illness", "image", "imitate", "immense", "immune", "impact", "impose", "improve", "impulse", "inch", "include", "income", "increase", "index", "indicate", "indoor", "industry", "infant", "inflict", "inform", "inhale", "inherit", "initial", "inject", "injury", "inmate", "inner", "innocent", "input", "inquiry", "insane", "insect", "inside", "inspire", "install", "intact", "interest", "into", "invest", "invite", "involve", "iron", "island", "isolate", "issue", "item", "ivory", "jacket", "jaguar", "jar", "jazz", "jealous", "jeans", "jelly", "jewel", "job", "join", "joke", "journey", "joy", "judge", "juice", "jumble", "jump", "junction", "junk", "just", "kangaroo", "keen", "keep", "ketchup", "key", "kick", "kid", "kidney", "kind", "kingdom", "kiss", "kit", "kitchen", "kite", "kittens", "kiwi", "knee", "knife", "knock", "know", "lab", "label", "labor", "ladder", "lady", "lake", "lamp", "language", "laptop", "large", "later", "latin", "laugh", "laundry", "lava", "law", "lawn", "lawsuit", "layer", "lazy", "leader", "leaf", "learn", "lease", "least", "leave", "lecture", "left", "leg", "legal", "legend", "lemon", "lend", "length", "lens", "leopard", "lesson", "letter", "level", "liar", "liberty", "library", "license", "life", "lift", "light", "like", "limb", "limit", "link", "lion", "liquid", "list", "little", "live", "lizard", "load", "loan", "lobster", "local", "lock", "logic", "lonely", "long", "loop", "lottery", "loud", "lounge", "love", "loyal", "lucky", "luggage", "lumber", "lunar", "lunch", "luxury", "lyrics", "machine", "mad", "magic", "magnet", "maize", "major", "make", "mammal", "man", "manage", "mandate", "mango", "mansion", "manual", "maple", "marble", "march", "margin", "marine", "market", "marriage", "mask", "mass", "master", "match", "material", "math", "matrix", "matter", "maximum", "maze", "meadow", "mean", "measure", "meat", "mechanic", "medal", "media", "melody", "melt", "member", "memory", "mention", "menu", "mercy", "merge", "merit", "merry", "mesh", "message", "metal", "method", "middle", "midnight", "milk", "million", "mimic", "mind", "mineral", "minimal", "minimum", "minor", "minute", "miracle", "mirror", "misery", "miss", "mistake", "mix", "mixed", "mixture", "mobile", "mode", "model", "modify", "mom", "moment", "monitor", "monster", "month", "moon", "moral", "more", "morning", "mosquito", "mother", "motion", "motor", "mountain", "mouse", "move", "movie", "much", "muffin", "mule", "multiply", "muscle", "museum", "mushroom", "music", "must", "mutual", "myself", "mystery", "myth", "naive", "name", "napkin", "narrow", "nasty", "nation", "nature", "near", "neck", "need", "negative", "neglect", "neither", "nephew", "nerve", "nest", "net", "network", "neutral", "never", "news", "next", "nice", "night", "noble", "noise", "nominee", "noodle", "normal", "north", "nose", "notable", "note", "nothing", "notice", "novel", "now", "nuclear", "number", "nurse", "nut", "oasis", "obey", "object", "oblige", "obscure", "observe", "obtain", "obvious", "occur", "ocean", "october", "odds", "offer", "office", "often", "oil", "okay", "old", "olive", "olympic", "omit", "once", "one", "onion", "online", "only", "open", "opera", "opinion", "oppose", "option", "orange", "orbit", "orchard", "order", "ordinary", "organ", "orient", "original", "orphan", "ostrich", "other", "outdoor", "outer", "output", "outside", "oval", "oven", "over", "own", "owner", "oxygen", "oyster", "ozone", "pact", "paddle", "page", "pair", "palace", "palm", "panda", "panel", "panic", "panther", "paper", "parade", "parent", "park", "parrot", "party", "pass", "patch", "path", "patient", "patrol", "pattern", "pause", "pave", "payment", "peace", "peanut", "pepper", "perfect", "permit", "person", "pet", "phone", "photo", "phrase", "physical", "piano", "picnic", "picture", "piece", "pig", "pigeon", "pill", "pilot", "pink", "pioneer", "pipe", "pistol", "pitch", "pizza", "place", "planet", "plastic", "plate", "play", "please", "pledge", "pluck", "plug", "plunge", "poem", "poet", "point", "polar", "pole", "police", "pond", "pony", "pool", "popular", "portion", "position", "possible", "post", "potato", "pottery", "pouch", "pound", "powder", "power", "practice", "praise", "predict", "prefer", "prepare", "present", "pretty", "prevent", "price", "pride", "primary", "print", "priority", "prison", "private", "prize", "problem", "process", "produce", "profit", "program", "project", "promote", "proof", "property", "prose", "protest", "protocol", "provide", "public", "pudding", "pull", "pulp", "pulse", "pumpkin", "punch", "pupil", "puppy", "purchase", "purity", "purple", "purpose", "pursue", "push", "put", "puzzle", "pyramid", "quality", "quantum", "quarter", "question", "quick", "quit", "quite", "quote", "rabbit", "raccoon", "race", "racket", "radar", "radio", "rail", "rain", "raise", "rally", "ramp", "ranch", "random", "range", "rapid", "rare", "rate", "rather", "raven", "raw", "razor", "ready", "real", "reason", "rebel", "rebuild", "recall", "receive", "recipe", "record", "reduce", "reflect", "reform", "refuse", "region", "regret", "regular", "reject", "relax", "release", "relief", "rely", "remain", "remark", "remind", "remove", "render", "renew", "rental", "repair", "repeat", "replace", "report", "require", "rescue", "resemble", "resist", "resource", "response", "result", "resume", "retire", "retreat", "return", "reunion", "reveal", "review", "reward", "rhythm", "ribbon", "rice", "rich", "ride", "ridge", "rifle", "right", "rigid", "ring", "riot", "ripen", "rise", "risk", "ritual", "rival", "river", "road", "roast", "robot", "robust", "rocket", "romance", "roof", "rookie", "room", "rose", "rotate", "rough", "round", "route", "royal", "rubber", "rude", "rug", "rule", "run", "rush", "rust", "sad", "saddle", "sadness", "safe", "sail", "salad", "salmon", "salt", "salute", "same", "sample", "sand", "satisfy", "satoshi", "sauce", "sausage", "save", "say", "scale", "scan", "scare", "scatter", "scene", "scheme", "school", "science", "scissors", "scorpion", "scout", "scrap", "screen", "script", "scrub", "sea", "search", "season", "seat", "second", "secret", "section", "sector", "secure", "segment", "select", "sell", "seminar", "senior", "sense", "sentence", "series", "service", "session", "settle", "setup", "seven", "shadow", "shaft", "shallow", "share", "shed", "shell", "sheriff", "shield", "shift", "shine", "ship", "shiver", "shock", "shoe", "shoot", "shop", "short", "shoulder", "shove", "shrimp", "shrug", "shuffle", "shy", "sibling", "sick", "side", "siege", "sight", "sign", "silent", "silk", "silly", "silver", "similar", "simple", "since", "sing", "siren", "sister", "situate", "six", "size", "skate", "sketch", "ski", "skill", "skin", "skirt", "skull", "slab", "slack", "slam", "slang", "slate", "slave", "sleep", "sleeve", "slide", "slight", "slim", "slogan", "slot", "slow", "slush", "small", "smart", "smile", "smoke", "smooth", "snack", "snake", "snap", "sniff", "snow", "soap", "soccer", "social", "sock", "soda", "soft", "solar", "soldier", "solid", "solution", "solve", "someone", "song", "soon", "sorry", "sort", "soul", "sound", "soup", "source", "south", "space", "spare", "spatial", "spawn", "speak", "special", "speed", "spell", "spend", "sphere", "spice", "spider", "spike", "spin", "spirit", "split", "spoil", "sport", "spot", "spray", "spread", "spring", "spy", "square", "squeeze", "squirrel", "stable", "stadium", "staff", "stage", "stamp", "staple", "star", "start", "state", "stay", "steak", "steel", "stem", "step", "stereo", "stick", "still", "sting", "stock", "stomach", "stone", "stool", "story", "stove", "strategy", "street", "strike", "strong", "struggle", "student", "stuff", "stumble", "style", "subject", "submit", "subway", "success", "such", "sugar", "suggest", "suit", "summer", "sun", "sunny", "sunset", "super", "supply", "supreme", "sure", "surface", "surge", "surprise", "surround", "survey", "suspect", "sustain", "swallow", "swamp", "swarm", "swear", "sweet", "swift", "swim", "swing", "switch", "sword", "symbol", "symptom", "syndrome", "system", "table", "tackle", "tactic", "tadpole", "tag", "tail", "talent", "talk", "tank", "tape", "target", "task", "taste", "tattle", "taught", "tax", "team", "tell", "temper", "temple", "tennis", "tent", "term", "test", "text", "thank", "that", "theme", "theory", "there", "they", "thing", "this", "thought", "three", "thrive", "throw", "thumb", "thunder", "ticket", "tide", "tiger", "tilt", "timber", "time", "tiny", "tip", "tired", "tissue", "title", "toast", "tobacco", "today", "toddler", "toe", "together", "toilet", "token", "tomato", "tomorrow", "tone", "tongue", "tonight", "tool", "tooth", "top", "topic", "topple", "torch", "tornado", "tortoise", "toss", "total", "tourist", "toward", "tower", "town", "toy", "track", "trade", "traffic", "tragic", "train", "transfer", "trap", "travel", "tray", "treat", "tree", "trend", "trial", "tribe", "trick", "trigger", "trim", "trip", "trophy", "trouble", "truck", "true", "truly", "trumpet", "trust", "truth", "try", "tube", "tuition", "tumble", "tuna", "tunnel", "turkey", "turn", "turtle", "twelve", "twist", "two", "type", "typical", "ugly", "umbrella", "unable", "unaware", "uncle", "uncover", "under", "undo", "unfair", "unfold", "unhappy", "uniform", "unique", "unit", "universe", "unknown", "unlock", "until", "unusual", "unveil", "update", "upgrade", "uphold", "uplift", "upon", "upper", "upset", "urban", "urge", "usage", "use", "used", "useful", "useless", "usual", "utility", "vacant", "vacuum", "vague", "valid", "valley", "valve", "van", "vanish", "vapor", "variable", "vault", "vegetable", "vehicle", "velvet", "vendor", "venture", "venue", "verb", "verify", "version", "very", "vessel", "veteran", "viable", "vibrant", "vicious", "victory", "video", "view", "village", "vintage", "violin", "virtual", "virus", "visa", "visit", "visual", "vital", "vivid", "vocal", "voice", "void", "volcano", "volume", "vote", "voyage", "wage", "wagon", "wait", "walk", "wall", "walnut", "want", "warfare", "warm", "warrior", "wash", "wasp", "waste", "water", "wave", "way", "wealth", "weapon", "wear", "weasel", "weather", "web", "wedding", "weekend", "weird", "welcome", "west", "wet", "whale", "what", "wheat", "wheel", "when", "where", "whip", "whisper", "wide", "width", "wife", "wild", "will", "win", "window", "wine", "wing", "wink", "winner", "winter", "wire", "wisdom", "wise", "wish", "witness", "wolf", "woman", "wonder", "wood", "wool", "word", "work", "world", "worry", "worth", "wrap", "wrist", "write", "wrong", "yard", "year", "yellow", "you", "young", "youth", "zebra", "zero", "zone", "zoo"
-].filter(word => word.length >= 5);
+		  "abandon", "ability", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access", "accident", "account", "accuse", "achieve", "acoustic", "acquire", "across", "action", "actor", "actress", "actual", "adapt", "addict", "address", "adjust", "admit", "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "agent", "agree", "ahead", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien", "alley", "allow", "almost", "alone", "alpha", "already", "alter", "always", "amateur", "amazing", "among", "amount", "amused", "analyst", "analyze", "anchor", "ancient", "anger", "angle", "angry", "animal", "ankle", "announce", "annual", "another", "answer", "anxiety", "apart", "apology", "appear", "apple", "approve", "april", "arctic", "arena", "argue", "armed", "armor", "around", "arrange", "arrest", "arrive", "arrow", "artist", "artwork", "aspect", "assault", "asset", "assist", "assume", "asthma", "athlete", "athletic", "atlas", "attack", "attend", "attitude", "attorney", "attract", "auction", "audit", "august", "author", "autumn", "average", "avocado", "avoid", "awake", "aware", "awesome", "awful", "awkward", "bachelor", "bacon", "badge", "balance", "balcony", "bamboo", "banana", "banner", "barely", "bargain", "barrel", "basic", "basket", "battle", "beach", "beauty", "because", "become", "before", "begin", "behave", "behind", "believe", "below", "bench", "benefit", "betray", "better", "between", "beyond", "bicycle", "biology", "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "blood", "blossom", "blouse", "board", "bonus", "boost", "border", "boring", "borrow", "bottom", "bounce", "bracket", "brain", "brand", "brass", "brave", "bread", "breeze", "brick", "bridge", "brief", "bright", "bring", "brisk", "broccoli", "broken", "bronze", "broom", "brother", "brown", "brush", "bubble", "buddy", "budget", "buffalo", "build", "bullet", "bundle", "bunker", "burden", "burger", "burst", "business", "butter", "buyer", "cabbage", "cabin", "cable", "cactus", "camera", "canal", "cancel", "candy", "cannon", "canoe", "canvas", "canyon", "capable", "capital", "captain", "carbon", "cargo", "carpet", "carry", "casino", "castle", "casual", "catalog", "catch", "category", "cattle", "caught", "cause", "caution", "ceiling", "celery", "cement", "census", "century", "ceramic", "certain", "chair", "chalk", "champion", "change", "chaos", "chapter", "charge", "cheap", "check", "cheese", "cherry", "chest", "chicken", "chief", "child", "chimney", "choice", "choose", "chronic", "chuckle", "chunk", "churn", "cigar", "cinnamon", "circle", "citizen", "civil", "claim", "clarify", "clean", "clerk", "clever", "click", "client", "cliff", "climb", "clinic", "clock", "clone", "close", "cloth", "cloud", "clump", "cluster", "clutch", "coach", "coast", "coconut", "coffee", "collect", "color", "column", "combine", "comfort", "comic", "common", "company", "concert", "conduct", "confirm", "connect", "consist", "console", "construct", "contact", "contain", "contest", "context", "continue", "control", "convey", "convince", "copper", "coral", "correct", "cotton", "couch", "country", "couple", "course", "cousin", "cover", "coyote", "crack", "cradle", "craft", "crane", "crash", "crater", "crawl", "crazy", "cream", "credit", "creek", "cricket", "crime", "crisp", "critic", "cross", "crouch", "crowd", "crown", "crucial", "cruel", "cruise", "crumble", "crunch", "crush", "crystal", "culture", "cupboard", "curious", "current", "curve", "cushion", "custom", "cycle", "damage", "dance", "danger", "daring", "daughter", "debate", "debris", "decade", "december", "decide", "decline", "decorate", "decrease", "defense", "define", "degree", "delay", "deliver", "demand", "demise", "depart", "depend", "deposit", "depth", "deputy", "derive", "describe", "desert", "design", "despair", "destroy", "detail", "detect", "develop", "device", "devote", "diagram", "diamond", "diary", "diesel", "differ", "digital", "dignity", "dilemma", "dinner", "dinosaur", "direct", "disagree", "discover", "disease", "dismiss", "disorder", "display", "distance", "divide", "divine", "divorce", "dizzy", "doctor", "document", "dolphin", "domain", "donate", "donkey", "donor", "double", "draft", "dragon", "drama", "drastic", "dream", "dress", "drift", "drill", "drink", "drive", "dwarf", "dynamic", "eager", "eagle", "early", "earth", "easily", "ecology", "economy", "educate", "effort", "eight", "either", "elbow", "elder", "electric", "elegant", "element", "elephant", "elevator", "elite", "embark", "embody", "embrace", "emerge", "emotion", "employ", "empower", "empty", "enable", "enact", "endless", "endorse", "enemy", "energy", "enforce", "engage", "engine", "enhance", "enjoy", "enlist", "enough", "enrich", "enroll", "ensure", "enter", "entire", "entry", "envelope", "episode", "equal", "equip", "erase", "erupt", "escape", "essay", "estate", "eternal", "ethics", "evidence", "evoke", "evolve", "exact", "example", "excess", "exchange", "excite", "exclude", "excuse", "execute", "exercise", "exhaust", "exhibit", "exile", "exist", "exotic", "expand", "expect", "expire", "explain", "expose", "express", "extend", "extra", "eyebrow", "fabric", "faculty", "faint", "faith", "false", "family", "famous", "fancy", "fantasy", "fashion", "fatal", "father", "fatigue", "fault", "favorite", "feature", "february", "federal", "festival", "fetch", "fever", "fiber", "fiction", "field", "figure", "final", "finger", "finish", "first", "fiscal", "fitness", "flame", "flash", "flavor", "flight", "float", "flock", "floor", "flower", "fluid", "flush", "focus", "follow", "force", "forest", "forget", "fortune", "forum", "forward", "fossil", "foster", "found", "fragile", "frame", "frequent", "fresh", "friend", "fringe", "front", "frost", "frown", "frozen", "fruit", "funny", "furnace", "future", "gadget", "galaxy", "gallery", "garage", "garbage", "garden", "garlic", "garment", "gather", "gauge", "general", "genius", "genre", "gentle", "genuine", "gesture", "ghost", "giant", "giggle", "ginger", "giraffe", "glance", "glare", "glass", "glide", "glimpse", "globe", "gloom", "glory", "glove", "goblin", "goose", "gorilla", "gospel", "gossip", "govern", "grace", "grain", "grant", "grape", "grass", "gravity", "great", "green", "grief", "grocery", "group", "grunt", "guard", "guess", "guide", "guilt", "guitar", "habit", "hammer", "hamster", "happy", "harbor", "harsh", "harvest", "hazard", "health", "heart", "heavy", "hedgehog", "height", "hello", "helmet", "hidden", "history", "hobby", "hockey", "holiday", "hollow", "honey", "horse", "hospital", "hotel", "hover", "human", "humble", "humor", "hundred", "hungry", "hurdle", "hurry", "husband", "hybrid", "identify", "ignore", "illegal", "illness", "image", "imitate", "immense", "immune", "impact", "impose", "improve", "impulse", "include", "income", "increase", "index", "indicate", "indoor", "industry", "infant", "inflict", "inform", "inhale", "inherit", "initial", "inject", "injury", "inmate", "inner", "innocent", "input", "inquiry", "insane", "insect", "inside", "inspire", "install", "intact", "interest", "invest", "invite", "involve", "island", "isolate", "issue", "ivory", "jacket", "jaguar", "jealous", "jeans", "jelly", "jewel", "journey", "judge", "juice", "jumble", "junction", "kangaroo", "ketchup", "kidney", "kingdom", "kitchen", "kittens", "knife", "knock", "label", "labor", "ladder", "language", "laptop", "large", "later", "latin", "laugh", "laundry", "leader", "learn", "lease", "least", "leave", "lecture", "legal", "legend", "lemon", "length", "leopard", "lesson", "letter", "level", "liberty", "library", "license", "light", "limit", "liquid", "little", "lizard", "lobster", "local", "logic", "lonely", "lottery", "lounge", "loyal", "lucky", "luggage", "lumber", "lunar", "lunch", "luxury", "lyrics", "machine", "magic", "magnet", "maize", "major", "mammal", "manage", "mandate", "mango", "mansion", "manual", "maple", "marble", "march", "margin", "marine", "market", "marriage", "master", "match", "material", "matrix", "matter", "maximum", "meadow", "measure", "mechanic", "medal", "media", "melody", "member", "memory", "mention", "mercy", "merge", "merit", "merry", "message", "metal", "method", "middle", "midnight", "million", "mimic", "mineral", "minimal", "minimum", "minor", "minute", "miracle", "mirror", "misery", "mistake", "mixed", "mixture", "mobile", "model", "modify", "moment", "monitor", "monster", "month", "moral", "morning", "mosquito", "mother", "motion", "motor", "mountain", "mouse", "movie", "muffin", "multiply", "muscle", "museum", "mushroom", "music", "mutual", "myself", "mystery", "naive", "napkin", "narrow", "nasty", "nation", "nature", "negative", "neglect", "neither", "nephew", "nerve", "network", "neutral", "never", "night", "noble", "noise", "nominee", "noodle", "normal", "north", "notable", "nothing", "notice", "novel", "nuclear", "number", "nurse", "oasis", "object", "oblige", "obscure", "observe", "obtain", "obvious", "occur", "ocean", "october", "offer", "office", "often", "olive", "olympic", "onion", "online", "opera", "opinion", "oppose", "option", "orange", "orbit", "orchard", "order", "ordinary", "organ", "orient", "original", "orphan", "ostrich", "other", "outdoor", "outer", "output", "outside", "owner", "oxygen", "oyster", "ozone", "paddle", "palace", "panda", "panel", "panic", "panther", "paper", "parade", "parent", "parrot", "party", "patch", "patient", "patrol", "pattern", "pause", "payment", "peace", "peanut", "pepper", "perfect", "permit", "person", "phone", "photo", "phrase", "physical", "piano", "picnic", "picture", "piece", "pigeon", "pilot", "pioneer", "pistol", "pitch", "pizza", "place", "planet", "plastic", "plate", "please", "pledge", "pluck", "plunge", "point", "polar", "police", "popular", "portion", "position", "possible", "potato", "pottery", "pouch", "pound", "powder", "power", "practice", "praise", "predict", "prefer", "prepare", "present", "pretty", "prevent", "price", "pride", "primary", "print", "priority", "prison", "private", "prize", "problem", "process", "produce", "profit", "program", "project", "promote", "proof", "property", "prose", "protest", "protocol", "provide", "public", "pudding", "pulse", "pumpkin", "punch", "pupil", "puppy", "purchase", "purity", "purple", "purpose", "pursue", "puzzle", "pyramid", "quality", "quantum", "quarter", "question", "quick", "quite", "quote", "rabbit", "raccoon", "racket", "radar", "radio", "raise", "rally", "ranch", "random", "range", "rapid", "rather", "raven", "razor", "ready", "reason", "rebel", "rebuild", "recall", "receive", "recipe", "record", "reduce", "reflect", "reform", "refuse", "region", "regret", "regular", "reject", "relax", "release", "relief", "remain", "remark", "remind", "remove", "render", "renew", "rental", "repair", "repeat", "replace", "report", "require", "rescue", "resemble", "resist", "resource", "response", "result", "resume", "retire", "retreat", "return", "reunion", "reveal", "review", "reward", "rhythm", "ribbon", "ridge", "rifle", "right", "rigid", "ripen", "ritual", "rival", "river", "roast", "robot", "robust", "rocket", "romance", "rookie", "rotate", "rough", "round", "route", "royal", "rubber", "saddle", "sadness", "salad", "salmon", "salute", "sample", "satisfy", "satoshi", "sauce", "sausage", "scale", "scare", "scatter", "scene", "scheme", "school", "science", "scissors", "scorpion", "scout", "screen", "script", "search", "season", "second", "secret", "section", "sector", "secure", "segment", "select", "seminar", "senior", "sense", "sentence", "series", "service", "session", "settle", "setup", "seven", "shadow", "shaft", "shallow", "share", "shell", "sheriff", "shield", "shift", "shine", "shiver", "shock", "shoot", "short", "shoulder", "shove", "shrimp", "shrug", "shuffle", "sibling", "siege", "sight", "silent", "silly", "silver", "similar", "simple", "since", "siren", "sister", "situate", "skate", "sketch", "skill", "skirt", "skull", "slack", "slang", "slate", "slave", "sleep", "sleeve", "slide", "slight", "slogan", "slush", "small", "smart", "smile", "smoke", "smooth", "snack", "snake", "sniff", "soccer", "social", "solar", "soldier", "solid", "solution", "solve", "someone", "sorry", "sound", "source", "south", "space", "spare", "spatial", "spawn", "speak", "special", "speed", "spell", "spend", "sphere", "spice", "spider", "spike", "spirit", "split", "spoil", "sport", "spray", "spread", "spring", "square", "squeeze", "squirrel", "stable", "stadium", "staff", "stage", "stamp", "staple", "start", "state", "steak", "steel", "stick", "still", "sting", "stock", "stomach", "stone", "stool", "story", "stove", "strategy", "street", "strike", "strong", "struggle", "student", "stuff", "stumble", "style", "subject", "submit", "subway", "success", "sugar", "suggest", "summer", "sunny", "sunset", "super", "supply", "supreme", "surface", "surge", "surprise", "surround", "survey", "suspect", "sustain", "swallow", "swamp", "swear", "sweet", "swift", "swing", "switch", "sword", "symbol", "symptom", "syndrome", "system", "table", "tackle", "tactic", "tadpole", "tail", "talent", "target", "taste", "tattle", "taught", "temper", "temple", "tennis", "thank", "theme", "theory", "there", "thing", "this", "thought", "three", "thrive", "throw", "thumb", "thunder", "ticket", "tiger", "timber", "tiny", "tired", "tissue", "title", "toast", "tobacco", "today", "toddler", "together", "toilet", "token", "tomato", "tomorrow", "tongue", "tonight", "tooth", "topic", "topple", "torch", "tornado", "tortoise", "total", "tourist", "toward", "tower", "track", "trade", "traffic", "tragic", "train", "transfer", "travel", "treat", "trend", "trial", "tribe", "trick", "trigger", "trophy", "trouble", "truck", "truly", "trumpet", "trust", "truth", "tuition", "tumble", "tunnel", "turkey", "turtle", "twelve", "twist", "typical", "umbrella", "unable", "unaware", "uncle", "uncover", "under", "unfair", "unfold", "unhappy", "uniform", "unique", "universe", "unknown", "unlock", "until", "unusual", "unveil", "update", "upgrade", "uphold", "uplift", "upper", "upset", "urban", "usage", "useful", "useless", "usual", "utility", "vacant", "vacuum", "vague", "valid", "valley", "valve", "vanish", "vapor", "variable", "vault", "vegetable", "vehicle", "velvet", "vendor", "venture", "venue", "verify", "version", "vessel", "veteran", "viable", "vibrant", "vicious", "victory", "video", "village", "vintage", "violin", "virtual", "virus", "visit", "visual", "vital", "vivid", "vocal", "voice", "volcano", "volume", "voyage", "wagon", "walnut", "warfare", "warrior", "waste", "water", "wealth", "weapon", "weasel", "weather", "wedding", "weekend", "weird", "welcome", "whale", "wheat", "wheel", "where", "whip", "whisper", "width", "window", "winner", "winter", "wisdom", "witness", "woman", "wonder", "world", "worry", "worth", "wrist", "write", "wrong", "yellow", "young", "youth", "zebra"
+];
 
 // Game state
 let currentWord = "";
@@ -179,10 +179,16 @@ let showWordLength = false;
 let gameLength = 12; // Default to 12 words
 let players = [];
 let gameActive = true;
+let keyboardLocked = false;
 let playerToggleSettings = [];
 let toggleUsedThisRound = false;
 let helpUsedCount = 0;
 let wrongGuessCount = 0;
+
+// Unified input sanitization function
+function sanitizeName(input) {
+    return input.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+}
 
 // Timer bonus system configuration
 const TIMER_DURATION = 5; // seconds - easy to adjust
@@ -561,7 +567,7 @@ function getRandomWord() {
     recentlyUsedWords.push(selectedWord);
     
     // Maintain recently used list at 210 entries max
-    if (recentlyUsedWords.length > 210) {
+    if (recentlyUsedWords.length > 120) {
         recentlyUsedWords.shift(); // Remove oldest entry
     }
 
@@ -1050,11 +1056,6 @@ function enableAllKeys() {
 
 // Edit player name function
 function editPlayerName(playerIndex, nameElement) {
-    // Don't allow editing during active gameplay
-    if (gameActive) {
-        console.log('❌ Cannot edit names during active gameplay');
-        return;
-    }
     
     // Don't allow editing if already editing another name
     if (document.querySelector('.name.editing')) {
@@ -1071,9 +1072,12 @@ function editPlayerName(playerIndex, nameElement) {
     input.type = 'text';
     input.className = 'name-input';
     // Filter the current name before setting it
-    const filteredCurrentName = currentName.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    const filteredCurrentName = sanitizeName(currentName);
     input.value = filteredCurrentName;
     input.maxLength = 12; // Reasonable limit
+    
+    // Lock keyboard for name input
+    keyboardLocked = true;
     
     // Add editing class for visual feedback
     nameElement.classList.add('editing');
@@ -1089,7 +1093,7 @@ function editPlayerName(playerIndex, nameElement) {
     // Add input filtering for name validation
     function filterInput(inputEl) {
         const original = inputEl.value;
-        const filtered = original.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+        const filtered = sanitizeName(original);
         if (original !== filtered) {
             console.log('🔄 FILTERING NAME INPUT:', original, '->', filtered);
             inputEl.value = filtered;
@@ -1108,7 +1112,7 @@ function editPlayerName(playerIndex, nameElement) {
     function saveName() {
         const rawName = input.value.trim();
         // Apply filtering to the final name before saving
-        const newName = rawName.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+        const newName = sanitizeName(rawName);
         if (newName && newName !== currentName) {
             players[playerIndex].name = newName;
         }
@@ -1117,18 +1121,25 @@ function editPlayerName(playerIndex, nameElement) {
         nameElement.classList.remove('editing');
         nameElement.removeChild(input);
         nameElement.textContent = players[playerIndex].name;
+        
+        // Unlock keyboard
+        keyboardLocked = false;
     }
     
     // Save on Enter key or blur
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
+            e.stopPropagation();
             saveName();
         } else if (e.key === 'Escape') {
             // Cancel editing - restore original name
             nameElement.classList.remove('editing');
             nameElement.removeChild(input);
             nameElement.textContent = currentName;
+            
+            // Unlock keyboard
+            keyboardLocked = false;
         }
     });
     
@@ -1209,6 +1220,88 @@ function updateSubmissionButtons() {
         globalBtn.disabled = true;
         globalBtn.textContent = '✅ Shared Globally';
         globalBtn.style.opacity = '0.6';
+    }
+}
+
+// Update the global submission eligibility UI
+async function updateGlobalEligibility(scoreData) {
+    const globalBtn = document.getElementById('submitGlobalBtn');
+    const eligibilityNotice = document.getElementById('eligibilityNotice');
+    
+    // Validate DOM elements exist
+    if (!globalBtn || !eligibilityNotice) {
+        console.error('Required DOM elements not found for eligibility update');
+        return;
+    }
+    
+    // Validate score data
+    if (!scoreData || typeof scoreData.combined !== 'number') {
+        console.error('Invalid score data provided to updateGlobalEligibility');
+        return;
+    }
+    
+    // Prevent race conditions by using a unique request ID
+    const requestId = Date.now() + Math.random();
+    updateGlobalEligibility.currentRequest = requestId;
+    
+    try {
+        // Show loading state
+        eligibilityNotice.style.display = 'block';
+        eligibilityNotice.className = 'eligibility-notice loading';
+        eligibilityNotice.textContent = '🔍 Checking global leaderboard qualification...';
+        
+        // Check eligibility
+        const eligibility = await checkGlobalEligibility(scoreData);
+        
+        // Check if this request is still the current one (prevent race conditions)
+        if (updateGlobalEligibility.currentRequest !== requestId) {
+            return; // Another request has been made, ignore this result
+        }
+        
+        if (eligibility.eligible) {
+            // Qualified - show green notice
+            eligibilityNotice.className = 'eligibility-notice qualified';
+            if (eligibility.rank) {
+                eligibilityNotice.textContent = `🎉 Your score qualifies for global leaderboard! Projected rank: #${eligibility.rank}`;
+            } else {
+                eligibilityNotice.textContent = `🎉 Your score qualifies for the global leaderboard!`;
+            }
+            
+            // Keep global button enabled and styled normally
+            globalBtn.classList.remove('ineligible');
+            globalBtn.removeAttribute('title');
+        } else {
+            // Not qualified - show red notice and disable button
+            eligibilityNotice.className = 'eligibility-notice not-qualified';
+            
+            if (eligibility.error) {
+                eligibilityNotice.textContent = `⚠️ Could not verify qualification. Score must be at least ${eligibility.minScore} to submit globally.`;
+            } else if (eligibility.totalEntries < 21) {
+                eligibilityNotice.textContent = `📊 Score too low. Need at least ${eligibility.minScore} points to qualify for global leaderboard.`;
+            } else {
+                eligibilityNotice.textContent = `📊 Score needs to be ${eligibility.minScore}+ to make top 21 global leaderboard (you need ${eligibility.scoreNeeded} more points).`;
+            }
+            
+            // Disable and style global button
+            globalBtn.classList.add('ineligible');
+            globalBtn.disabled = true;
+            globalBtn.textContent = `Score too low (${eligibility.minScore}+ needed)`;
+            globalBtn.title = `Your score needs to be at least ${eligibility.minScore} to qualify for global leaderboard`;
+        }
+        
+    } catch (error) {
+        console.error('Error updating global eligibility:', error);
+        
+        // Check if this request is still the current one (prevent race conditions)
+        if (updateGlobalEligibility.currentRequest !== requestId) {
+            return; // Another request has been made, ignore this result
+        }
+        
+        // On error, show warning but allow submission
+        eligibilityNotice.className = 'eligibility-notice loading';
+        eligibilityNotice.textContent = '⚠️ Could not check qualification. You can still try to submit globally.';
+        globalBtn.classList.remove('ineligible');
+        globalBtn.removeAttribute('title');
     }
 }
 
@@ -1439,13 +1532,48 @@ async function getPersonalBest(gameLength) {
 }
 
 // Global Leaderboard (GitHub-based)
+// Cache for global leaderboard data
+let globalLeaderboardCache = {
+    data: null,
+    timestamp: 0,
+    ttl: 30000 // 30 seconds cache
+};
+
+// Clear the global leaderboard cache (used after successful score submission)
+function clearGlobalLeaderboardCache() {
+    globalLeaderboardCache.data = null;
+    globalLeaderboardCache.timestamp = 0;
+}
+
 async function loadGlobalLeaderboard() {
     try {
+        const now = Date.now();
+        
+        // Return cached data if it's still fresh
+        if (globalLeaderboardCache.data && 
+            (now - globalLeaderboardCache.timestamp) < globalLeaderboardCache.ttl) {
+            return globalLeaderboardCache.data;
+        }
+        
+        // Fetch fresh data
         const response = await fetch('/.netlify/functions/get-leaderboard');
         if (!response.ok) throw new Error('Failed to load global leaderboard');
-        return await response.json();
+        const data = await response.json();
+        
+        // Update cache
+        globalLeaderboardCache.data = data;
+        globalLeaderboardCache.timestamp = now;
+        
+        return data;
     } catch (error) {
         console.error('Error loading global leaderboard:', error);
+        
+        // Return cached data if available, even if stale
+        if (globalLeaderboardCache.data) {
+            console.warn('Using stale cached leaderboard data due to fetch error');
+            return globalLeaderboardCache.data;
+        }
+        
         return [];
     }
 }
@@ -1472,6 +1600,9 @@ async function submitGlobalScore(name, scoreData) {
             throw new Error(error.error || 'Failed to submit global score');
         }
 
+        // Clear cache on successful submission so fresh leaderboard is fetched
+        clearGlobalLeaderboardCache();
+        
         return await response.json();
     } catch (error) {
         console.error('Error submitting global score:', error);
@@ -1485,6 +1616,72 @@ async function loadLeaderboard() {
         return await getLocalScores();
     } else {
         return await loadGlobalLeaderboard();
+    }
+}
+
+// Check if a score qualifies for global leaderboard submission
+async function checkGlobalEligibility(playerScore) {
+    try {
+        // Validate input - more comprehensive validation
+        if (!playerScore || 
+            !playerScore.hasOwnProperty('combined') || 
+            typeof playerScore.combined !== 'number' || 
+            isNaN(playerScore.combined)) {
+            throw new Error('Invalid player score data');
+        }
+        
+        const globalScores = await loadGlobalLeaderboard();
+        
+        // Validate global scores data
+        if (!Array.isArray(globalScores)) {
+            throw new Error('Invalid global scores data');
+        }
+        
+        // If leaderboard has less than 21 entries, always eligible (with minimum threshold)
+        const MINIMUM_THRESHOLD = 500; // Prevent very low scores even on empty leaderboard
+        
+        if (globalScores.length < 21) {
+            return {
+                eligible: playerScore.combined >= MINIMUM_THRESHOLD,
+                minScore: MINIMUM_THRESHOLD,
+                rank: playerScore.combined >= MINIMUM_THRESHOLD ? 
+                    globalScores.filter(s => s.combined > playerScore.combined).length + 1 : null,
+                totalEntries: globalScores.length
+            };
+        }
+        
+        // Get the 21st place score as threshold (array is 0-indexed, so index 20 = 21st place)
+        // But first ensure we actually have at least 21 scores
+        const minScore = globalScores.length >= 21 ? globalScores[20].combined : MINIMUM_THRESHOLD;
+        
+        // Check if player's score beats the threshold
+        const betterScores = globalScores.filter(s => s.combined > playerScore.combined);
+        const eligible = playerScore.combined > minScore;
+        
+        return {
+            eligible: eligible,
+            minScore: minScore,
+            rank: eligible ? betterScores.length + 1 : null,
+            totalEntries: globalScores.length,
+            scoreNeeded: eligible ? 0 : minScore - playerScore.combined + 1
+        };
+    } catch (error) {
+        console.error('Error checking global eligibility:', error);
+        
+        // Re-throw validation errors so tests can catch them
+        if (error.message === 'Invalid player score data') {
+            throw error;
+        }
+        
+        // For other errors (network, etc.), return fallback with safe threshold
+        const FALLBACK_THRESHOLD = 500; // Same as minimum threshold for consistency
+        return {
+            eligible: playerScore && playerScore.combined >= FALLBACK_THRESHOLD,
+            minScore: FALLBACK_THRESHOLD,
+            rank: null,
+            totalEntries: 0,
+            error: true
+        };
     }
 }
 
@@ -1579,7 +1776,7 @@ function updateRankStatus(result, isLocal = false) {
         rankStatus.innerHTML = `🎉 Saved locally + rank #${result.rank} on global leaderboard! 🎉`;
         rankStatus.className = 'rank-status made-leaderboard';
     } else if (result) {
-        rankStatus.innerHTML = `🌍 Saved locally + shared globally, but didn't make top 21. Keep practicing!`;
+        rankStatus.innerHTML = `🌍 Saved locally + shared globally, but didn't make top 12. Keep practicing!`;
         rankStatus.className = 'rank-status no-leaderboard';
     } else {
         rankStatus.innerHTML = `❌ Failed to share globally. Your score is saved locally.`;
@@ -1669,6 +1866,9 @@ async function showGameEndScreen(triggeringPlayerIndex) {
                 scoreSubmittedGlobally = false;
                 resetSubmissionButtons();
                 
+                // Check global leaderboard eligibility for winner
+                updateGlobalEligibility(winnerData.scoreEntry);
+                
                 // Pre-fill the name input with the winner's name (filtered)
                 const filteredWinnerName = winnerData.player.name.replace(/[^A-Z0-9]/gi, '').toUpperCase();
                 document.getElementById('playerNameInput').value = filteredWinnerName;
@@ -1750,6 +1950,9 @@ async function showGameEndScreen(triggeringPlayerIndex) {
         // Reset button states
         resetSubmissionButtons();
         
+        // Check global leaderboard eligibility
+        updateGlobalEligibility(scoreEntry);
+        
         finalStats.innerHTML = `
             <div class="player-final-stats">
                 <div class="stat-card large-score">
@@ -1816,7 +2019,12 @@ skipButton.addEventListener('click', skip);
 
 // Continue button handler
 document.getElementById('continueButton').addEventListener('click', () => {
-    window.location.href = 'donate.html';
+    // Hide game end screen
+    document.getElementById('gameEndScreen').style.display = 'none';
+    // Restore body overflow
+    document.body.style.overflow = 'hidden';
+    // Start new game
+    newWord();
 });
 
 // Tab switching event handlers
@@ -1838,12 +2046,12 @@ document.getElementById('submitLocalBtn').addEventListener('click', async () => 
     if (!validatedName) {
         nameInput.focus();
         nameInput.style.borderColor = '#ff6b6b';
-        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : 
+        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-12 chars)' : 
                                name.length < 3 ? `Too short - need ${3 - name.length} more chars` :
-                               'Name too long - max 21 chars';
+                               'Name too long - max 12 chars';
         setTimeout(() => {
             nameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-21 chars)';
+            nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-12 chars)';
         }, 3000);
         return;
     }
@@ -1905,12 +2113,12 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
     if (!validatedName) {
         nameInput.focus();
         nameInput.style.borderColor = '#ff6b6b';
-        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-21 chars)' : 
+        nameInput.placeholder = name.length === 0 ? 'Name required (A-Z, 0-9, 3-12 chars)' : 
                                name.length < 3 ? `Too short - need ${3 - name.length} more chars` :
-                               'Name too long - max 21 chars';
+                               'Name too long - max 12 chars';
         setTimeout(() => {
             nameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-21 chars)';
+            nameInput.placeholder = 'Enter your name (A-Z, 0-9, 3-12 chars)';
         }, 3000);
         return;
     }
@@ -1922,6 +2130,18 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
 
     if (scoreSubmittedGlobally) {
         return; // Button should already be disabled and show shared state
+    }
+
+    // Double-check eligibility as a final safeguard (prevent client-side bypassing)
+    try {
+        const finalEligibilityCheck = await checkGlobalEligibility(currentPlayerScore);
+        if (!finalEligibilityCheck.eligible) {
+            alert(`Score does not qualify for global leaderboard. Minimum required: ${finalEligibilityCheck.minScore}`);
+            return;
+        }
+    } catch (error) {
+        console.warn('Could not verify final eligibility, proceeding with submission:', error);
+        // Continue with submission if eligibility check fails
     }
 
     // Disable both buttons and show loading state
@@ -1976,14 +2196,14 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
 
 // Enhanced name input validation and filtering
 function validatePlayerName(name) {
-    const filtered = name.replace(/[^A-Z0-9]/gi, '').toUpperCase();
-    return filtered.length >= 3 && filtered.length <= 21 ? filtered : null;
+    const filtered = sanitizeName(name);
+    return filtered.length >= 3 && filtered.length <= 12 ? filtered : null;
 }
 
 document.getElementById('playerNameInput').addEventListener('input', (e) => {
     const input = e.target;
     const original = input.value;
-    const filtered = original.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    const filtered = sanitizeName(original);
     
     // Apply filtering
     if (original !== filtered) {
@@ -1993,8 +2213,8 @@ document.getElementById('playerNameInput').addEventListener('input', (e) => {
     // Visual feedback for length requirements
     if (filtered.length < 3) {
         input.style.borderColor = '#ff6b6b';
-    } else if (filtered.length > 21) {
-        input.value = filtered.substring(0, 21);
+    } else if (filtered.length > 12) {
+        input.value = filtered.substring(0, 12);
         input.style.borderColor = '#feca57';
     } else {
         input.style.borderColor = '#00b894';
@@ -2005,9 +2225,9 @@ document.getElementById('playerNameInput').addEventListener('input', (e) => {
 document.getElementById('playerNameInput').addEventListener('paste', (e) => {
     setTimeout(() => {
         const input = e.target;
-        const filtered = input.value.replace(/[^A-Z0-9]/gi, '').toUpperCase();
-        if (filtered.length > 21) {
-            input.value = filtered.substring(0, 21);
+        const filtered = sanitizeName(input.value);
+        if (filtered.length > 12) {
+            input.value = filtered.substring(0, 12);
         } else {
             input.value = filtered;
         }
@@ -2019,6 +2239,15 @@ document.getElementById('playerNameInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         document.getElementById('submitLocalBtn').click();
     }
+});
+
+// Handle keyboard locking for game end screen name input
+document.getElementById('playerNameInput').addEventListener('focus', () => {
+    keyboardLocked = true;
+});
+
+document.getElementById('playerNameInput').addEventListener('blur', () => {
+    keyboardLocked = false;
 });
 
 // Language detection and README redirect
@@ -2054,7 +2283,7 @@ document.querySelectorAll('.key').forEach(key => {
 
 // Physical keyboard support
 document.addEventListener('keydown', (e) => {
-    if (!gameActive) return;
+    if (!gameActive || keyboardLocked) return;
     
     if (e.key === 'Backspace') {
         handleKeyPress('backspace');
