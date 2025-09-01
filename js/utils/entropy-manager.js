@@ -39,7 +39,7 @@ function collectMouseEntropy(event) {
     const currentTime = performance.now();
     const timeDelta = currentTime - lastMouseTime;
     
-    if (timeDelta > 10) { // Throttle to avoid spam
+    if (timeDelta > 50) { // Throttle to avoid spam (5x less frequent)
         const entropy = (event.clientX * event.clientY * timeDelta) % 0xFFFFFFFF;
         addEntropy('mouse', entropy);
         lastMouseTime = currentTime;
@@ -54,7 +54,7 @@ function collectKeyEntropy(event) {
     const currentTime = performance.now();
     const timeDelta = currentTime - lastKeyTime;
     
-    if (timeDelta > 5) { // Throttle
+    if (timeDelta > 25) { // Throttle (5x less frequent)
         const entropy = (event.keyCode * timeDelta * currentTime) % 0xFFFFFFFF;
         addEntropy('keyboard', entropy);
         lastKeyTime = currentTime;

@@ -1745,7 +1745,9 @@ function displayLeaderboard(leaderboard, currentPlayerRank = null, highlightScor
     
     leaderboardList.appendChild(header);
 
-    // Create entries using safer DOM methods
+    // Create entries using DocumentFragment for optimal performance
+    const fragment = document.createDocumentFragment();
+    
     leaderboard.forEach((entry, index) => {
         const rank = index + 1;
         const isCurrentPlayer = currentPlayerRank === rank;
@@ -1784,15 +1786,19 @@ function displayLeaderboard(leaderboard, currentPlayerRank = null, highlightScor
         scoreDiv.className = 'leaderboard-score';
         scoreDiv.textContent = entry.combined.toLocaleString();
         
-        // Append all elements
+        // Append all elements to entry
         entryDiv.appendChild(rankDiv);
         entryDiv.appendChild(nameDiv);
         entryDiv.appendChild(wordsDiv);
         entryDiv.appendChild(timeDiv);
         entryDiv.appendChild(scoreDiv);
         
-        leaderboardList.appendChild(entryDiv);
+        // Add entry to fragment instead of direct DOM append
+        fragment.appendChild(entryDiv);
     });
+    
+    // Single DOM operation to append all entries at once
+    leaderboardList.appendChild(fragment);
 
     // Scroll to current player if they're not visible
     if ((currentPlayerRank && currentPlayerRank > 7) || highlightScore) {
@@ -2409,55 +2415,51 @@ newWord();
 function initMatrixRain() {
     const matrixContainer = document.getElementById('matrixContainer');
     const columns = Math.floor(window.innerWidth / 35);
+    let matrixBoxCount = 0;
+    const MAX_BOXES = Math.min(71, columns * 2.13); // 42% more boxes
     
-    // Create boxes with 46% more density (2.9 average per column) 
-    for (let i = 0; i < columns * 2.9; i++) {
-        const column = i % columns;
-        const delay = Math.random() * 12000 + (Math.floor(i / columns) * 2000);
-        setTimeout(() => createMatrixBox(column, true), delay);
-    }
-
-    function createMatrixBox(column, isInitial = false) {
+    function createMatrixBox() {
+        // Don't create more than MAX_BOXES at once
+        if (matrixBoxCount >= MAX_BOXES) return;
+        
         const box = document.createElement('div');
         box.className = `matrix-box shade-${Math.floor(Math.random() * 3) + 1}`;
         
-        // Random horizontal position within column
+        // Random position
+        const column = Math.floor(Math.random() * columns);
         const xPos = column * 35 + Math.random() * 25;
         box.style.left = xPos + 'px';
         
         // Random animation duration for different speeds
         const duration = 12 + Math.random() * 18;
         box.style.animationDuration = duration + 's';
-        
-        // Always start from top, use animation delay for staggered appearance
         box.style.top = '-40px';
-        
-        if (isInitial) {
-            // For initial boxes, use negative delay to simulate "already falling"
-            const randomStartPercent = Math.random() * 100;
-            const animationDelay = -duration * (randomStartPercent / 100);
-            box.style.animationDelay = animationDelay + 's';
-        } else {
-            // For continuous boxes, small positive delay
-            box.style.animationDelay = Math.random() * 2 + 's';
-        }
+        box.style.animationDelay = Math.random() * 2 + 's';
         
         const size = 20 + Math.random() * 15;
         box.style.width = size + 'px';
         box.style.height = size + 'px';
         
-        // Security: Limit DOM elements to prevent memory exhaustion
-        if (matrixContainer.children.length > 200) {
-            matrixContainer.firstChild.remove();
-        }
-        
         matrixContainer.appendChild(box);
+        matrixBoxCount++;
         
-        // Remove and recreate when animation ends
+        // Clean removal without recursive setTimeout
         box.addEventListener('animationend', () => {
             box.remove();
-            setTimeout(() => createMatrixBox(column, false), Math.random() * 3000);
-        });
+            matrixBoxCount--;
+        }, { once: true }); // Remove listener after first use
+    }
+    
+    // Use single interval instead of recursive timeouts
+    const matrixInterval = setInterval(() => {
+        if (matrixBoxCount < MAX_BOXES) {
+            createMatrixBox();
+        }
+    }, 2000 + Math.random() * 3000); // Create new boxes every 2-5 seconds
+    
+    // Create initial boxes
+    for (let i = 0; i < MAX_BOXES * 0.7; i++) {
+        setTimeout(createMatrixBox, Math.random() * 8000);
     }
 }
 
