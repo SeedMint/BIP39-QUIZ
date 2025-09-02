@@ -2370,72 +2370,6 @@ if (isMobile) {
     }, { passive: false });
 }
 
-// Initialize game
-// Check for saved player names from previous session
-if (sessionStorage.getItem('playerNames')) {
-    try {
-        // Security: Parse and validate sessionStorage data
-        const savedNamesRaw = sessionStorage.getItem('playerNames');
-        const savedNumPlayersRaw = sessionStorage.getItem('numPlayers');
-        const savedGameLengthRaw = sessionStorage.getItem('gameLength');
-        
-        // Clear the session storage immediately to prevent reuse
-        sessionStorage.removeItem('playerNames');
-        sessionStorage.removeItem('numPlayers');
-        sessionStorage.removeItem('gameLength');
-        
-        // Validate and sanitize JSON data
-        let savedNames = [];
-        if (savedNamesRaw) {
-            const parsedNames = JSON.parse(savedNamesRaw);
-            if (Array.isArray(parsedNames)) {
-                savedNames = parsedNames.filter(name => 
-                    typeof name === 'string' && 
-                    name.length >= 1 && 
-                    name.length <= 20 &&
-                    /^[a-zA-Z0-9\s\-_.]{1,20}$/.test(name)
-                );
-            }
-        }
-        
-        // Validate numeric parameters
-        const savedNumPlayers = Math.max(1, Math.min(4, parseInt(savedNumPlayersRaw) || 1));
-        const savedGameLength = [12, 24].includes(parseInt(savedGameLengthRaw)) ? 
-                                parseInt(savedGameLengthRaw) : gameLength;
-        
-        // Apply validated game parameters
-        if (savedGameLength !== gameLength) {
-            gameLength = savedGameLength;
-            gameLengthLabel.textContent = `Game length: ${gameLength} words`;
-            if (gameLength === 24) {
-                gameLengthToggle.classList.add('active');
-            }
-        }
-        
-        // Initialize with validated number of players
-        initializePlayers(savedNumPlayers);
-        
-        // Restore sanitized player names
-        if (savedNames.length > 0) {
-            savedNames.forEach((name, index) => {
-                if (players[index] && name) {
-                    // Additional sanitization layer
-                    players[index].name = sanitizeForDisplay(name);
-                }
-            });
-        }
-        
-        // Update display and start
-        updateScoreDisplay();
-        
-    } catch (error) {
-        // Security: If sessionStorage data is corrupted, start fresh
-        if (DEBUG) console.warn('Invalid sessionStorage data, starting fresh:', error);
-        initializePlayers(1);
-    }
-} else {
-    initializePlayers(1);
-}
 
 // Fallback shuffleArray function in case module loading fails
 function fallbackShuffleArray(array) {
@@ -2449,12 +2383,75 @@ function fallbackShuffleArray(array) {
 
 // Game initialization function - called after modules are loaded
 function initializeGame() {
-    console.log('Initializing game...');
     
     // Check if shuffleArray is available, use fallback if not
     if (typeof window.shuffleArray !== 'function') {
-        console.warn('shuffleArray not available from module, using fallback');
         window.shuffleArray = fallbackShuffleArray;
+    }
+    
+    // Check for saved player names from previous session
+    if (sessionStorage.getItem('playerNames')) {
+        try {
+            // Security: Parse and validate sessionStorage data
+            const savedNamesRaw = sessionStorage.getItem('playerNames');
+            const savedNumPlayersRaw = sessionStorage.getItem('numPlayers');
+            const savedGameLengthRaw = sessionStorage.getItem('gameLength');
+            
+            // Clear the session storage immediately to prevent reuse
+            sessionStorage.removeItem('playerNames');
+            sessionStorage.removeItem('numPlayers');
+            sessionStorage.removeItem('gameLength');
+            
+            // Validate and sanitize JSON data
+            let savedNames = [];
+            if (savedNamesRaw) {
+                const parsedNames = JSON.parse(savedNamesRaw);
+                if (Array.isArray(parsedNames)) {
+                    savedNames = parsedNames.filter(name => 
+                        typeof name === 'string' && 
+                        name.length >= 1 && 
+                        name.length <= 20 &&
+                        /^[a-zA-Z0-9\s\-_.]{1,20}$/.test(name)
+                    );
+                }
+            }
+            
+            // Validate numeric parameters
+            const savedNumPlayers = Math.max(1, Math.min(4, parseInt(savedNumPlayersRaw) || 1));
+            const savedGameLength = [12, 24].includes(parseInt(savedGameLengthRaw)) ? 
+                                    parseInt(savedGameLengthRaw) : gameLength;
+            
+            // Apply validated game parameters
+            if (savedGameLength !== gameLength) {
+                gameLength = savedGameLength;
+                gameLengthLabel.textContent = `Game length: ${gameLength} words`;
+                if (gameLength === 24) {
+                    gameLengthToggle.classList.add('active');
+                }
+            }
+            
+            // Initialize with validated number of players
+            initializePlayers(savedNumPlayers);
+            
+            // Restore sanitized player names
+            if (savedNames.length > 0) {
+                savedNames.forEach((name, index) => {
+                    if (players[index] && name) {
+                        // Additional sanitization layer
+                        players[index].name = sanitizeForDisplay(name);
+                    }
+                });
+            }
+            
+            // Update display and start
+            updateScoreDisplay();
+            
+        } catch (error) {
+            // Security: If sessionStorage data is corrupted, start fresh
+            initializePlayers(1);
+        }
+    } else {
+        initializePlayers(1);
     }
     
     // Initialize word selection system
@@ -2479,7 +2476,6 @@ function initMatrixRain() {
         return;
     }
     
-    console.log('Initializing matrix background...');
     const columns = Math.floor(window.innerWidth / 35);
     let matrixBoxCount = 0;
     const MAX_BOXES = Math.min(50, columns * 1.5); // 50 boxes for better visual effect
