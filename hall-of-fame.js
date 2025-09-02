@@ -125,11 +125,11 @@ async function getGlobalScores() {
         
         const data = await response.json();
         
-        if (!data.success || !Array.isArray(data.leaderboard)) {
+        if (!Array.isArray(data)) {
             throw new Error('Invalid leaderboard data structure');
         }
         
-        return data.leaderboard.slice(0, 12);
+        return data.slice(0, 12);
     } catch (error) {
         console.error('Error fetching global leaderboard:', error);
         return [];
