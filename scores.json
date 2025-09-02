@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-08-31T19:48:32.759Z",
+  "lastUpdated": "2025-09-02T11:49:03.334Z",
   "scores": [
     {
       "name": "GENESIS21",
@@ -10,6 +10,16 @@
       "combined": 241212,
       "timestamp": "2025-08-31T19:48:32.395Z",
       "gameTime": 170,
+      "gameLength": 12
+    },
+    {
+      "name": "SATOSHI",
+      "score": 74,
+      "streak": 2,
+      "words": 12,
+      "combined": 74212,
+      "timestamp": "2025-09-02T11:49:02.938Z",
+      "gameTime": 101,
       "gameLength": 12
     }
   ]
