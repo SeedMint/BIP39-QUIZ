@@ -122,42 +122,6 @@
             font-weight: 700;
         }
 
-        .testing-controls {
-            background: rgba(255, 107, 107, 0.1);
-            border: 2px solid rgba(255, 107, 107, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .testing-controls h3 {
-            color: #ff6b6b;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        .test-button {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            margin: 5px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-        }
-
-        .test-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .test-button.clear {
-            background: linear-gradient(135deg, #ea5455, #feb692);
-        }
 
         .filter-controls {
             display: flex;
@@ -217,13 +181,6 @@
         <h1 class="hall-title">🏆 Hall of Fame 🏆</h1>
         <p class="hall-subtitle">BIP-39 Masters Leaderboard</p>
 
-        <!-- Testing Controls -->
-        <div class="testing-controls">
-            <h3>🧪 Testing Controls</h3>
-            <button class="test-button" id="fillLocalBtn">Fill Local Leaderboard</button>
-            <button class="test-button" id="fillGlobalBtn">Fill Global Leaderboard</button>
-            <button class="test-button clear" id="clearAllBtn">Clear All Data</button>
-        </div>
 
         <!-- Leaderboard Tabs -->
         <div class="leaderboard-tabs">
@@ -242,7 +199,7 @@
         <div class="enhanced-leaderboard" id="leaderboardDisplay">
             <div class="no-data-message">
                 <p>🎮 No scores yet!</p>
-                <p>Use the testing controls above to populate the leaderboards and see how they look.</p>
+                <p>Play the game to see your achievements here!</p>
             </div>
         </div>
     </div>

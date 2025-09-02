@@ -103,11 +103,58 @@
             margin-top: 30px;
             text-decoration: none;
             display: inline-block;
+            /* 3D Effects */
+            box-shadow: 
+                0 4px 10px rgba(0, 0, 0, 0.2),
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
         }
 
         .back-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 
+                0 6px 20px rgba(255, 107, 107, 0.4),
+                0 3px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .play-again {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            font-size: 1.1em;
+            font-weight: bold;
+            /* 3D Effects for consistency */
+            box-shadow: 
+                0 4px 10px rgba(0, 0, 0, 0.2),
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .play-again:hover {
+            box-shadow: 
+                0 6px 20px rgba(78, 205, 196, 0.4),
+                0 3px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Active state for better interaction feedback */
+        .back-btn:active {
+            transform: translateY(0);
+            box-shadow: 
+                0 2px 5px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
         }
 
         @media (max-width: 600px) {
@@ -161,7 +208,9 @@
             </svg>
         </div>
 
-        <a href="index.html" class="back-btn">← Back to Game</a>
+        <div class="game-links">
+            <a href="index.html" id="playAgainBtn" class="back-btn play-again">🎯 Play Again</a>
+        </div>
     </div>
 
     <script>
@@ -189,6 +238,20 @@
                     this.style.transform = 'scale(1)';
                 }, 150);
             });
+        });
+        
+        // Show Play Again button only if coming from a finished game
+        window.addEventListener('load', () => {
+            const playAgainBtn = document.getElementById('playAgainBtn');
+            const hasPlayerNames = sessionStorage.getItem('playerNames');
+            
+            if (hasPlayerNames) {
+                // Coming from finished game - show Play Again prominently
+                playAgainBtn.style.display = 'inline-block';
+            } else {
+                // Regular visit - hide Play Again button
+                playAgainBtn.style.display = 'none';
+            }
         });
     </script>
 </body>

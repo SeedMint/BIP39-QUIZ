@@ -2,10 +2,7 @@ exports.handler = async (event, context) => {
   // CORS headers for browser requests - restrict to known domains
   const allowedOrigins = [
     'https://seedmint.github.io',
-    'https://bipardy.netlify.app',
-    'http://localhost:3000',
-    'http://localhost:8080',
-    'http://127.0.0.1:5500' // VS Code Live Server
+    'https://bipardy.netlify.app'
   ];
   
   const origin = event.headers.origin || event.headers.Origin;
@@ -123,7 +120,7 @@ exports.handler = async (event, context) => {
     }
 
     // Basic reasonableness checks (prevent obvious cheating)
-    if (score < 0 || score > 50000 || streak < 0 || streak > 1000 || words < 0 || words > gameLength) {
+    if (score < 0 || score > 21000000 || streak < 0 || streak > 10000 || words < 0 || words > gameLength) {
       return {
         statusCode: 400,
         headers,
@@ -132,7 +129,7 @@ exports.handler = async (event, context) => {
     }
 
     // Validate game time (should be at least reasonable time based on game length)
-    const minGameTime = gameLength === 12 ? 20 : 35; // 12 words: 20s, 24 words: 35s
+    const minGameTime = gameLength === 12 ? 10 : 20; // 12 words: 10s, 24 words: 20s
     if (!gameTime || gameTime < minGameTime) {
       return {
         statusCode: 400,

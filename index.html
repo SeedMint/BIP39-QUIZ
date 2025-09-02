@@ -20,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.github.com https://*.netlify.app;">
     
     <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -194,6 +194,25 @@
                     <div class="privacy-note">
                         💡 Both options save to your device. Global also shares your score publicly for everyone to see.
                     </div>
+                    
+                    <!-- Social Sharing Section -->
+                    <div class="social-share-section" id="socialShareSection" style="display: none;">
+                        <h4>🎉 Share Your Achievement!</h4>
+                        <div class="share-buttons">
+                            <button onclick="shareOnX()" class="share-btn x-share">
+                                𝕏 Share on X
+                            </button>
+                            <button onclick="shareOnNostrWeb()" class="share-btn nostr-web">
+                                ⚡ Share on Nostr (Web)
+                            </button>
+                            <button onclick="copyNostrWithScreenshot()" class="share-btn nostr-native">
+                                ⚡📋 Copy for Nostr + Screenshot
+                            </button>
+                            <button onclick="downloadScreenshot()" class="share-btn download">
+                                📸 Download Screenshot
+                            </button>
+                        </div>
+                    </div>
                     <div class="multiplayer-submission-info" id="multiplayerSubmissionInfo" style="display: none;">
                         <div style="font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-top: 10px; text-align: center;">
                             🎮 Multiplayer Mode: Each qualifying player can submit their score individually
@@ -214,14 +233,39 @@
 
     
     <!-- External Scripts -->
+    <!-- html2canvas is now lazy-loaded only when needed -->
+    
     <script type="module">
         // Import modules
         import { initializePWA } from './js/utils/pwa-manager.js';
-        import { initializeEntropyCollection } from './js/utils/entropy-manager.js';
+        import { shuffleArray, initializeEntropyCollection } from './js/utils/entropy-manager.js';
         
         // Initialize modules
         initializePWA();
         initializeEntropyCollection();
+        
+        // Make shuffleArray globally available for game.js
+        window.shuffleArray = shuffleArray;
+        
+        // Wait for DOM to be ready, then initialize game
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                if (window.initializeGame) {
+                    window.initializeGame();
+                } else {
+                    console.error('initializeGame function not found!');
+                }
+            });
+        } else {
+            // DOM already loaded
+            setTimeout(() => {
+                if (window.initializeGame) {
+                    window.initializeGame();
+                } else {
+                    console.error('initializeGame function not found!');
+                }
+            }, 100); // Small delay to ensure game.js is loaded
+        }
     </script>
     <script src="game.js"></script>
 </body>

@@ -2,10 +2,7 @@ exports.handler = async (event, context) => {
   // CORS headers for browser requests - restrict to known domains
   const allowedOrigins = [
     'https://seedmint.github.io',
-    'https://bipardy.netlify.app',
-    'http://localhost:3000',
-    'http://localhost:8080',
-    'http://127.0.0.1:5500' // VS Code Live Server
+    'https://bipardy.netlify.app'
   ];
   
   const origin = event.headers.origin || event.headers.Origin;

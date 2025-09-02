@@ -65,3 +65,26 @@
 .github-link:hover {
     color: #ff9ff3;
 }
+
+/* Hall of Fame specific styling */
+.hall-of-fame-link {
+    background: linear-gradient(45deg, #ff6b6b, #feca57, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shine 2s ease-in-out infinite alternate;
+}
+
+.hall-of-fame-link:hover {
+    color: transparent;
+    animation: shine 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes shine {
+    0% {
+        filter: brightness(1);
+    }
+    100% {
+        filter: brightness(1.2);
+    }
+}

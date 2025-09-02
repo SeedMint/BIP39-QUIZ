@@ -7,7 +7,6 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 
 // Debug flag for development vs production logging
 const DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const IS_PRODUCTION = !DEBUG;
 
 
 // Keyboard toggle for desktop
@@ -212,7 +211,10 @@ function startTimer() {
     timerStartTime = Date.now();
     currentTimerBonus = MAX_TIMER_BONUS;
     
-    // Show timer UI (using cached elements)
+    // Show timer UI
+    const timerContainer = document.getElementById('timerContainer');
+    const timerProgress = document.getElementById('timerProgress');
+    const timerBonus = document.getElementById('timerBonus');
     
     timerContainer.classList.add('active');
     timerBonus.classList.add('show');
@@ -228,8 +230,8 @@ function startTimer() {
         timerProgress.style.width = '0%';
     }, 50);
     
-    // Update bonus less frequently - CSS handles smooth animation
-    timerInterval = setInterval(updateTimerBonus, 500);
+    // Update bonus every 100ms for smooth updates
+    timerInterval = setInterval(updateTimerBonus, 100);
     
     // Auto-expire timer
     setTimeout(expireTimer, TIMER_DURATION * 1000);
@@ -246,7 +248,7 @@ function updateTimerBonus() {
     currentTimerBonus = Math.round(MAX_TIMER_BONUS * progress);
     
     // Update bonus display
-    // Use cached timerBonus element
+    const timerBonus = document.getElementById('timerBonus');
     timerBonus.textContent = `+${currentTimerBonus} Bonus`;
     
     // Stop when timer expires
@@ -265,7 +267,7 @@ function expireTimer() {
     }
     
     // Update UI to show expired state
-    // Use cached timerBonus element
+    const timerBonus = document.getElementById('timerBonus');
     timerBonus.textContent = '+0 Bonus';
     timerBonus.classList.remove('show');
 }
@@ -279,8 +281,8 @@ function stopTimer() {
     }
     
     // Hide timer UI
-    // Use cached timerContainer element
-    // Use cached timerBonus element
+    const timerContainer = document.getElementById('timerContainer');
+    const timerBonus = document.getElementById('timerBonus');
     
     timerContainer.classList.remove('active');
     timerBonus.classList.remove('show');
@@ -299,14 +301,15 @@ let wordPool = []; // Shuffled word pool for better distribution
 let poolIndex = 0; // Current position in shuffled pool
 let sessionWordStats = new Map(); // Track word frequency this session
 
+// Client-side entropy collection
+let entropyPool = [];
+let lastMouseTime = 0;
+let lastKeyTime = 0;
+let entropyCounter = 0;
 
-// DOM elements - cached for performance
+// DOM elements
 const letterContainer = document.getElementById('letterContainer');
 const helpButton = document.getElementById('helpButton');
-// Already cached above
-const timerContainer = document.getElementById('timerContainer');
-const timerProgress = document.getElementById('timerProgress');
-const timerBonus = document.getElementById('timerBonus');
 
 // Helper function to update help button text
 function updateHelpButtonText() {
@@ -335,7 +338,9 @@ function updateHelpButtonText() {
         helpButton.textContent = `HELP`;
     }
 }
-// Already cached above
+const skipButton = document.getElementById('skipButton');
+const submitButton = document.getElementById('submitButton');
+const message = document.getElementById('message');
 const lengthToggle = document.getElementById('lengthToggle');
 const gameLengthToggle = document.getElementById('gameLengthToggle');
 const gameLengthLabel = document.getElementById('gameLengthLabel');
@@ -400,7 +405,128 @@ function updateScoreDisplay() {
     });
 }
 
+// Client-side entropy collection functions
+function addEntropy(source, value) {
+    const timestamp = performance.now();
+    const entropy = {
+        source: source,
+        value: value,
+        time: timestamp,
+        counter: entropyCounter++
+    };
+    
+    entropyPool.push(entropy);
+    
+    // Keep entropy pool manageable (last 1000 events)
+    if (entropyPool.length > 1000) {
+        entropyPool.shift();
+    }
+}
 
+function collectMouseEntropy(event) {
+    const currentTime = performance.now();
+    const timeDelta = currentTime - lastMouseTime;
+    
+    if (timeDelta > 10) { // Throttle to avoid spam
+        const entropy = (event.clientX * event.clientY * timeDelta) % 0xFFFFFFFF;
+        addEntropy('mouse', entropy);
+        lastMouseTime = currentTime;
+    }
+}
+
+function collectKeyEntropy(event) {
+    const currentTime = performance.now();
+    const timeDelta = currentTime - lastKeyTime;
+    
+    if (timeDelta > 5) { // Throttle
+        const entropy = (event.keyCode * timeDelta * currentTime) % 0xFFFFFFFF;
+        addEntropy('keyboard', entropy);
+        lastKeyTime = currentTime;
+    }
+}
+
+function collectTouchEntropy(event) {
+    const currentTime = performance.now();
+    let entropy = currentTime % 0xFFFFFFFF;
+    
+    if (event.touches && event.touches.length > 0) {
+        const touch = event.touches[0];
+        entropy = (touch.clientX * touch.clientY * currentTime * event.touches.length) % 0xFFFFFFFF;
+    }
+    
+    addEntropy('touch', entropy);
+}
+
+function collectDeviceEntropy() {
+    // Collect various device-specific entropy sources
+    const deviceEntropy = [
+        screen.width * screen.height,
+        window.devicePixelRatio * 1000,
+        Date.now() % 0xFFFF,
+        navigator.hardwareConcurrency || 4,
+        window.innerWidth * window.innerHeight,
+        (navigator.connection?.downlink || Math.random()) * 1000
+    ];
+    
+    const combined = deviceEntropy.reduce((a, b) => (a * b) % 0xFFFFFFFF, 1);
+    addEntropy('device', combined);
+}
+
+// Enhanced crypto-based random number generator with entropy mixing
+function secureRandom() {
+    // Start with crypto random
+    const cryptoArray = new Uint32Array(1);
+    crypto.getRandomValues(cryptoArray);
+    let cryptoRandom = cryptoArray[0];
+    
+    // Mix with collected entropy if available
+    if (entropyPool.length > 0) {
+        let entropyMix = 0;
+        
+        // Use last few entropy sources
+        const recentEntropy = entropyPool.slice(-10);
+        recentEntropy.forEach(entry => {
+            entropyMix ^= entry.value;
+            entropyMix ^= (entry.time * entry.counter) % 0xFFFFFFFF;
+        });
+        
+        // XOR crypto random with entropy mix
+        cryptoRandom ^= entropyMix;
+    }
+    
+    return cryptoRandom / (0xFFFFFFFF + 1);
+}
+
+// Initialize entropy collection
+function initializeEntropyCollection() {
+    // Collect initial device entropy
+    collectDeviceEntropy();
+    
+    // Set up event listeners for continuous entropy collection
+    document.addEventListener('mousemove', collectMouseEntropy, { passive: true });
+    document.addEventListener('keydown', collectKeyEntropy, { passive: true });
+    document.addEventListener('keyup', collectKeyEntropy, { passive: true });
+    document.addEventListener('touchstart', collectTouchEntropy, { passive: true });
+    document.addEventListener('touchmove', collectTouchEntropy, { passive: true });
+    
+    // Periodic entropy collection
+    setInterval(() => {
+        collectDeviceEntropy();
+        addEntropy('periodic', (performance.now() * Math.random()) % 0xFFFFFFFF);
+    }, 5000);
+    
+    if (DEBUG) console.log('Client-side entropy collection initialized');
+}
+
+// Fisher-Yates shuffle algorithm with crypto random
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(secureRandom() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
 
 // Initialize word pool (called on game start)
 function initializeWordPool() {
@@ -520,6 +646,9 @@ function logEntropyStats() {
 
 // Initialize word selection system on page load
 function initializeWordSelectionSystem() {
+    // Initialize entropy collection first
+    initializeEntropyCollection();
+    
     // Then initialize word pool with enhanced randomness
     initializeWordPool();
     
@@ -980,13 +1109,11 @@ function editPlayerName(playerIndex, nameElement) {
     
     if (DEBUG) console.log('✅ Name filtering function attached to input element');
     
-    // Instant input response for snappy feel
     input.addEventListener('input', (e) => filterInput(e.target));
-    
-    // Debounce only paste events for performance
     input.addEventListener('paste', (e) => {
-        setTimeout(() => filterInput(e.target), 50);
+        setTimeout(() => filterInput(e.target), 0);
     });
+    input.addEventListener('keyup', (e) => filterInput(e.target));
     
     // Handle saving the name
     function saveName() {
@@ -1069,39 +1196,6 @@ let currentPlayerScore = null;
 let currentLeaderboardView = 'local'; // 'local' or 'global'
 let scoreSubmittedLocally = false;
 let scoreSubmittedGlobally = false;
-
-// Track submitted scores to prevent duplicates
-function generateScoreId(playerName, score, timestamp) {
-    return `${playerName}_${score}_${timestamp}`;
-}
-
-function getSubmittedScores() {
-    try {
-        const stored = localStorage.getItem('submittedScores');
-        return stored ? JSON.parse(stored) : [];
-    } catch (error) {
-        console.warn('Error reading submitted scores:', error);
-        return [];
-    }
-}
-
-function addSubmittedScore(scoreId) {
-    try {
-        const submittedScores = getSubmittedScores();
-        if (!submittedScores.includes(scoreId)) {
-            submittedScores.push(scoreId);
-            localStorage.setItem('submittedScores', JSON.stringify(submittedScores));
-        }
-    } catch (error) {
-        console.warn('Error storing submitted score:', error);
-    }
-}
-
-function isScoreAlreadySubmitted(playerName, score, timestamp) {
-    const scoreId = generateScoreId(playerName, score, timestamp);
-    const submittedScores = getSubmittedScores();
-    return submittedScores.includes(scoreId);
-}
 
 
 // Reset button states for new game
@@ -1460,11 +1554,6 @@ function clearGlobalLeaderboardCache() {
 
 async function loadGlobalLeaderboard() {
     try {
-        // Return empty array for localhost with friendly message
-        if (!IS_PRODUCTION) {
-            return [];
-        }
-        
         const now = Date.now();
         
         // Return cached data if it's still fresh
@@ -2049,12 +2138,6 @@ document.getElementById('submitLocalBtn').addEventListener('click', async () => 
         return; // Button should already be disabled and show saved state
     }
 
-    // Check if this exact score was already submitted
-    if (isScoreAlreadySubmitted(validatedName, currentPlayerScore.combined, currentPlayerScore.timestamp)) {
-        alert('This score has already been submitted locally!');
-        return;
-    }
-
     // Disable button and show loading state
     localBtn.disabled = true;
     localBtn.textContent = 'Saving...';
@@ -2081,10 +2164,6 @@ document.getElementById('submitLocalBtn').addEventListener('click', async () => 
         
         // Mark as submitted locally
         scoreSubmittedLocally = true;
-        
-        // Add to submitted scores to prevent duplicates
-        const scoreId = generateScoreId(validatedName, currentPlayerScore.combined, currentPlayerScore.timestamp);
-        addSubmittedScore(scoreId);
         
         // Update button states
         updateSubmissionButtons();
@@ -2129,31 +2208,11 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
         return; // Button should already be disabled and show shared state
     }
 
-    // Check if running on localhost
-    if (!IS_PRODUCTION) {
-        alert('Global leaderboard requires deployment to production environment.\nFor now, use "Save Locally Only" option.');
-        return;
-    }
-
-    // Generate score ID and check if already submitted
-    const scoreId = generateScoreId(validatedName, currentPlayerScore.combined, currentPlayerScore.timestamp);
-    if (isScoreAlreadySubmitted(validatedName, currentPlayerScore.combined, currentPlayerScore.timestamp)) {
-        alert('This score has already been submitted!');
-        return;
-    }
-
-    // Mark as submitted IMMEDIATELY to prevent retry duplicates
-    addSubmittedScore(scoreId);
-
     // Double-check eligibility as a final safeguard (prevent client-side bypassing)
     try {
         const finalEligibilityCheck = await checkGlobalEligibility(currentPlayerScore);
         if (!finalEligibilityCheck.eligible) {
             alert(`Score does not qualify for global leaderboard. Minimum required: ${finalEligibilityCheck.minScore}`);
-            // Remove the score from submitted list since we're not actually submitting
-            const submittedScores = getSubmittedScores();
-            const filteredScores = submittedScores.filter(id => id !== scoreId);
-            localStorage.setItem('submittedScores', JSON.stringify(filteredScores));
             return;
         }
     } catch (error) {
@@ -2167,7 +2226,7 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
     globalBtn.textContent = 'Sharing...';
 
     try {
-        // First save locally as backup (this is the working approach from yesterday)
+        // First save locally as backup
         const scoreEntryWithName = { ...currentPlayerScore, name: validatedName };
         await saveLocalScore(scoreEntryWithName);
         
@@ -2201,22 +2260,19 @@ document.getElementById('submitGlobalBtn').addEventListener('click', async () =>
         
     } catch (error) {
         console.error('Global submission failed:', error);
-        
         // Update rank status to show it's saved locally but failed globally
-        updateRankStatus(null, true);
+        updateRankStatus(null, false);
         
-        // Mark as submitted locally only (already saved locally as backup above)
+        // Mark as submitted locally (global submission saves locally first)
         scoreSubmittedLocally = true;
         
         // Update button states
         updateSubmissionButtons();
         
-        // Re-enable global button since it failed
+        // Re-enable global button since it failed (local button will be disabled by updateSubmissionButtons)
         globalBtn.disabled = false;
         globalBtn.textContent = '🌍 Share Globally (retry)';
         globalBtn.style.opacity = '1';
-        
-        alert('Global submission failed, but score was saved locally. You can retry global sharing.');
     }
 });
 
@@ -2437,52 +2493,14 @@ if (sessionStorage.getItem('playerNames')) {
     initializePlayers(1);
 }
 
-// Fallback shuffleArray function in case module loading fails
-function fallbackShuffleArray(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
-
-// Game initialization function - called after modules are loaded
-function initializeGame() {
-    console.log('Initializing game...');
-    
-    // Check if shuffleArray is available, use fallback if not
-    if (typeof window.shuffleArray !== 'function') {
-        console.warn('shuffleArray not available from module, using fallback');
-        window.shuffleArray = fallbackShuffleArray;
-    }
-    
-    // Initialize word selection system
-    initializeWordSelectionSystem();
-    
-    // Initialize matrix background
-    initMatrixRain();
-    
-    // Start the first word
-    newWord();
-}
-
-// Make initializeGame globally available
-window.initializeGame = initializeGame;
+newWord();
 
 // Matrix Rain Background Effect - Optimized
 function initMatrixRain() {
     const matrixContainer = document.getElementById('matrixContainer');
-    
-    if (!matrixContainer) {
-        console.error('Matrix container not found! Background will not work.');
-        return;
-    }
-    
-    console.log('Initializing matrix background...');
     const columns = Math.floor(window.innerWidth / 35);
     let matrixBoxCount = 0;
-    const MAX_BOXES = Math.min(50, columns * 1.5); // 50 boxes for better visual effect
+    const MAX_BOXES = Math.min(71, columns * 2.13); // 42% more boxes
     
     function createMatrixBox() {
         // Don't create more than MAX_BOXES at once
@@ -2495,11 +2513,11 @@ function initMatrixRain() {
         const column = Math.floor(Math.random() * columns);
         const xPos = column * 35 + Math.random() * 25;
         box.style.left = xPos + 'px';
-        box.style.top = '-50px'; // Start above viewport to match animation
         
         // Random animation duration for different speeds
         const duration = 12 + Math.random() * 18;
         box.style.animationDuration = duration + 's';
+        box.style.top = '-40px';
         box.style.animationDelay = Math.random() * 2 + 's';
         
         const size = 20 + Math.random() * 15;
@@ -2521,16 +2539,19 @@ function initMatrixRain() {
         if (matrixBoxCount < MAX_BOXES) {
             createMatrixBox();
         }
-    }, 1000 + Math.random() * 1000); // Create new boxes every 1-2 seconds
+    }, 2000 + Math.random() * 3000); // Create new boxes every 2-5 seconds
     
-    // Create initial boxes with faster timing
-    for (let i = 0; i < 10; i++) {
-        setTimeout(createMatrixBox, i * 200 + Math.random() * 500);
+    // Create initial boxes
+    for (let i = 0; i < MAX_BOXES * 0.7; i++) {
+        setTimeout(createMatrixBox, Math.random() * 8000);
     }
 }
 
-// Note: Game initialization moved to initializeGame() function
-// This is called from index.html after modules are loaded
+// Initialize advanced word selection system
+initializeWordSelectionSystem();
+
+// Initialize matrix rain effect
+initMatrixRain();
 
 // Social Sharing Functions
 let currentShareData = null;

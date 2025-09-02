@@ -7,6 +7,7 @@
 let entropyPool = [];
 let lastMouseTime = 0;
 let lastKeyTime = 0;
+let lastTouchTime = 0;
 let entropyCounter = 0;
 
 /**
@@ -39,7 +40,7 @@ function collectMouseEntropy(event) {
     const currentTime = performance.now();
     const timeDelta = currentTime - lastMouseTime;
     
-    if (timeDelta > 50) { // Throttle to avoid spam (5x less frequent)
+    if (timeDelta > 200) { // Throttle to avoid spam (much less frequent)
         const entropy = (event.clientX * event.clientY * timeDelta) % 0xFFFFFFFF;
         addEntropy('mouse', entropy);
         lastMouseTime = currentTime;
@@ -54,7 +55,7 @@ function collectKeyEntropy(event) {
     const currentTime = performance.now();
     const timeDelta = currentTime - lastKeyTime;
     
-    if (timeDelta > 25) { // Throttle (5x less frequent)
+    if (timeDelta > 100) { // Throttle (much less frequent)
         const entropy = (event.keyCode * timeDelta * currentTime) % 0xFFFFFFFF;
         addEntropy('keyboard', entropy);
         lastKeyTime = currentTime;
@@ -67,14 +68,19 @@ function collectKeyEntropy(event) {
  */
 function collectTouchEntropy(event) {
     const currentTime = performance.now();
-    let entropy = currentTime % 0xFFFFFFFF;
+    const timeDelta = currentTime - lastTouchTime;
     
-    if (event.touches && event.touches.length > 0) {
-        const touch = event.touches[0];
-        entropy = (touch.clientX * touch.clientY * currentTime * event.touches.length) % 0xFFFFFFFF;
+    if (timeDelta > 150) { // Throttle touch events
+        let entropy = currentTime % 0xFFFFFFFF;
+        
+        if (event.touches && event.touches.length > 0) {
+            const touch = event.touches[0];
+            entropy = (touch.clientX * touch.clientY * currentTime * event.touches.length) % 0xFFFFFFFF;
+        }
+        
+        addEntropy('touch', entropy);
+        lastTouchTime = currentTime;
     }
-    
-    addEntropy('touch', entropy);
 }
 
 /**
@@ -151,11 +157,11 @@ function initializeEntropyCollection() {
     document.addEventListener('touchstart', collectTouchEntropy, { passive: true });
     document.addEventListener('touchmove', collectTouchEntropy, { passive: true });
     
-    // Periodic entropy collection
+    // Periodic entropy collection (reduced frequency)
     setInterval(() => {
         collectDeviceEntropy();
         addEntropy('periodic', (performance.now() * Math.random()) % 0xFFFFFFFF);
-    }, 5000);
+    }, 15000);
     
     // Only log in development mode
     const DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
