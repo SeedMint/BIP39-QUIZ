@@ -117,9 +117,46 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
+        .enhanced-leaderboard .leaderboard-header {
+            display: grid;
+            grid-template-columns: 40px 1fr 60px 60px minmax(100px, 1fr);
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+        }
+
+        .enhanced-leaderboard .leaderboard-entry {
+            display: grid;
+            grid-template-columns: 40px 1fr 60px 60px minmax(100px, 1fr);
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+        }
+
+        .enhanced-leaderboard .leaderboard-rank {
+            font-weight: bold;
+            color: #feca57;
+            min-width: 30px;
+        }
+
+        .enhanced-leaderboard .leaderboard-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .enhanced-leaderboard .leaderboard-game-length,
+        .enhanced-leaderboard .leaderboard-game-time {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
         .enhanced-leaderboard .leaderboard-score {
-            font-size: 1.3rem;
-            font-weight: 700;
+            color: #48dbfb;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            text-align: right;
         }
 
 
