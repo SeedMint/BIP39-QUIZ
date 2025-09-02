@@ -114,18 +114,28 @@ async function saveLocalScores(scores) {
     }
 }
 
-// Mock global leaderboard (simulates API response)
-let mockGlobalScores = [];
-
+// Global leaderboard API connection
 async function getGlobalScores() {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockGlobalScores.sort((a, b) => b.combined - a.combined).slice(0, 12);
+    try {
+        const response = await fetch('/.netlify/functions/get-leaderboard');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!data.success || !Array.isArray(data.leaderboard)) {
+            throw new Error('Invalid leaderboard data structure');
+        }
+        
+        return data.leaderboard.slice(0, 12);
+    } catch (error) {
+        console.error('Error fetching global leaderboard:', error);
+        return [];
+    }
 }
 
-function setGlobalScores(scores) {
-    mockGlobalScores = scores.slice(0, 12);
-}
 
 // Display functions
 function displayLeaderboard(leaderboard, viewType) {
@@ -210,33 +220,23 @@ async function fillLocalLeaderboard() {
     console.log('Local leaderboard filled with 12 mock scores');
 }
 
-async function fillGlobalLeaderboard() {
-    const mockScores = [];
-    for (let i = 1; i <= 12; i++) {
-        mockScores.push(generateMockScore(i));
-    }
-    
-    setGlobalScores(mockScores);
-    
+async function refreshGlobalLeaderboard() {
     if (currentView === 'global') {
         const scores = await getGlobalScores();
         displayLeaderboard(scores, 'global');
     }
     
-    console.log('Global leaderboard filled with 12 mock scores');
+    console.log('Global leaderboard refreshed from API');
 }
 
 async function clearAllData() {
     // Clear local storage
     localStorage.removeItem('bipardy-local-scores');
     
-    // Clear mock global data
-    mockGlobalScores = [];
-    
     // Refresh display
     await loadAndDisplayLeaderboard();
     
-    console.log('All leaderboard data cleared');
+    console.log('Local leaderboard data cleared');
 }
 
 async function switchView(newView) {
@@ -275,11 +275,7 @@ async function loadAndDisplayLeaderboard() {
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', async () => {
-    // Set up event listeners
-    document.getElementById('fillLocalBtn').addEventListener('click', fillLocalLeaderboard);
-    document.getElementById('fillGlobalBtn').addEventListener('click', fillGlobalLeaderboard);
-    document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
-    
+    // Set up event listeners for existing elements
     document.getElementById('localTabBtn').addEventListener('click', () => switchView('local'));
     document.getElementById('globalTabBtn').addEventListener('click', () => switchView('global'));
     
@@ -294,5 +290,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadAndDisplayLeaderboard();
     
     console.log('Hall of Fame initialized');
-    console.log('Access at: http://localhost:8080/hall-of-fame.html');
 });
