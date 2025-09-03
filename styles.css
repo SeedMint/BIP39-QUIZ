@@ -1129,6 +1129,29 @@ body {
     }
 }
 
+/* Mobile leaderboard improvements */
+@media (max-width: 768px) {
+    .leaderboard-header {
+        grid-template-columns: 30px 1fr 40px 50px auto !important;
+        gap: 6px !important;
+        padding: 6px 8px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .leaderboard-entry {
+        grid-template-columns: 30px 1fr 40px 50px auto !important;
+        gap: 6px !important;
+        padding: 6px 8px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .leaderboard-score {
+        font-size: 0.9rem !important;
+        word-break: break-all !important;
+        overflow-wrap: anywhere !important;
+    }
+}
+
 /* Additional mobile viewport fix */
 @media (max-width: 480px) {
     .game-end-content {
@@ -1140,6 +1163,24 @@ body {
     
     .leaderboard-list {
         max-height: 150px !important;
+    }
+    
+    .leaderboard-header {
+        grid-template-columns: 25px 1fr 35px 40px minmax(80px, auto) !important;
+        gap: 4px !important;
+        padding: 6px 4px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .leaderboard-entry {
+        grid-template-columns: 25px 1fr 35px 40px minmax(80px, auto) !important;
+        gap: 4px !important;
+        padding: 6px 4px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .leaderboard-score {
+        font-size: 0.8rem !important;
     }
     
     /* Ensure continue button is always accessible on small screens */
