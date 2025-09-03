@@ -1,7 +1,17 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-09-03T13:51:01.113Z",
+  "lastUpdated": "2025-09-03T13:52:43.902Z",
   "scores": [
+    {
+      "name": "attacker123",
+      "score": 21000000,
+      "streak": 9999,
+      "words": 12,
+      "combined": 21000000999912,
+      "timestamp": "2025-09-03T13:52:43.676Z",
+      "gameTime": 99999,
+      "gameLength": 24
+    },
     {
       "name": "HONEYBADGER",
       "score": 329,
