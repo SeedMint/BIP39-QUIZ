@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-09-03T21:20:49.100Z",
+  "lastUpdated": "2025-09-03T22:18:44.418Z",
   "scores": [
     {
       "name": "attacker123",
@@ -90,6 +90,16 @@
       "combined": 241212,
       "timestamp": "2025-08-31T19:48:32.395Z",
       "gameTime": 170,
+      "gameLength": 12
+    },
+    {
+      "name": "KDU",
+      "score": 224,
+      "streak": 7,
+      "words": 11,
+      "combined": 224711,
+      "timestamp": "2025-09-03T22:18:43.956Z",
+      "gameTime": 534,
       "gameLength": 12
     },
     {
