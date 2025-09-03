@@ -2478,7 +2478,7 @@ function initMatrixRain() {
     
     const columns = Math.floor(window.innerWidth / 35);
     let matrixBoxCount = 0;
-    const MAX_BOXES = Math.min(50, columns * 1.5); // 50 boxes for better visual effect
+    const MAX_BOXES = Math.min(75, columns * 2); // 75 boxes for richer visual effect
     
     function createMatrixBox() {
         // Don't create more than MAX_BOXES at once
@@ -2517,11 +2517,11 @@ function initMatrixRain() {
         if (matrixBoxCount < MAX_BOXES) {
             createMatrixBox();
         }
-    }, 1000 + Math.random() * 1000); // Create new boxes every 1-2 seconds
+    }, 500 + Math.random() * 1000); // Create new boxes every 0.5-1.5 seconds
     
     // Create initial boxes with faster timing
-    for (let i = 0; i < 10; i++) {
-        setTimeout(createMatrixBox, i * 200 + Math.random() * 500);
+    for (let i = 0; i < 15; i++) {
+        setTimeout(createMatrixBox, i * 150 + Math.random() * 300);
     }
 }
 

@@ -135,6 +135,7 @@ body {
     pointer-events: none;
     z-index: 1;
     opacity: 1.0;
+    contain: layout style paint; /* Performance isolation */
 }
 
 .matrix-box {
