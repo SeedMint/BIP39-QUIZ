@@ -61,3 +61,14 @@ logs
 
 # Local development
 .local
+
+# Local data and test files
+scores.json
+*.backup
+*-test.html
+*-optimized.js
+generate-templates.js
+
+# Development reports
+*_REPORT.md
+*_RESULTS.md
