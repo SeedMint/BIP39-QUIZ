@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-09-03T22:18:44.418Z",
+  "lastUpdated": "2025-10-31T09:47:35.414Z",
   "scores": [
     {
       "name": "attacker123",
@@ -31,6 +31,16 @@
       "timestamp": "2025-09-03T14:20:13.265Z",
       "gameTime": 99999,
       "gameLength": 24
+    },
+    {
+      "name": "PLAYER1",
+      "score": 404,
+      "streak": 11,
+      "words": 12,
+      "combined": 4041112,
+      "timestamp": "2025-10-31T09:47:35.023Z",
+      "gameTime": 128,
+      "gameLength": 12
     },
     {
       "name": "HONEYBADGER",
